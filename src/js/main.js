@@ -50,4 +50,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
     // Laod Calendar
     var cal = calendar.generate('calendar-chart');
     calendar.updateData(cal,[]);
+
+    // load double bar
+    dbars = double_bars.generate('double-bars-chart');
+    double_bars.loadDataFromFile(dbars,'data/double-bars.csv');
 })
