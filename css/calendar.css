@@ -1,0 +1,15 @@
+.container {
+    width: 98vw;
+    height: 70vh;
+}
+
+.day {
+  fill: #fff;
+  stroke: #ccc;
+}
+
+.month {
+  fill: none;
+  stroke: #000;
+  stroke-width: 2px;
+}

@@ -1,0 +1,30 @@
+.container {
+    width: 98vw;
+    height: 70vh;
+}
+.axis text {
+  font: 10px sans-serif;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.axis path{
+    fill: none;
+    stroke: #000;
+}
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.axis .tick line {
+    stroke-width: 1;
+    stroke: rgba(0, 0, 0, 0.2);
+}
+
+.x.axis path {
+    display: none;
+}
