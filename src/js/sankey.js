@@ -1,6 +1,6 @@
 (function(){
     // end helper functions
-    window.pack = {
+    window.sankey = {
 	getChartDimensions: function(graph){
 	    if (!graph.id) throw "Graph requires an ID"; 
 	    
