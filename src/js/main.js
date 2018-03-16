@@ -54,4 +54,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
     // load double bar
     dbars = double_bars.generate('double-bars-chart');
     double_bars.loadDataFromFile(dbars,'data/double-bars.csv');
+
+    // Load pack chart
+    pChart = pack.generate('pack-chart');
+    pack.loadDataFromFile(pChart,'data/pack.json');
 })
