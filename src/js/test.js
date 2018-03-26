@@ -1,25 +1,25 @@
 var oas;
 document.addEventListener('DOMContentLoaded', function(event) {
     // load double bar
-    stackareaChart = stackarea.generate('stackarea-chart');
-    stackarea.loadDataFromFile(stackareaChart,'0','data/stackarea.csv',function(data){	
-	var cols = ['cat1','cat2','cat3','cat4','cat5','cat6','cat7','cat8','cat9'];
-	var total = {}
- 	data.map(function(d){
-	    total[d.category] = cols.reduce(function(acc,c){
-		d[c] = +d[c];
-		acc += d[c];
-		return acc
+    barstackChart = barstack.generate('barstack-chart');
+    barstack.loadDataFromFile(barstackChart,'0','data/stackarea.csv',function(data){
+	data.map(function(d){
+	    d.total = data.columns.reduce(function(a,c){
+		if(c != 'category'){
+		    d[c] = +d[c];
+		    a += d[c]
+		};
+		return a
 	    },0);
 	});
-
 	data.map(function(d){
-	    cols.map(function(c){
-		d[c] = d[c]/total[d.category];
-	    }) 
+	    data.columns.map(function(c){
+		if(c != 'category') d[c] = d[c]/d.total;
+	    })
+	    d.total = 1;
 	});
 	return data;
     });
-    oas = stackareaChart;
+    oas = barstackChart;
 });
 
