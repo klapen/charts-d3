@@ -48,17 +48,18 @@
 	    }
 	},
 	drawChart:function(graph,data){
-	    console.log(data)
 	    var area = d3.area()
 		.x(function(d, i) { return graph.x(d.data.category); })
 		.y0(function(d) { return graph.y(d[0]); })
 		.y1(function(d) { return graph.y(d[1]); });
 	    
-	    var keys = data.columns.slice(2);
+	    var keys = data.columns.slice(1);
 	    
 	    graph.x.domain(data.map(function(d) { return d.category; }));
 	    graph.color.domain(keys);
 	    graph.stack.keys(keys);
+
+	    console.log(data,graph.stack(data))
 
 	    var x_offset = graph.x.bandwidth()/2;
 
@@ -76,11 +77,11 @@
 		.attr("d", area);
 	    
 	    layer.append("text")
-		.attr("x", graph.width-graph.margin.left-graph.margin.right - (1.5*x_offset))
+		.attr("x", graph.width-graph.margin.left-graph.margin.right - (2*x_offset))
 		.attr("y", function(d) { return graph.y((d[d.length - 1][0] + d[d.length - 1][1]) / 2); })
 		.attr("dy", ".35em")
 		.style("font", "10px sans-serif")
-		.style("text-anchor", "end")
+		.style("text-anchor", "start")
 		.text(function(d) { return d.key; });
 	   
 	    var x_axis = g.append("g")
