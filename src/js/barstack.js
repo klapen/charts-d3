@@ -113,7 +113,7 @@
 	},
 	onResize: function(graph){
 	    this.getChartDimensions(graph);
-	    this.updateData(graph.data,graph);
+	    this.updateData(graph,graph.data);
 	},
 	generate: function(id){
 	    var that = this;
