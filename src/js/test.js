@@ -1,20 +1,18 @@
 var oas;
 document.addEventListener('DOMContentLoaded', function(event) {
     // load double bar
-    anaChart = analfabetismo.generate('ana-chart');
-    analfabetismo.loadDataFromFile(anaChart,'range1','data/analfabetismo.csv',function(data){
+    cpChart = comparativePlanet.generate('complanet-chart');
+    comparativePlanet.loadDataFromFile(cpChart,'0','data/comparative-planet.csv',function(data){
 	data = data.reduce(function(acc,curr){
-	    acc[curr.name] = {'Male':[{'name':'Yes','value':+curr.m_yes},
-				      {'name':'No','value':+curr.m_no},
-				      {'name':'No info','value':+curr.m_no_info}],
-			      'Female':[{'name':'Yes','value':+curr.f_yes},
-					{'name':'No','value':+curr.f_no},
-					{'name':'No info','value':+curr.f_no_info}]
-			     }
-	    return acc;
-	},{})
-	console.log(data);
+            var order_data = data.columns.filter(function(d){
+                return ['id','total','name'].indexOf(d) < 0;
+            }).map(function(c){
+                return {'name':c,'value':+curr[c],'total':+curr.total}
+            }).sort(function(a,b){return b.value - a.value});
+            acc[curr['id']] = {'name':curr.name,'data':order_data};
+            return acc
+        },{});
 	return data;
     });
-    oas = anaChart;
+    oas = cpChart;
 });
