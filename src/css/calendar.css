@@ -3,12 +3,11 @@
     height: 70vh;
 }
 
-.day {
-  fill: #fff;
+.calendar-day {
   stroke: #ccc;
 }
 
-.month {
+.calendar-month path {
   fill: none;
   stroke: #000;
   stroke-width: 2px;

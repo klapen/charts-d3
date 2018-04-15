@@ -48,8 +48,14 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }, 3000);
 
     // Laod Calendar
-    var cal = calendar.generate('calendar-chart');
-    calendar.updateData(cal,[]);
+    // monthlyGraph
+    cal = calendar.generate('calendar-chart');
+    calendar.loadDataFromFile(cal,'values','data/calendar.json',function(data){
+	data.values.map(function(d){
+	    d[0] = new Date(d[0]);
+	})	
+	return data;
+    });
 
     // load double bar
     dbars = double_bars.generate('double-bars-chart');
