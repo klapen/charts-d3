@@ -1,16 +1,15 @@
 var oas;
 document.addEventListener('DOMContentLoaded', function(event) {
     // load double bar
-    tbChart = timebars.generate('time-chart');
-    tbChart.drawYear = true;
-    timebars.loadDataFromFile(tbChart,'values','data/timebars.json',function(data){
+    areaChart = area.generate('area-chart');
+    area.loadDataFromFile(areaChart,'values','data/area.json',function(data){
 	data.values.map(function(d){
 	    d[0] = new Date(d[0]);
-	})	
-	//console.log(data);
+	    d[1] = d[1]+Math.random();
+	})
 	return data;
     });
-    oas = tbChart;
+    oas = areaChart;
 });
 
 function simulateDataYear(){

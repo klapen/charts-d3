@@ -185,4 +185,15 @@ document.addEventListener('DOMContentLoaded', function(event) {
 	    return d;
 	})
     });
+
+    // load double bar
+    tbChart = timebars.generate('time-chart');
+    tbChart.drawYear = true;
+    timebars.loadDataFromFile(tbChart,'values','data/timebars.json',function(data){
+	data.values.map(function(d){
+	    d[0] = new Date(d[0]);
+	})	
+	//console.log(data);
+	return data;
+    });
 })

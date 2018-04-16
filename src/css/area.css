@@ -1,0 +1,9 @@
+.container {
+    width: 98vw;
+    height: 70vh;
+}
+
+.area {
+  fill: url(#area-gradient);
+  stroke-width: 05px;
+}
