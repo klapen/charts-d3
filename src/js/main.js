@@ -148,52 +148,35 @@ document.addEventListener('DOMContentLoaded', function(event) {
 	return data;
     });
 
-    anaChart = analfabetismo.generate('ana-chart');
-    analfabetismo.loadDataFromFile(anaChart,'range1','data/analfabetismo.csv',function(data){
-	data = data.reduce(function(acc,curr){
-	    acc[curr.name] = {'Male':[{'name':'Yes','value':+curr.m_yes},
-				      {'name':'No','value':+curr.m_no},
-				      {'name':'No info','value':+curr.m_no_info}],
-			      'Female':[{'name':'Yes','value':+curr.f_yes},
-					{'name':'No','value':+curr.f_no},
-					{'name':'No info','value':+curr.f_no_info}]
-			     }
-	    return acc;
-	},{})
-	return data;
-    });
+    // multiChart = multilines.generate('multilines-chart');
+    // var cols = ['col1','col2'];
+    // multilines.loadDataFromFile(multiChart,{'x':'year','lines':cols},'data/multilines.csv',function(data){
+    // 	return data.map(function(d){
+    // 	    cols.map(function(c){ d[c] = +d[c] });
+    // 	    return d;
+    // 	})
+    // });
 
-    cpChart = comparativePlanet.generate('complanet-chart');
-    comparativePlanet.loadDataFromFile(cpChart,'0','data/comparative-planet.csv',function(data){
-	data = data.reduce(function(acc,curr){
-            var order_data = data.columns.filter(function(d){
-                return ['id','total','name'].indexOf(d) < 0;
-            }).map(function(c){
-                return {'name':c,'value':+curr[c],'total':+curr.total}
-            }).sort(function(a,b){return b.value - a.value});
-            acc[curr['id']] = {'name':curr.name,'data':order_data};
-            return acc
-        },{});
-	return data;
-    });
-
-    multiChart = multilines.generate('multilines-chart');
-    var cols = ['col1','col2'];
-    multilines.loadDataFromFile(multiChart,{'x':'year','lines':cols},'data/multilines.csv',function(data){
-	return data.map(function(d){
-	    cols.map(function(c){ d[c] = +d[c] });
-	    return d;
-	})
-    });
-
-    // load double bar
-    tbChart = timebars.generate('time-chart');
-    tbChart.drawYear = true;
-    timebars.loadDataFromFile(tbChart,'values','data/timebars.json',function(data){
+    areaChart = area.generate('area-chart');
+    area.loadDataFromFile(areaChart,'values','data/area.json',function(data){
 	data.values.map(function(d){
 	    d[0] = new Date(d[0]);
-	})	
-	//console.log(data);
+	    d[1] = d[1]+Math.random();
+	})
 	return data;
     });
+    
+    function simulateDataYear(){
+	return ['2015','2016','2017'].reduce(function(acc,y){
+	    ['01','02','03','04','05','06','07','08','09','10','11','12'].reduce(function(a,m){
+		acc.push([[y,m,'01'].join('-'),Math.random()*4])
+	    },0)
+	    return acc;
+	},[])
+    }
+    
+    function simulateDataMonth(){
+	var res = d3.timeDays(new Date(2018, 0, 1), new Date(2018, 12, 1));
+	res = res.map(function(d){ return [d,Math.random()*4]; })
+    }
 })

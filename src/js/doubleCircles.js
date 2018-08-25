@@ -1,6 +1,6 @@
 (function(){
     // end helper functions
-    window.comparativePlanet = {
+    window.doubleCircles = {
 	getChartDimensions: function(graph){
 	    if (!graph.id) throw "Graph requires an ID"; 
 	    
@@ -65,12 +65,27 @@
 		    },-1)
 		})])
 
-	    console.log('keys',graph.data,keys,selectors, max_data);
-	    var dots = graph.chart.append('g').attr('class','data-dots')
+	    var dots = graph.chart.append('g').attr('class','data-dots');
+
+	    var tooltip = graph.chart.append('g').attr('class','tooltip-double-circles tooltip-'+graph.id);
+
+	    function mouseover(d,i){
+		tooltip.selectAll('text').remove();
+		var m_data = d3.selectAll('.data-dots-'+d.name).data();
+		tooltip.selectAll('text').data(m_data).enter().append('text')
+		    .attr('x',function(){return graph.x(d.name)})
+		    .attr('y',function(e,j){
+			var offset = i % 2 == 0 ? y_offset/2 : y_offset;
+			return graph.height + (0.5*graph.x.bandwidth()) - offset + (j*0.25*graph.x.bandwidth());
+		    }).text(function(e){return e.year+": "+d3.format('.1%')(e.value/100)})
+		    .style('text-anchor','middle').style('font-size','60%');
+		tooltip.transition().duration(200)
+		    .style('opacity',0.9);
+	    };
+	    function mouseout(d){tooltip.transition().duration(200).style('opacity',0)}
 	    
 	    Object.keys(data).forEach(function(k){ drawCircles(k,data[k].data); })
 	    function drawCircles(sel,datum){
-		console.log('datum',datum)
 		var yr = dots.append('g').selectAll('g')
 		    .data(datum).enter().append('g')
 		    .attr('class',function(d){return 'data-dots-'+d.name});
@@ -78,7 +93,12 @@
 		yr.append('circle')
 		    .attr('cx',function(d){return graph.x(d.name)})
 		    .attr('cy',graph.x.bandwidth())
-		    .attr('r',function(d){return graph.r(d.value)})
+		    .attr('r',function(d){
+			var min_radius = 0.1*graph.r.domain()[1];
+			if(d.value < min_radius) return graph.r(min_radius)
+			else return graph.r(d.value)
+		    })
+		    .attr('year',sel)
 		    .style('fill','none')
 		    .style('stroke',function(d){return graph.color(sel)})
 		    .style('stroke-width',2);
@@ -92,16 +112,36 @@
 	    
 	    lines.append('line')
 		.attr('x1',function(d){return graph.x(d.name)})
-		.attr('y1',function(d){return (1.05*graph.x.bandwidth()) + graph.r(max_data[d.name])})
+		.attr('y1',function(d){
+		    var rad = max_data[d.name]
+		    var min_radius = 0.1*graph.r.domain()[1];
+		    if(rad < min_radius) rad = min_radius;
+		    return (1.05*graph.x.bandwidth()) + graph.r(rad)
+		})
 		.attr('x2',function(d){return graph.x(d.name)})
 		.attr('y2',function(d,i){ return graph.height - (i % 2 == 0 ? y_offset/2 : y_offset); })
 		.style('stroke','#5cb3e6').style('stroke-width',1);
 
 	    lines.append('text')
 	    	.attr('x',function(d){return graph.x(d.name)})
-		.attr('y',function(d,i){ return graph.height + (0.15*graph.x.bandwidth()) - (i % 2 == 0 ? y_offset/2 : y_offset); })
-		.style('text-anchor','middle').style('font-size','80%')
+		.attr('y',function(d,i){
+		    return graph.height + (0.15*graph.x.bandwidth()) - (i % 2 == 0 ? y_offset/2 : y_offset);
+		}).style('text-anchor','middle').style('font-size','70%')
 		.text(function(d){return d.name})
+		.on('mouseover',mouseover).on('mouseout',mouseout)
+		.on('click',mouseover)
+
+	    lines.append('circle')
+		.attr('cx',function(d){return graph.x(d.name)})
+		.attr('cy',graph.x.bandwidth())
+		.attr('r',function(d){
+		    var rad = max_data[d.name]
+		    var min_radius = 0.1*graph.r.domain()[1];
+		    if(rad < min_radius) return graph.r(min_radius)
+		    else return graph.r(rad)
+		})
+		.style('opacity',0).on('mouseover',mouseover).on('mouseout',mouseout)
+		.on('click',mouseover)
 
 	    // Conventions
 	    var conv = graph.chart.append('g').attr('class','data-convention')
@@ -109,15 +149,15 @@
 	    var cr = 0.1*graph.x.bandwidth();
 	    
 	    conv.append('circle')
-		.attr('cx',function(d,i){ return graph.x(keys.slice(-1)[0]) - (selectors.length-i)*7*cr })
+		.attr('cx',function(d,i){ return graph.x(keys.slice(-1)[0]) - (selectors.length-1-i)*9*cr })
 		.attr('cy',graph.margin.top).attr('r', cr)
 		.style('fill','none')
 		.style('stroke',function(d){return graph.color(d)})
 		.style('stroke-width',2);
 	    conv.append('text')
-		.attr('x',function(d,i){ return graph.x(keys.slice(-1)[0]) - (selectors.length-i)*7*cr + 1.2*cr})
-		.attr('y',graph.margin.top+cr/2).attr('r', cr)
-		.style('text-anchor','start')
+		.attr('x',function(d,i){ return graph.x(keys.slice(-1)[0]) - (selectors.length-1-i)*9*cr + 1.4*cr})
+		.attr('y',graph.margin.top+0.7*cr).attr('r', cr)
+		.style('text-anchor','start').style('font-size','70%')
 		.text(function(d){ return data[d].name});
 	    
 	},

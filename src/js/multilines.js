@@ -6,7 +6,7 @@
 	    
 	    var width = utils.widthCalc(graph.id);
 	    var height = utils.heightCalc(graph.id);
-	    var margin = {top: (0.05*height), right: (0.08*width), bottom: (0.1*height), left: (0.08*width)};
+	    var margin = {top: (0.05*height), right: (0.08*width), bottom: (0.2*height), left: (0.15*width)};
 	    
 	    graph.margin= margin;
 	    graph.width= width-margin.left-margin.right;
@@ -52,7 +52,6 @@
 	    }
 	},
 	drawChart:function(graph,data){
-	    console.log(data);
 	    var y_max = d3.max(graph.selector.lines.reduce(function(acc,curr){
 		acc = acc.concat(d3.extent(data,function(d){return d[curr]}));
 		return acc;
@@ -62,27 +61,35 @@
 	    graph.color.domain(graph.selector.lines);
 	    graph.y.domain([1.117*y_max,0]);
 
-	    graph.chart.append("g")
+	    graph.xAxis = graph.chart.append("g")
 		.attr("class", "axis axis--x")
 		.attr("transform", utils.translation(0, graph.height))
 		.call(d3.axisBottom(graph.x))
-		.append("text")
-	    	.attr("x", graph.width)
-		.attr("y", -0.005*graph.width)
-		.attr('text-anchor','end')
-		.attr("font-size", "100%")
-		.attr("fill", "#000")
-		.text("Title X Axis");
-	    
-	    graph.chart.append("g")
+
+	    graph.yAxis = graph.chart.append("g")
 		.attr("class", "axis axis--y")
-		.call(d3.axisLeft(graph.y))
-		.append("text")
-		.attr("transform", "rotate(-90)")
-		.attr("y", 0.015*graph.width)
-		.attr("font-size", "100%")
-		.attr("fill", "#000")
-		.text("Title Y Axis");
+	    var axis = d3.axisLeft(graph.y);
+	    if(graph.format) axis.tickFormat(graph.format);
+	    graph.yAxis.call(axis);
+	
+	    if(graph.titles.x){
+		graph.xAxis.append("text")
+	    	    .attr("x", graph.width)
+		    .attr("y", -0.005*graph.width)
+		    .attr('text-anchor','end')
+		    .attr("font-size", "100%")
+		    .attr("fill", "#000")
+		    .text(graph.titles.x);
+	    }
+
+	    if(graph.titles.y){
+		graph.yAxis.append("text")
+		    .attr("transform", "rotate(-90)")
+		    .attr("y", 0.05*graph.width)
+		    .attr("font-size", "100%")
+		    .attr("fill", "#000")
+		    .text(graph.titles.y);
+	    }
 
 	    var lines_data = graph.selector.lines.map(function(l){
 		return {
@@ -98,7 +105,7 @@
 		.attr('transform',utils.translation(graph.x.bandwidth()/2,0))
 
 	    lines.append('path').attr('class','mline')
-		.attr('d',function(d){ console.log(d);return graph.valueLine(d.values) })
+		.attr('d',function(d){ return graph.valueLine(d.values) })
 		.style('stroke', function(d){ return graph.color(d.id)})
 		.style('fill','none').style('stroke-width', 0.001*graph.width);
 
@@ -112,41 +119,44 @@
 
 	    function mouseover(n){
 		tooltip.selectAll('g').remove();
-		var g = tooltip.selectAll('g').data(d3.selectAll('.mdot-'+n[graph.selector.x]).data())
+		var g = tooltip.selectAll('g').data(d3.selectAll('.mdot-'+graph.id+'-'+n[graph.selector.x]).data())
 		    .enter().append('g');
 		graph.selector.lines.forEach(function(l){
 		    g.append('text')
 			.attr('x',function(d){ return graph.x(d[graph.selector.x]) })
 			.attr('y',function(d){ return graph.y(d[l]) - 2*radius})
-			.style('text-anchor','middle').style('font-size','70%')
-			.text(function(d){return d[l]})
+			.style('text-anchor','middle').style('font-size','65%')
+			.text(function(d){return graph.format ? graph.format(d[l]) : d[l]})
 		    
 		    g.append('line')
-			.attr('x1',function(d){ return graph.x(d[graph.selector.x])})
-			.attr('y1',function(d){ return graph.y(d[l])})
-			.attr('x2',function(d){ return graph.x(d[graph.selector.x])})
-			.attr('y2',function(d){ return graph.height })
-			.style('stroke','lightgrey').style('stroke-width',0.001*graph.width)
-			.attr('stroke-dasharray','5,5');
+		    	.attr('x1',function(d){ return graph.x(d[graph.selector.x])})
+		    	.attr('y1',function(d){ return graph.y(d[l])})
+		    	.attr('x2',function(d){ return graph.x(d[graph.selector.x])})
+		    	.attr('y2',function(d){ return graph.height })
+		    	.style('stroke','black').style('stroke-width',0.001*graph.width)
+			.style('opacity',1)
+		    	.attr('stroke-dasharray','5,10');
 		    
 		    g.append('line')
-			.attr('x1',function(d){ return -graph.x.bandwidth()/2})
-			.attr('y1',function(d){ return graph.y(d[l])})
-			.attr('x2',function(d){ return graph.x(d[graph.selector.x])})
-			.attr('y2',function(d){ return graph.y(d[l]) })
-			.style('stroke','lightgrey').style('stroke-width',0.001*graph.width)
-			.attr('stroke-dasharray','5,10');
+		    	.attr('x1',function(d){ return -graph.x.bandwidth()/2})
+		    	.attr('y1',function(d){ return graph.y(d[l])})
+		    	.attr('x2',function(d){ return graph.x(d[graph.selector.x])})
+		    	.attr('y2',function(d){ return graph.y(d[l]) })
+		    	.style('stroke','black').style('stroke-width',0.001*graph.width)
+			.style('opacity',1)
+		    	.attr('stroke-dasharray','5,10');
 		})
 	    }
 	    
 	    graph.selector.lines.forEach(function(l){
 		dots.append('circle')
 		    .attr('r',radius)
-		    .attr('class',function(d){return 'mdot-'+d[graph.selector.x]})
+		    .attr('class',function(d){return 'mdot-'+graph.id+'-'+d[graph.selector.x]})
 		    .attr('cx',function(d){ return graph.x(d[graph.selector.x])})
 		    .attr('cy',function(d){ return graph.y(d[l])})
 		    .style('fill',function(){ return graph.color(l)})
-		    .on('mouseover',mouseover);
+		    .on('mouseover',mouseover)
+		    .on('click',mouseover);
 	    })
 
 	    // Conventions
@@ -156,17 +166,17 @@
 		.enter().append('g');
 	    conv.append("rect")
 		.attr('height',rect_size).attr('width',rect_size)
-		.attr("x", function(d,i) { return rect_gap*i + rect_size})
-		.attr("y", 1.06*graph.height)
+		.attr("x", function(d,i) { return rect_gap*i + rect_gap/8})
+		.attr("y", 1.07*graph.height)
 		.style("fill", function(d) { return graph.color(d); })
 	    conv.append('text')
-		.attr("x", function(d,i) { return rect_gap*i + 2.4*rect_size})
-		.attr("y", 1.06*graph.height +rect_size/2)
+		.attr("x", function(d,i) { return rect_gap*i + rect_gap/8 + 2*rect_size})
+		.attr("y", 1.07*graph.height +rect_size/2)
 		.attr("dy", ".35em")
 		.style("font", "sans-serif")
 		.style('font-size','70%')
 		.style("text-anchor", "start")
-		.text(function(d) { return d; });
+		.text(function(d) { return graph.labels ? graph.labels[d] : d; });
 	},
 	updateData: function(graph,data){
 	    var that = this;

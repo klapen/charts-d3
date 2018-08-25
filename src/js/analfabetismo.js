@@ -6,7 +6,7 @@
 	    
 	    var width = utils.widthCalc(graph.id);
 	    var height = utils.heightCalc(graph.id);
-	    var margin = {top: (0.04*height), right: (0.03125*width), bottom: (0.04*height), left: (0.04166*width)};
+	    var margin = {top: (0.04*height), right: (0.03125*width), bottom: (0.25*height), left: (0.04166*width)};
 	    
 	    graph.margin= margin;
 	    graph.width= width - margin.left - margin.right;
@@ -16,16 +16,19 @@
 	    
 	    graph.xRight = d3.scaleLinear();
 	    graph.xLeft = d3.scaleLinear();
+	    graph.colors = {'male':'#162a6b','female':'#4496d8'};
 	    
 	    if(graph.svg) d3.select('#'+graph.id).select('svg').remove();
 	    graph.svg = d3.select('#'+graph.id).append('svg').attr('width', width).attr('height', height);
 	},
 	// ToDo: Refactor on utils using callback
-	loadDataFromFile: function(graph,selector,url,callback){
+	loadDataFromFile: function(graph,selector,url,callback,mapCallback,initMap){
 	    var that = this;
 	    graph.selector = selector;
 	    graph.dataCallback = callback || graph.dataCallback;
 	    if(graph.dataCallback == undefined) throw "Graph requires a data callback";
+	    graph.mapCallback = mapCallback;
+	    graph.initMap = initMap ? initMap : false;
 	    
 	    var ext = url.split('.')[1];
 
@@ -49,19 +52,22 @@
 	drawChart:function(graph,data){
 	    var that = this;
 	    graph.chart = graph.svg.append('g').attr('transform',utils.translation(graph.margin.left,graph.margin.top));
-	    var keys = data[graph.selector]['Female'].sort(function(a,b){return a.value - b.value})
+	    var keys = data[graph.selector].data['Female'].sort(function(a,b){return a.value - b.value})
 		.map(function(d){return d.name});
 
-	    var sum_male = d3.sum(data[graph.selector]['Male'],function(d){return d.value});
-	    data[graph.selector]['Male'].map(function(d){ d.total = sum_male});
-	    var sum_female = d3.sum(data[graph.selector]['Female'],function(d){return d.value});
-	    data[graph.selector]['Female'].map(function(d){ d.total = sum_female});
+	    var sum_male = d3.sum(data[graph.selector].data['Male'],function(d){return d.value});
+	    data[graph.selector].data['Male'].map(function(d){ d.total = sum_male});
+	    var sum_female = d3.sum(data[graph.selector].data['Female'],function(d){return d.value});
+	    data[graph.selector].data['Female'].map(function(d){ d.total = sum_female});
 
 	    graph.y.domain(keys);
 
+	    function getData(d){
+		return graph.dataSelector == 'quantity' ? d.value : d.value/d.total;
+	    }
 	    graph.maxData = [
-		d3.max(data[graph.selector]['Female'], function(d){return d.value/d.total}),
-		d3.max(data[graph.selector]['Male'], function(d){return d.value/d.total})
+		d3.max(data[graph.selector].data['Male'], getData),
+		d3.max(data[graph.selector].data['Female'], getData)
 	    ];
 	    
 	    // Calculate mid point
@@ -98,47 +104,77 @@
 
 	    // d3.selectAll('.axis text').style('font-size','70%');
 	    
-	    that.createRightBars(graph,data[graph.selector]['Female']);
-	    that.createLeftBars(graph,data[graph.selector]['Male']);
+	    that.createRightBars(graph,data[graph.selector].data['Female']);
+	    that.createLeftBars(graph,data[graph.selector].data['Male']);
 
 	    // Middle line 
 	    graph.chart.append('line').attr('class','analfabetismo-mid-line')
 		.attr('x1',graph.midPoint).attr('y1',-graph.margin.top)
-		.attr('x2',graph.midPoint).attr('y2',graph.height+graph.margin.bottom)
-		.style('stroke','#000000').style('stroke-width',line_stroke)
-	    
+		.attr('x2',graph.midPoint).attr('y2',graph.height+graph.margin.top)
+		.style('stroke','#000000').style('stroke-width',line_stroke);
+
+	    // Conventions
+	    var opts = graph.svg.append('g').attr('class','analfabetismo-conv')
+		.selectAll('g').data(['Hombres','Mujeres']).enter().append('g');
+
+	    var rect_size = graph.y.bandwidth()/2;
+	    opts.append('rect')
+		.attr('height',rect_size).attr('width',rect_size)
+		.style('fill',function(d){ return d == 'Hombres' ? graph.colors.male : graph.colors.female})
+		.attr('y',graph.height+graph.margin.top+rect_size/2)
+		.attr('x',function(d,i){return rect_size + i*graph.width/2});
+
+	    opts.append('text')
+		.attr('y',graph.height+graph.margin.top+1.2*rect_size)
+		.attr('x',function(d,i){return 2.1*rect_size + i*graph.width/2})
+		.text(function(d){return d})
+		.style('text-anchor','start').style('font-size','70%')
 	},
 	createLeftBars: function(graph,data){
 	    var rBars = graph.chart.append('g').attr('class','male-bars left').selectAll('g')
 		.data(data).enter().append('g');
+
+	    function getData(d){
+		return graph.dataSelector == 'quantity' ? d.value : d.value/d.total;
+	    };
+	    function getFormat(d){
+		return graph.dataSelector == 'quantity' ? d.value : d3.format('.2%')(d.value/d.total);
+	    }
 	    
 	    rBars.append('rect')
-		.style('fill','#162a6b')
+		.style('fill', graph.colors.male)
 		.attr('class',function(d){return 'male-'+d.name.replace(/ /g,'-').toLowerCase()})
-		.attr('width', function(d){return graph.xLeft(d.value/d.total)})
+		.attr('width', function(d){return graph.xLeft(getData(d))})
 		.attr('height', graph.y.bandwidth())
 		.attr('y', function(d,i) { return graph.y(d.name); })
-		.attr('x', function(d) { return graph.midPoint-graph.xLeft(d.value/d.total)});
+		.attr('x', function(d) { return graph.midPoint-graph.xLeft(getData(d))});
 	    
 	    // Add labels
 	    rBars.append('text')
 	    	.attr("x", function(d) { return graph.midPoint/2})
 	    	.attr("y", function(d) { return graph.y(d.name)+graph.y.bandwidth()/2; })
-	    	.attr("dy", ".35em")
+	    	.attr("dy", ".35em").style('font-size','70%')
 	    	.style('text-anchor','middle')
-	    	.text(function(d) { return d3.format('.2%')(d.value/d.total); })
+	    	.text(function(d) { return getFormat(d); })
 		.style('fill',function(d){
-		    return graph.midPoint/2 > graph.midPoint - graph.xLeft(d.value/d.total) ? 'white' : 'black'
+		    return graph.midPoint/2 > graph.midPoint - graph.xLeft(getData(d)) ? 'white' : 'black'
 		});
 	},
 	createRightBars: function(graph,data){
 	    var rBars = graph.chart.append('g').attr('class','female-bars right').selectAll('g')
 		.data(data).enter().append('g');
+
+	    function getData(d){
+		return graph.dataSelector == 'quantity' ? d.value : d.value/d.total;
+	    };
+	    function getFormat(d){
+		return graph.dataSelector == 'quantity' ? d.value : d3.format('.2%')(d.value/d.total);
+	    }
 	    
 	    rBars.append('rect')
-		.style('fill', '#4496d8')
+		.style('fill', graph.colors.female)
 		.attr('class',function(d){return 'female-'+d.name.replace(/ /g,'-').toLowerCase()})
-		.attr('width', function(d){return graph.xRight(d.value/d.total)})
+		.attr('width', function(d){return graph.xRight(getData(d))})
 		.attr('height', graph.y.bandwidth())
 		.attr('y', function(d,i) { return graph.y(d.name); })
 		.attr('x', function(d) { return graph.midPoint;});
@@ -147,18 +183,19 @@
 	    rBars.append('text')
 	    	.attr("x", function(d) { return graph.midPoint + (graph.width-graph.midPoint)/2})
 	    	.attr("y", function(d) { return graph.y(d.name)+graph.y.bandwidth()/2; })
-	    	.attr("dy", ".35em")
+	    	.attr("dy", ".35em").style('font-size','70%')
 		.style('text-anchor','middle')
-	    	.text(function(d) { return d3.format('.2%')(d.value/d.total);})
+	    	.text(function(d) { return getFormat(d);})
 		.style('fill',function(d){
 		    var text_point = graph.midPoint + (graph.width-graph.midPoint)/2;
-		    return text_point < graph.midPoint + graph.xRight(d.value/d.total) ? 'white' : 'black'
+		    return text_point < graph.midPoint + graph.xRight(getData(d)) ? 'white' : 'black'
 		});
 	},
 	updateData: function(graph,data){
 	    var that = this;
 	    graph.data = data;
 	    var order_data = graph.dataCallback(data);
+	    if (graph.initMap && graph.mapCallback) graph.mapCallback(graph.data);
 	    graph.svg.selectAll('g').remove();
 
 	    if(!graph.svg) throw "Graph requires to be generated before using the load function";
@@ -178,12 +215,23 @@
 	    this.getChartDimensions(graph);
 	    this.updateData(graph,graph.data);
 	},
-	generate: function(id){
+	generate: function(id,selector,hasLocalidad){
 	    var that = this;
 	    var graph = {id:id,
-			 dataSelector: 'percentage'};
-	    graph.changeDataSelector = function(selector){
-		// ToDo: change to quantity
+			 dataSelector: selector ? selector : 'percentage',
+			 hasLocalidad: hasLocalidad ? hasLocalidad: true};
+
+	    graph.changeSelector = function(sel){
+		if(this.hasLocalidad){
+		    this.selector = sel;
+		    analfabetismo.updateData(this,this.data);
+		}
+	    };
+	    
+	    graph.changeDataSelector = function(sel){
+		console.log('change',sel);
+		this.dataSelector = sel;
+		analfabetismo.updateData(graph,graph.data);
 	    };
 	    that.getChartDimensions(graph);
 	    window.onresize = function(){that.onResize(graph)};
