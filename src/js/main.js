@@ -179,4 +179,17 @@ document.addEventListener('DOMContentLoaded', function(event) {
 	var res = d3.timeDays(new Date(2018, 0, 1), new Date(2018, 12, 1));
 	res = res.map(function(d){ return [d,Math.random()*4]; })
     }
+    
+    // load circular stack bar
+    rsbChart = radialStackbar.generate('radial-stackbar-chart');
+    radialStackbar.loadDataFromFile(rsbChart,'values','data/radial-stackbar.csv',function(data){
+	data.map(function(d){
+	    d['total'] = 0;
+	    data.columns.filter(function(c){ return c != 'name'})
+		.forEach(function(col){
+		    d.total += +d[col];
+		})
+	})
+	return data;
+    });
 })
