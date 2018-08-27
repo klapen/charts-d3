@@ -71,24 +71,26 @@
 	    var axis = d3.axisLeft(graph.y);
 	    if(graph.format) axis.tickFormat(graph.format);
 	    graph.yAxis.call(axis);
-	
-	    if(graph.titles.x){
-		graph.xAxis.append("text")
-	    	    .attr("x", graph.width)
-		    .attr("y", -0.005*graph.width)
-		    .attr('text-anchor','end')
-		    .attr("font-size", "100%")
-		    .attr("fill", "#000")
-		    .text(graph.titles.x);
-	    }
 
-	    if(graph.titles.y){
-		graph.yAxis.append("text")
-		    .attr("transform", "rotate(-90)")
-		    .attr("y", 0.05*graph.width)
-		    .attr("font-size", "100%")
-		    .attr("fill", "#000")
-		    .text(graph.titles.y);
+	    if(graph.titles){
+		if(graph.titles.x){
+		    graph.xAxis.append("text")
+	    		.attr("x", graph.width)
+			.attr("y", -0.005*graph.width)
+			.attr('text-anchor','end')
+			.attr("font-size", "100%")
+			.attr("fill", "#000")
+			.text(graph.titles.x);
+		}
+		
+		if(graph.titles.y){
+		    graph.yAxis.append("text")
+			.attr("transform", "rotate(-90)")
+			.attr("y", 0.05*graph.width)
+			.attr("font-size", "100%")
+			.attr("fill", "#000")
+			.text(graph.titles.y);
+		}
 	    }
 
 	    var lines_data = graph.selector.lines.map(function(l){

@@ -148,14 +148,14 @@ document.addEventListener('DOMContentLoaded', function(event) {
 	return data;
     });
 
-    // multiChart = multilines.generate('multilines-chart');
-    // var cols = ['col1','col2'];
-    // multilines.loadDataFromFile(multiChart,{'x':'year','lines':cols},'data/multilines.csv',function(data){
-    // 	return data.map(function(d){
-    // 	    cols.map(function(c){ d[c] = +d[c] });
-    // 	    return d;
-    // 	})
-    // });
+    multiChart = multilines.generate('multilines-chart');
+    var cols = ['col1','col2'];
+    multilines.loadDataFromFile(multiChart,{'x':'year','lines':cols},'data/multilines.csv',function(data){
+    	return data.map(function(d){
+     	    cols.map(function(c){ d[c] = +d[c] });
+     	    return d;
+     	})
+    });
 
     areaChart = area.generate('area-chart');
     area.loadDataFromFile(areaChart,'values','data/area.json',function(data){
