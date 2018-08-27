@@ -150,12 +150,13 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
     multiChart = multilines.generate('multilines-chart');
     var cols = ['col1','col2'];
-    multilines.loadDataFromFile(multiChart,{'x':'year','lines':cols},'data/multilines.csv',function(data){
-    	return data.map(function(d){
-     	    cols.map(function(c){ d[c] = +d[c] });
-     	    return d;
-     	})
-    });
+    multilines.loadDataFromFile(multiChart,{'x':'year','lines':cols},'data/multilines.csv',
+				function(data){
+    				    return data.map(function(d){
+     					cols.map(function(c){ d[c] = +d[c] });
+     					return d;
+     				    })
+				});
 
     areaChart = area.generate('area-chart');
     area.loadDataFromFile(areaChart,'values','data/area.json',function(data){
@@ -192,4 +193,18 @@ document.addEventListener('DOMContentLoaded', function(event) {
 	})
 	return data;
     });
+
+    // Double multiline
+    dml = doubleMultilines.generate('double-multilines-chart');
+    var cols = {'upper':['col1','col2'],'bottom':['col3','col4']};
+    doubleMultilines.loadDataFromFile(dml,{'x':'year','lines':cols},'data/double-multilines.csv',
+				      function(data){
+					  var res = data.map(function(d){
+     					      cols.upper.map(function(c){ d[c] = +d[c] });
+					      cols.bottom.map(function(c){ d[c] = +d[c] });
+     					      return d;
+     					  })
+					  //console.log('data',res)
+					  return res;
+				      });
 })
