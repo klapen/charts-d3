@@ -1,0 +1,18 @@
+{
+  "name": "charts-d3",
+  "private": true,
+  "version": "2.0.0",
+  "description": "Klapen — D3.js visualizations gallery",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "aws s3 cp dist/ s3://klapen.com.co/ --recursive"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "tailwindcss": "^4.0.0",
+    "vite": "^6.0.0"
+  }
+}

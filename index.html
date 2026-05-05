@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Klapen · D3.js Visualizations</title>
+    <meta name="description" content="A gallery of D3.js data visualizations by Orlando A. Saavedra" />
+  </head>
+  <body class="bg-neutral-950 text-neutral-100 min-h-screen">
+    <header class="border-b border-neutral-800">
+      <div class="max-w-6xl mx-auto px-6 py-12">
+        <h1 class="text-4xl font-bold tracking-tight">Klapen</h1>
+        <p class="text-neutral-400 mt-2">D3.js visualizations · Orlando A. Saavedra</p>
+      </div>
+    </header>
+
+    <section class="max-w-6xl mx-auto px-6 py-8">
+      <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mb-8">
+        <div class="flex flex-wrap gap-2" id="filters">
+          <button data-filter="all" class="bg-brand text-white px-3 py-1 rounded-full text-sm cursor-pointer">All</button>
+          <button data-filter="colombia" class="bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700">Colombia</button>
+          <button data-filter="sports" class="bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700">Sports</button>
+          <button data-filter="economics" class="bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700">Economics</button>
+          <button data-filter="maps" class="bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700">Maps</button>
+          <button data-filter="charts" class="bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700">Charts</button>
+        </div>
+        <input
+          id="search"
+          type="search"
+          placeholder="Search…"
+          class="bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-sm w-full sm:w-64 focus:outline-none focus:border-brand"
+        />
+      </div>
+
+      <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <a
+          href="/viz/d3-charts/"
+          data-viz-card
+          data-title="D3 Charts"
+          data-tags="charts"
+          class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand transition"
+        >
+          <div class="aspect-video bg-neutral-800 flex items-center justify-center text-neutral-600">
+            <span class="text-sm">D3 Charts gallery</span>
+          </div>
+          <div class="p-4">
+            <h3 class="font-semibold group-hover:text-brand transition">D3 Charts</h3>
+            <p class="text-sm text-neutral-400 mt-1">Reusable D3 chart collection</p>
+          </div>
+        </a>
+
+        <!-- More cards land here as visualizations are migrated. -->
+      </div>
+    </section>
+
+    <footer class="border-t border-neutral-800 mt-16">
+      <div class="max-w-6xl mx-auto px-6 py-8 text-sm text-neutral-500">
+        <a href="https://github.com/klapen/charts-d3" class="hover:text-brand">github.com/klapen/charts-d3</a>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/landing/main.js"></script>
+  </body>
+</html>

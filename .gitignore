@@ -14,3 +14,8 @@ tramp
 *.zip
 *.tar.gz
 *.tar.bz
+
+# Build / deps
+node_modules
+dist
+.vite
