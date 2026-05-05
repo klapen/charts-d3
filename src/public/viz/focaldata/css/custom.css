@@ -1,0 +1,39 @@
+body {
+	font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+p {
+	font-size: 14px;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-family: "Montserrat", Times, serif;
+	font-weight: 400;
+	/*color: #6f6f6f;*/
+	text-transform: none;
+}
+
+ul {
+	list-style: none;
+}
+
+hr {
+	margin: 0px;
+}
+.navbar-header {
+	color: #fff;
+}
+
+.credits blockquote {
+	font-size: 10px;
+}
+
+.hideSector{
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 1s, visibility 1s;
+}
+
+.showSector{
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 1s, visibility 1s;
+}

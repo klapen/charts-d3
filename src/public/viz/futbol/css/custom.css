@@ -1,0 +1,57 @@
+#graph{
+    /*left: 50px;
+    height: 960px;*/
+}
+
+.node {
+  font: 300 20px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  fill: #3E3C3C;
+}
+
+.small-node {
+  font: 10px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  fill: #3E3C3C;
+}
+
+.move-left{
+    left: -100px
+}
+
+.node:hover {
+  fill: #000;
+}
+
+.link {
+  stroke: #050C5C;
+  stroke-opacity: .4;
+  fill: none;
+  pointer-events: none;
+}
+
+.node:hover,
+.node--source,
+.node--target {
+  font-weight: 700;
+}
+
+.node--source {
+  fill: #d62728; /* red */
+}
+
+.node--target {
+  fill: #2ca02c; /* green */
+}
+
+.link--source,
+.link--target {
+  stroke-opacity: 1;
+  stroke-width: 2px;
+}
+
+.link--source {
+  stroke: #2ca02c; /* green */
+}
+
+.link--target {
+  stroke: #d62728;
+}

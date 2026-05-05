@@ -1,0 +1,485 @@
+@import url('http://fonts.googleapis.com/css?family=Roboto+Slab|Open+Sans');
+
+body {
+  /*padding-top: 40px;*/
+  font-family: 'Open Sans',Arial, Helvetica, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto Slab', serif;
+    line-height: 1.3;
+}
+
+a {
+  color: rgb(182,1,76);
+}
+a:active, a:focus, a:hover {
+  color: rgb(120,20,79);
+}
+
+.btn-link {
+  color: rgb(182,1,76);
+}
+.btn-link:active, .btn-link:focus, .btn-link:hover {
+  color: rgb(120,20,79);
+}
+
+.row {
+  margin-top: 10px;
+}
+
+.btn-link {
+  color: rgb(182,1,76);
+}
+.btn-link:active, .btn-link:focus, .btn-link:hover {
+  color: rgb(120,20,79);
+}
+.container {
+  /*background: #aaa;*/
+}
+
+#dane-logo {
+  padding: 15px 0px 0px 15px;
+	height: 130px;
+}
+
+#bar {
+  left: 60px;
+}
+
+#titulo {
+  padding-top: 30px;
+}
+
+#idioma {
+  text-align: right;
+}
+
+#search {
+  margin-top: 10px;
+}
+
+.form-control:focus {
+  border-color: rgb(182,1,76);
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(182,1,76,.6);
+  /* box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(182,1,76,.6); */
+}
+
+.glyphicon {
+    top: 0px;
+}
+
+#redes {
+  border-top: solid 5px rgb(182,1,76);
+  padding: 30px 0px 10px;∫
+  position: relative;
+  /*top: 50px;*/
+}
+
+#icon-net {
+  margin: 10px 5px 10px;
+  float: right;
+  width: 30px;
+  height: 30px;
+}
+
+.ml {
+  background: url("../img/mail.png") no-repeat;
+}
+.tw {
+  background: url("../img/twitter.png") no-repeat;
+}
+.fb {
+  background: url("../img/facebook.png") no-repeat;
+}
+.yt {
+  background: url("../img/youtube.png") no-repeat;
+}
+.ml:active, .ml:hover, .ml:focus {
+  background: url("../img/mail_hv.png") no-repeat;
+}
+.tw:active, .tw:hover, .tw:focus {
+  background: url("../img/twitter_hv.png") no-repeat;
+}
+.fb:active, .fb:hover, .fb:focus {
+  background: url("../img/facebook_hv.png") no-repeat;
+}
+.yt:active, .yt:hover, .yt:focus {
+  background: url("../img/youtube_hv.png") no-repeat;
+}
+
+
+/* ___________ Colorbar ____________________ */
+
+#colorbar {
+  position: relative;
+  height: 15px;
+  background-color: rgb(182,1,76);
+  z-index: 898;
+}
+#color_container {
+  position: inherit;
+  height: 35px;
+  top: -10px;
+  width: 80%;
+  left: 6.84%;
+}
+.color1 {
+  position: inherit;
+  float: left;
+  background-color: rgb(245,188,0);
+}
+.color2 {
+  position: inherit;
+  float: left;
+  /*background-color: rgb(232,124,40);*/
+  background-color: rgb(240,153,37);
+}
+.color3 {
+  position: inherit;
+  float: left;
+  background-color: rgb(199,214,79);
+}
+.color4 {
+  position: inherit;
+  float: left;
+  background-color: rgb(143,190,62);
+}
+.color5 {
+  position: inherit;
+  float: left;
+  background-color: rgb(54,169,225);
+}
+.color6 {
+  position: inherit;
+  float: left;
+  background-color: rgb(0,128,181);
+}
+#areaa {
+  position: inherit;
+  float: left;
+  width: 4%;
+  margin-top: 10px;
+  height: 25px;
+}
+#area1 {
+  width: 100%;
+  height: 15px ;
+}
+#area2 {
+  width: 20%;
+  height: 10px ;
+}
+#area3 {
+  width: 5%;
+  margin-top: 10px;
+  height: 15px;
+}
+#area4 {
+  width: 15%;
+  margin-top: 10px;
+  height: 15px;
+}
+#areab {
+  position: inherit;
+  float: left;
+  width: 12%;
+  margin-top: 10px;
+  height: 25px;
+}
+#area5 {
+  width: 100%;
+  /*margin-top: 10px;*/
+  height: 15px ;
+}
+#area6 {
+  width: 40%;
+  height: 10px ;
+}
+#area7 {
+  width: 10%;
+  /*margin-top: 10px;*/
+  height: 10px;
+}
+#areac {
+  position: inherit;
+  float: left;
+  width: 8%;
+  margin-top: 10px;
+  height: 25px;
+}
+#area8 {
+  width: 100%;
+  /*margin-top: 10px;*/
+  height: 15px ;
+}
+#area9 {
+  width: 15%;
+  height: 10px ;
+}
+#area10 {
+  width: 3.5%;
+  margin-top: 10px;
+  height: 15px;
+}
+#area11 {
+  width: 5%;
+  margin-top: 10px;
+  height: 15px ;
+}
+#aread {
+  position: inherit;
+  float: left;
+  width: 8%;
+  /*margin-top: 10px;*/
+  height: 25px;
+}
+#area12 {
+  width:  15%;
+  height: 10px ;
+}
+#area13 {
+  width: 100%;
+  /*margin-top: 10px;*/
+  height: 15px ;
+}
+#area14 {
+  width: 4%;
+  margin-top: 10px;
+  height: 15px ;
+}
+#areae {
+  position: inherit;
+  float: left;
+  width: 5%;
+  margin-top: 10px;
+  height: 25px;
+}
+#area15 {
+  width: 100%;
+  height: 15px ;
+}
+#area16 {
+  width: 25%;
+  /*margin-top: 10px;*/
+  height: 10px;
+  float: right;
+}
+#areaf {
+  position: inherit;
+  float: left;
+  width: 15%;
+  /*margin-top: 10px;*/
+  height: 35px;
+}
+#area17 {
+  width: 10%;
+  /*margin-top: 10px;*/
+  height: 10px;
+  float: right;
+}
+#area18 {
+  width: 100%;
+  height: 15px ;
+}
+#area19 {
+  width: 10%;
+  /*margin-top: 10px;*/
+  height: 10px ;
+}
+#areag {
+  position: inherit;
+  float: left;
+  width: 10%;
+  /*margin-top: 10px;*/
+  height: 25px;
+}
+#area20 {
+  float: right;
+  width: 15%;
+  /*margin-top: 10px;*/
+  height: 10px;
+}
+#area21 {
+  width: 100%;
+  height: 15px ;
+}
+#area22 {
+  width: 1%;
+  margin-top: 25px;
+  height: 10px;
+}
+
+
+.btn-standard a,
+.btn-standard a:hover,
+.btn-standard a:focus
+ {
+  color: rgb(255,255,255);
+}
+
+
+.col-md-2 {
+}
+
+.p {
+  text-align: center;
+  padding-top: 120px;
+}
+
+.p a {
+  text-decoration: underline;
+  color: blue;
+}
+
+.blancos {
+  position: relative;
+  margin-top: 30px;
+}
+
+/*footer*/
+
+footer {
+  margin-top: 20px;
+  background: rgb(66,66,66);
+  color: rgb(255,255,255);
+  font-size: x-small;
+  padding-bottom: 10px;
+}
+
+footer h5 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#contact_icon {
+  margin-top: 8px;
+}
+
+footer .list-inline {
+  padding-top: 10px;
+}
+
+footer .list-unstyled {
+  list-style-type: square;
+  padding-left: 20px;
+  line-height: 2;
+}
+
+footer a {
+  color: rgb(255,255,255);
+}
+
+footer a:active, a:focus, a:hover {
+  color: rgb(180,180,180);
+}
+
+#geoportal_map {
+  margin-top: 10px;
+  background: rgb(182,1,76);
+  width: 190px;
+  height: 100px;
+}
+
+@media screen and (max-width: 768px) {
+  #dane-logo {
+    width: 100%;
+  }
+
+  .input-group {
+    top: -20px;
+    margin-left: 10px;
+  }
+
+  #busqueda {
+    top: 0px;
+    left: -10px;
+    margin-left: 0px;
+  }
+
+  #menu {
+    top: 0px;
+  }
+}
+
+/*____________________ custom_ambientales ____________________*/
+
+#chart_14001 svg{
+  overflow: visible !important;
+}
+.btn-sm {
+  background-color: rgb(192,192,192);
+}
+
+.btn .btn-sm :hover,
+.btn .btn-sm :focus,
+.btn .btn-sm :active {
+  background-color: rgb(53,53,53);
+}
+
+#btn-anexos a {
+  color: rgb(255,255,255);
+}
+
+
+@media screen and (min-width: 768px) {
+  .row {
+    margin-top: 0px;
+  }
+
+  #bar {
+    left: 60px;
+  }
+
+  #redes_2 {
+  border-top: solid 5px rgb(182,1,76);
+  padding: 5px 0px 10px;
+  position: relative;
+  /*top: 50px;*/
+}
+
+  #fecha {
+    font-size: x-small;
+  }
+  #links {
+    font-size: xx-small;
+    line-height: 1.5;
+  }
+
+  #logo_gel {
+    padding-top: 10px;
+  }
+
+  #services_menu {
+    float: right;
+  }
+}
+
+#map {
+    width: 100%; 
+    height: 700px; 
+    background: white;
+    border: 1px solid #bababa;
+
+}
+
+.leaflet-control-attribution a{
+    visibility: hidden;
+}
+
+@media only screen and (min-width : 1200px) {
+  #bar {
+    left: 0px;
+  }
+  #fecha {
+    font-size: small;
+  }
+  #links {
+    font-size: x-small;
+  }
+  #logo_gel {
+    padding-top: 60px;
+  }
+}
+

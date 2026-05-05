@@ -1,0 +1,7 @@
+/*-- Chart regions --*/
+.c3-region.regionX1 {
+  fill: green;
+}
+.c3-region.regionX2 {
+  fill: red;
+}

@@ -1,0 +1,124 @@
+body {
+/*	font-family: Karla;
+*/}
+.x-small {
+	font-size: 65%;
+}
+
+.mapa {
+	/*width: 100%;*/
+	height:650px;
+	/*background: white;*/
+}
+
+h4 {
+	font-weight: 700;
+}
+
+#mcipio-name {
+	height: 30px;
+	padding-left: 30px;
+	padding-top: 5px;
+	width: 100%;
+	height: 30px;
+	/*background-color: #B2E1F8;*/
+	margin-bottom: 0px;
+}
+
+.dpto-style{
+    color: "#EAEAEB",
+    fillOpacity: 1,
+    fillColor: "#EAEAEB",
+    weight: 0.8,
+    opacity: 1
+}
+
+.dpto-style-selected = {
+	color: "#0683BE",
+	fillOpacity: 1,
+	fillColor: "#0683BE",
+	weight: 0.8,
+	opacity: 1
+}
+
+.general_depto {
+	margin-top: 10px;
+}
+
+/*---- css tooltip ----*/
+
+#dpt-info-title {
+	font-weight: 700;
+	font-size: 18px;
+	margin-bottom: 20px;
+	text-align: left;
+	/*background-color: #B2EFA6;*/
+	height: 30px;
+	padding-top: 6px;
+	margin-bottom: 0px;
+}
+#dpt-info {
+	min-height: 700px;
+	 /*border: 1px solid #bababa;*/
+}
+table {
+	margin-top: 10px;
+}
+table td {
+	border-top: none !important;
+	border-bottom: 1px solid #ddd;
+}
+table td:last-child {
+	text-align: right;
+}
+table td:first-child {
+	font-weight: bold;
+}
+#info_financiero_mpio td:first-child,
+#info_financiero_mpio_2 td:first-child,
+#info_financiero_mpio_3 td:first-child {
+	width: 80%;
+}
+#info_geoest_mpio_2 td:first-child {
+	width: 40%;
+}
+#piramid_pob_dpto,
+#radar_dpto,
+#donut_area_dpto,
+#donut_financiero_dpto,
+#radar_mpio {
+	margin-top: 20px;
+}
+
+/*Style for population piramids*/
+
+.slider {
+	width: 65% !important;
+}
+
+.axis line,
+.axis path {
+	shape-rendering: crispEdges;
+	fill: transparent;
+	stroke: #555;
+}
+.axis text {
+	font-size: 9px;
+}
+
+.bar {
+	fill-opacity: 0.5;
+}
+.bar.left {
+	fill: steelblue;
+}
+.bar.right {
+	fill: firebrick;
+}
+.mirror {
+	display:block; 
+	-webkit-transform: matrix(-1, 0, 0, 1, 0, 0);
+	-moz-transform: matrix(-1, 0, 0, 1, 0, 0);
+	-o-transform: matrix(-1, 0, 0, 1, 0, 0);
+	transform: matrix(-1, 0, 0, 1, 0, 0);
+}

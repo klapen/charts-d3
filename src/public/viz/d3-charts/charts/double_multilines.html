@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Double Multilines Chart</title>
+    <link href="../../css/app.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/double-multilines.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="../../../index.html">
+            <img src="../../../img/klapenlogo-inv.svg" width="30" height="30" alt="Logo Klapen" title="Back to Home">
+            <span>KLAPEN</span>
+        </a>
+    </nav>
+    <div class="container-fluid" role="main">
+        <div class="row">
+            <div class="col-10 offset-1">
+                <div class="my-4 w-100 graphic-container">
+                    <div id="double-multilines-chart" class="chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(event) {
+            var dml = doubleMultilines.generate('double-multilines-chart');
+            var dmlCols = {'upper':['col1','col2'],'bottom':['col3','col4']};
+            doubleMultilines.loadDataFromFile(dml,{'x':'year','lines':dmlCols},'../data/double-multilines.csv',
+                                              function(data){
+                                                  var res = data.map(function(d){
+                                                      dmlCols.upper.map(function(c){ d[c] = +d[c] });
+                                                      dmlCols.bottom.map(function(c){ d[c] = +d[c] });
+                                                      return d;
+                                                  })
+                                                  return res;
+                                              });
+        });
+    </script>
+</body>
+</html>

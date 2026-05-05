@@ -1,0 +1,10 @@
+body{
+    width:1200px;
+    margin:100px auto;
+}
+svg text{
+    font-size:12px;
+}
+rect{
+    shape-rendering:crispEdges;
+}

@@ -1,0 +1,33 @@
+match,group,teams,stadium,hour
+match_1,Grupo A,Estados Unidos vs. Colombia,Levi's Stadium - Santa Clara - CA,Viernes - Junio 3 - 8:30pm – 10:30pm
+match_2,Grupo A,Costa Rica vs Paraguay,Orlando Citrus Bowl - Orlando - FL,Sábado - Junio 4 - 4pm – 6pm
+match_3,Grupo B,Haiti vs Perú,CenturyLink Field - Seattle - WA,Sábado - Junio 4 - 6:30pm – 8:30pm
+match_4,Grupo B,Brasil vs Ecuador,Rose Bowl Stadium - Pasadena - CA,Sábado - Junio 4 - 9pm – 11pm
+match_5,Grupo C,Jamaica vs Venezuela,Soldier Field - Chicago - IL,Domingo - Junio 5 - 4pm – 6pm
+match_6,Grupo C,Mexico vs Uruguay,University of Phoenix Stadium - Glendale - AZ,Domingo - Junio 5 - 7pm – 9pm
+match_7,Grupo D,Panamá vs Bolivia,Orlando Citrus Bowl - Orlando - FL,Lunes - Junio 6 - 6pm – 8pm
+match_8,Grupo D,Argentina vs Chile,Levi's Stadium - Santa Clara - CA,Lunes - Junio 6 - 9pm – 11pm
+match_9,Grupo A,Estados Unidos vs Costa Rica,Soldier Field - Chicago - IL,Martes - Junio 7 - 7pm – 9pm
+match_10,Grupo A,Colombia vs Paraguay,Rose Bowl Stadium - Pasadena - CA,Martes - Junio 7 - 9:30pm – 11:30pm
+match_11,Grupo B,Brazil vs Haiti,Orlando Citrus Bowl - Orlando - FL,Miércoles - Junio 8 - 6:30pm – 8:30pm
+match_12,Grupo B,Ecuador vs Perú,University of Phoenix Stadium - Glendale - AZ,Miércoles - Junio 8 - 9pm – 11pm
+match_13,Grupo C,Uruguay vs Venezuela,Lincoln Financial Field - Philadelphia - PA,Jueves - Junio 9 - 6:30pm – 8:30pm
+match_14,Grupo C,Mexico vs Jamaica,Rose Bowl Stadium - Pasadena - CA,Jueves - Junio 9 - 9pm – 11pm
+match_15,Grupo D,Chile vs Bolivia,Gillette Stadium - Foxborough - MA,Viernes - Junio 10 - 6pm – 8pm
+match_16,Grupo D,Argentina vs Panamá,Soldier Field - Chicago - IL,Viernes - Junio 10 - 8:30pm – 10:30pm
+match_17,Grupo A,Estados Unidos vs Paraguay,Lincoln Financial Field - Philadelphia - PA,Sábado - Junio 11 - 6pm – 8pm
+match_18,Grupo A,Colombia vs Costa Rica,NRG Stadium - Houston - TX,Sábado - Junio 11 - 8pm – 10pm
+match_19,Grupo B,Ecuador vs Haiti,MetLife Stadium - East Rutherford - NJ,Domingo - Junio 12 - 5:30pm – 7:30pm
+match_20,Grupo B,Brazil vs Perú,Gillette Stadium - Foxborough - MA,Domingo - Junio 12 - 7:30pm – 9:30pm
+match_21,Grupo C,Mexico vs Venezuela,NRG Stadium - Houston - TX,Lunes - Junio 13 - 7pm – 9pm
+match_22,Grupo C,Uruguay vs Jamaica,Levi's Stadium - Santa Clara - CA,Lunes - Junio 13 - 9pm – 11pm
+match_23,Grupo D,Chile vs Panamá,Lincoln Financial Field - Philadelphia - PA,Martes - Junio 14 - 7pm – 9pm
+match_24,Grupo D,Argentina vs Bolivia,CenturyLink Field - Seattle - WA,Martes - Junio 14 - 9pm – 11pm
+match_25,Octavos de final,1A vs 2B,CenturyLink Field - Seattle - WA,Jueves - Junio 16 - 5:30pm – 7:30pm
+match_26,Octavos de final,1B vs 2A,MetLife Stadium - East Rutherford - NJ,Viernes - Junio 17 - 7pm – 9pm
+match_27,Octavos de final,1C vs 2D,Levi's Stadium - Santa Clara - CA,Sábado - Junio 18 - 6pm – 8pm
+match_28,Octavos de final,1D vs 2C,Gillette Stadium - Foxborough - MA,Sábado - Junio 18 - 6pm – 8pm
+match_29,Semifinales,G25 vs G27,NRG Stadium - Houston - TX,Martes - Junio 21 - 7pm – 9pm
+match_30,Semifinales,G26 vs G28,Soldier Field - Chicago - IL,Miércoles - Junio 22 - 6pm – 8pm
+match_31,Por el 3º y 4º lugar,P29 vs P30,University of Phoenix Stadium - Glendale - AZ,Sábado - Junio 25 - 4pm – 6pm
+match_32,Final,G29 vs G30,MetLife Stadium - East Rutherford - NJ,Domingo - Junio 26 - 7pm – 9pm

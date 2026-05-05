@@ -1,0 +1,50 @@
+[
+    {"name":"Argentina",
+     "imports":["Bolivia","Brazil","Chile","Colombia","Costa Rica","Ecuador","Jamaica","México","Paraguay","Peru","Uruguay","Venezuela"]
+    },
+    {"name":"Bolivia",
+     "imports":["Ecuador","México","USA"]
+    },
+    {"name":"Brazil",
+     "imports":["Bolivia","Chile","Colombia","Costa Rica","Ecuador","Honduras","México","Paraguay","Peru","USA","Venezuela"]
+    },
+    {"name":"Chile",
+     "imports":["Bolivia","Colombia","Ecuador","Peru","Venezuela"]
+    },
+    {"name":"Colombia",
+     "imports":["Bolivia","Costa Rica","Ecuador","Honduras","México","USA","Venezuela"]
+    },
+    {"name":"Costa Rica",
+     "imports":["Bolivia","Chile","Honduras"]
+    },
+    {"name":"Ecuador",
+     "imports":["Colombia","USA","Venezuela"]
+    },
+    {"name":"Honduras",
+     "imports":["Bolivia","Brazil","Uruguay"]
+    },
+    {"name":"Jamaica",
+     "imports":[]
+    },
+    {"name":"Japón",
+     "imports":[]
+    },
+    {"name":"México",
+     "imports":["Chile","Ecuador","Uruguay","Venezuela"]
+    },
+    {"name":"Paraguay",
+     "imports":["Bolivia","Chile","Colombia","Costa Rica","Ecuador","Jamaica","Japón","Peru","USA","Uruguay","Venezuela"]
+    },
+    {"name":"Peru",
+     "imports":["Bolivia","Colombia","Ecuador","Japón","Venezuela"]
+    },
+    {"name":"USA",
+     "imports":["Chile"]
+    },
+    {"name":"Uruguay",
+     "import":["Bolivia","Chile","Colombia","Costa Rica","Ecuador","Jamaica","Paraguay","Peru","USA","Venezuela"]
+    },
+    {"name":"Venezuela",
+     "import":[]
+    }
+]

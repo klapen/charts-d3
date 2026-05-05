@@ -1,0 +1,66 @@
+[
+    {"country":"Argentina",
+     "target":["Bolivia","Brazil","Chile","Colombia","Costa Rica","Ecuador","Jamaica","México","Paraguay","Peru","Uruguay","Venezuela"],
+     "source":[]
+    },
+    {"country":"Bolivia",
+     "target":["Colombia","Ecuador","México","U.S.A.","Venezuela"],
+     "source":["Argentina","Brazil","Chile","Paraguay","Uruguay"]
+    },
+    {"country":"Brazil",
+     "target":["Bolivia","Chile","Colombia","Costa Rica","Ecuador","México","Paraguay","Peru","U.S.A.","Uruguay","Venezuela"],
+     "source":["Argentina"]
+    },
+    {"country":"Chile",
+     "target":["Bolivia","Colombia","Ecuador","México","Paraguay","Peru","Venezuela"],
+     "source":["Argentina","Brazil","Uruguay"]
+    },
+    {"country":"Colombia",
+     "target":["Bolivia","Costa Rica","Ecuador","Honduras","México","U.S.A.","Venezuela"],
+     "source":["Argentina","Brazil","Chile","Paraguay","Peru"]
+    },
+    {"country":"Costa Rica",
+     "target":["Bolivia","Chile","Honduras"],
+     "source":["Argentina","Brazil","Colombia","Paraguay","Uruguay"]
+    },
+    {"country":"Ecuador",
+     "target":["Colombia","U.S.A.","Venezuela"],
+     "source":["Argentina","Brazil","Chile","Paraguay","Peru","Uruguay"]
+    },
+    {"country":"Honduras",
+     "target":["Bolivia","Brazil","Uruguay"],
+     "source":["Colombia","Costa Rica"]
+    },
+    {"country":"Jamaica",
+     "target":[],
+     "source":["Argentina","Paraguay","Uruguay"]
+    },
+    {"country":"Japón",
+     "target":[],
+     "source":["Paraguay","Peru"]
+    },
+    {"country":"México",
+     "target":["Chile","Ecuador","Uruguay","Venezuela"],
+     "source":["Argentina","Bolivia","Brazil","Colombia"]
+    },
+    {"country":"Paraguay",
+     "target":["Bolivia","Brazil","Chile","Colombia","Costa Rica","Ecuador","Jamaica","Japón","México","Peru","Venezuela"],
+     "source":["Argentina","Uruguay"]
+    },
+    {"country":"Peru",
+     "target":["Bolivia","Chile","Colombia","Ecuador","Japón","México","Venezuela"],
+     "source":["Argentina","Brazil","Uruguay"]
+    },
+    {"country":"U.S.A.",
+     "target":["Chile"],
+     "source":["Bolivia","Brazil","Colombia","Ecuador","Paraguay","Uruguay"]
+    },
+    {"country":"Uruguay",
+     "target":["Bolivia","Brazil","Chile","Colombia","Ecuador","Jamaica","México","Paraguay","Peru","U.S.A.","Venezuela"],
+     "source":["Argentina"]
+    },
+    {"country":"Peru",
+     "target":[],
+     "source":["Argentina","Brazil","Chile","Colombia","México","Paraguay","Peru","Uruguay"]
+    }
+]

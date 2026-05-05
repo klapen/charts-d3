@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Klapen visualizations - Orlando A. Saavedra</title>
+
+    <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
+    <!-- <link href="../../css/bootstrap.min.css" rel="stylesheet"> -->
+
+    <!-- Custom CSS -->
+    <!-- <link href="../../css/freelancer.css" rel="stylesheet"> -->
+    <link href="css/c3.css" rel="stylesheet" type="text/css">
+    <link href="../css/app.css" rel="stylesheet" type="text/css">
+
+    <!-- Custom Fonts -->    
+
+    <!-- Geo section-->
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="js/jquery-1.11.0.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="js/d3.v3.min.js"></script>
+    <script type="text/javascript" src="js/c3.min.js"></script>
+    <script type="text/javascript" src="js/charts.js"></script>
+
+    <script src="js/leaflet.js"></script>
+    <script src="js/geo_functions3.js"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+  <body id="page-top" class="index">
+        <!-- Navigation -->
+        <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+          <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="../index.html">
+            <img src="../img/klapenlogo-inv.svg" width="30" height="30" alt="Logo Klapen" title="Back to Home">
+            <span>KLAPEN</span>
+          </a>
+        </nav>
+
+        <div class="container-fluid" id="content_info" role="main">
+          <div class="row">
+            <div class="col-md-6">
+              <h4>Colombia. Temperatura del aire registrada</h4>
+              <h5>1972-2013</h5>
+              <div id="map"></div>
+
+            </div>
+
+            <div class="col-md-6">
+              <h4 class="city_name"></h4>
+              <div class="col-md-12">
+                <h5>Temp. Histórico</h5>
+                <div id="chart_temp_max"></div>
+              </div>
+              <div class="col-md-12">
+                <h5>Temp. Últimos 12 meses</h5>
+                <div id="chart_last_yr"></div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="text-center">
+              <span><small>Fuente: <button class="btn btn-link"><a href="http://www.ideam.gov.co/" target="_blank" alt="Vínculo al MinAmbiente">Sistema de Información Hidrológica y Meteorológica -SISDHIM, Instituto de Hidrología, Meteorología y Estudios Ambientales -IDEAM.</a></button></small></span>
+              <span><small>Fecha: 12/08/2013 - 3:00 pm</small></span>
+            </div>
+          </div>
+        </div>
+
+
+    <!-- jQuery -->
+      
+
+        <!-- Plugin JavaScript -->
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+        <!-- <script src="../../js/classie.js"></script>
+        <script src="../../js/cbpAnimatedHeader.js"></script> -->
+
+        <!-- Custom Theme JavaScript -->
+        <!-- <script src="../../js/freelancer.js"></script> -->
+  </body>
+</html>
+

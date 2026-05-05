@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Sankey Chart</title>
+    <link href="../../css/app.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/sankey.css">
+    <script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://unpkg.com/d3-sankey@0.6"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/sankey.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="../../../index.html">
+            <img src="../../../img/klapenlogo-inv.svg" width="30" height="30" alt="Logo Klapen" title="Back to Home">
+            <span>KLAPEN</span>
+        </a>
+    </nav>
+    <div class="container-fluid" role="main">
+        <div class="row">
+            <div class="col-10 offset-1">
+                <div class="my-4 w-100 graphic-container">
+                    <div id="sankey-chart" class="chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(event) {
+            var sChart = sankey.generate('sankey-chart');
+            sankey.loadDataFromFile(sChart,'Segment 1','../data/sankey.csv',function(data){
+                var sankey_obj = {'nodes':['First','Second','Third','Fourth','Fifth','With','Without'],
+                                   'links':[]};
+                var res = {};
+                data.map(function(d){
+                    res[d.name] = JSON.parse(JSON.stringify(sankey_obj));
+                    res[d.name].nodes.map(function(n,i){
+                        if(n != 'With' && n != 'Without'){
+                            var t = +d[n.toLowerCase()+'_t'];
+                            res[d.name].links.push({'source':i,'target':5,'value':t})
+                            res[d.name].links.push({'source':i,'target':6,'value':+d[n.toLowerCase()]-t})
+                        };
+                        res[d.name].nodes[i] = {'name':n}
+                    });
+                    
+                })
+                return res;
+            });
+        });
+    </script>
+</body>
+</html>

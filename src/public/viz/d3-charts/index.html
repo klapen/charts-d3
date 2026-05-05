@@ -1,89 +1,141 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Air pollution Dashboard</title>
-    <meta name="description" content="Air pollution dashboard">
-    <!-- Load required CSSs-->
-    <link rel="stylesheet" type="text/css" href="css/group_bars.css">
-    <link rel="stylesheet" type="text/css" href="css/bars.css">
-    <link rel="stylesheet" type="text/css" href="css/stackbar.css">
-    <link rel="stylesheet" type="text/css" href="css/calendar.css">
-    <link rel="stylesheet" type="text/css" href="css/pack.css">
-    <link rel="stylesheet" type="text/css" href="css/area.css">
-    <link rel="stylesheet" type="text/css" href="css/radial-stackbar.css">
-    <!-- Load required javascripts-->
-    <script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
-    <script src="http://d3js.org/d3.v4.min.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/group_bars.js"></script>
-    <script src="js/loadmap.js"></script>
-    <script src="js/stackbar.js"></script>
-    <script src="js/bars.js"></script>
-    <script src="js/calendar.js"></script>
-    <script src="js/double-bars.js"></script>
-    <script src="js/pack.js"></script>
-    <script src="js/sankey.js"></script>
-    <script src="https://unpkg.com/d3-sankey@0.6"></script>
-    <script src="js/sunburst.js"></script>
-    <script src="js/stackarea.js"></script>
-    <script src="js/barstack.js"></script>
-    <script src="js/force.js"></script>
-    <script src="js/multilines.js"></script>
-    <script src="js/area.js"></script>
-    <script src="js/d3-scale-radial.js"></script>
-    <script src="js/radialStackbar.js"></script>
-    <script src="js/double-multilines.js"></script>
-    <script src="js/main.js"></script>
-  </head>
-  <body>
-    <div class="container">
-      <div id="group-bars-chart"></div>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3 Charts</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+    <div class="jumbotron text-center">
+        <h1 class="display-4">D3 Charts</h1>
+        <p class="lead">A collection of D3.js charts</p>
     </div>
+
     <div class="container">
-      <div id="bta-map"></div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card project-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Group Bars Chart</h5>
+                        <a href="charts/group_bars.html" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card project-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Stackbar Chart</h5>
+                        <a href="charts/stackbar.html" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card project-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Bars Chart</h5>
+                        <a href="charts/bars.html" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card project-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Calendar Chart</h5>
+                        <a href="charts/calendar.html" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card project-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Double Bars Chart</h5>
+                        <a href="charts/double_bars.html" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card project-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Pack Chart</h5>
+                        <a href="charts/pack.html" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card project-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Sankey Chart</h5>
+                        <a href="charts/sankey.html" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card project-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Sunburst Chart</h5>
+                        <a href="charts/sunburst.html" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card project-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Stackarea Chart</h5>
+                        <a href="charts/stackarea.html" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card project-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Barstack Chart</h5>
+                        <a href="charts/barstack.html" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card project-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Force Chart</h5>
+                        <a href="charts/force.html" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card project-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Multilines Chart</h5>
+                        <a href="charts/multilines.html" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card project-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Area Chart</h5>
+                        <a href="charts/area.html" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card project-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Radial Stackbar Chart</h5>
+                        <a href="charts/radialStackbar.html" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card project-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Double Multilines Chart</h5>
+                        <a href="charts/double_multilines.html" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="container">
-      <div id="stckbar"></div>
-    </div>
-    <div class="container">
-      <div id="vbars"></div>
-    </div>
-    <div class="container">
-      <div id="calendar-chart"></div>
-    </div>
-    <div class="container">
-      <div id="double-bars-chart"></div>
-    </div>
-    <div class="container">
-      <div id="pack-chart"></div>
-    </div>
-    <div class="container">
-      <div id="sankey-chart"></div>
-    </div>
-    <div class="container">
-      <div id="sunburst-chart"></div>
-    </div>
-    <div class="container">
-      <div id="stackarea-chart"></div>
-    </div>
-     <div class="container">
-      <div id="barstack-chart"></div>
-     </div>
-     <div class="container">
-      <div id="force-chart"></div>
-     </div>
-     <div class="container">
-       <div id="multilines-chart"></div>
-     </div>
-     <div class="container">
-       <div id="area-chart"></div>
-     </div>
-     <div class="container">
-       <div id="radial-stackbar-chart"></div>
-     </div>
-     <div class="container">
-       <div id="double-multilines-chart"></div>
-     </div>
-  </body>
+</body>
 </html>

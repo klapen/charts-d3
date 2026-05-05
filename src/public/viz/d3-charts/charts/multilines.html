@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Multilines Chart</title>
+    <link href="../../css/app.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/multilines.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="../../../index.html">
+            <img src="../../../img/klapenlogo-inv.svg" width="30" height="30" alt="Logo Klapen" title="Back to Home">
+            <span>KLAPEN</span>
+        </a>
+    </nav>
+    <div class="container-fluid" role="main">
+        <div class="row">
+            <div class="col-10 offset-1">
+                <div class="my-4 w-100 graphic-container">
+                    <div id="multilines-chart" class="chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(event) {
+            var multiChart = multilines.generate('multilines-chart');
+            var multiChartCols = ['col1','col2'];
+            multilines.loadDataFromFile(multiChart,{'x':'year','lines':multiChartCols},'../data/multilines.csv',
+                                        function(data){
+                                            return data.map(function(d){
+                                                multiChartCols.map(function(c){ d[c] = +d[c] });
+                                                return d;
+                                            })
+                                        });
+        });
+    </script>
+</body>
+</html>

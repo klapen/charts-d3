@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Información del Departamento de Chocó</title>
+    <!-- Bootstrap Core CSS -->
+    <!-- Custom Fonts -->
+    <!-- Custom CSS -->
+    <link href="css/c3.css" rel="stylesheet" type="text/css">
+    <link href="css/radar-chart.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- <link rel="stylesheet" href="css/creative.css" type="text/css"> -->
+    <link rel="stylesheet" href="css/custom.css" type="text/css">
+    <link href="../css/app.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="css/stylesheet.css" type="text/css"> -->
+    <link rel="stylesheet" href="css/leaflet.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="js/d3.v3.min.js" type="text/javascript"></script>
+    <script src="js/c3.min.js" type="text/javascript"></script>
+    <script src="js/radar-chart.js" type="text/javascript"></script>
+    <script src="js/c3_depto.js" type="text/javascript"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="../index.html">
+        <img src="../img/klapenlogo-inv.svg" width="30" height="30" alt="Logo Klapen" title="Back to Home">
+        <span>KLAPEN</span>
+      </a>
+    </nav>
+
+    <div class="container" role="main">
+      <div class="text-center">
+        <h1>Departamento de Chocó</h1>
+      </div>
+      <div class="row">
+        <div class="col-sm-3">
+            <h2>Chocó</h2>
+          <div class="">
+            <div class="col-sm-12">
+              <img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Colombia_-_Choc%C3%B3.svg">
+            </div>
+          </div>
+          <div class="row general_depto">
+            <div class="col-sm-4 text-center">
+              <img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag_of_Choc%C3%B3.svg">
+              <span class="x-small">Bandera del departamento</span>
+            </div>
+            <div class="col-sm-8">
+              <table class="table small">
+                <tbody>
+                  <tr>
+                    <td>Capital</td>
+                    <td>Quibdó</td>
+                  </tr>
+                  <tr>
+                    <td>Gentilicio</td>
+                    <td>Chocoano</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <div class="nav nav-tabs nav-justified" role="tab-list" id="main-nav-tab">
+            <a class="nav-item nav-link active" data-toggle="tab" href="#general"><small><br>Población</small></a>
+            <a class="nav-item nav-link" data-toggle="tab" href="#poblacion"><small><br>Socioeconómico</small></a>
+            <a class="nav-item nav-link" data-toggle="tab" href="#geoestrategico"><small><br>Geoestratégico</small></a>
+            <a class="nav-item nav-link" data-toggle="tab" href="#economia"><small><br>Financiero</small></a>
+            <a class="nav-item nav-link" data-toggle="tab" href="#security"><small>Conflicto<br> y seguridad</small></a>
+          </div>
+          <div class="tab-content" id="main-nav-tabContent">
+            <div id="general" class="tab-pane fade show active" role="tabpanel">
+              <div class="row">
+                <div class="col-sm-5">
+                  <table class="table small table-hover">
+                    <tbody>
+                      <tr>
+                        <td>Total Población (habitantes)</td>
+                        <td>500.093</td>
+                      </tr>
+                      <tr>
+                        <td>Cabecera (personas)</td>
+                        <td>245.923</td>
+                      </tr>
+                      <tr>
+                        <td>Resto (personas)</td>
+                        <td>254.170</td>
+                      </tr>
+                      <tr>
+                        <td>Hombres (personas)</td>
+                        <td>250.236</td>
+                      </tr>
+                      <tr>
+                        <td>Mujeres (personas)</td>
+                        <td>249.857</td>
+                      </tr>
+                      <tr>
+                        <td>Población económicamente activa (personas)</td>
+                        <td>276.542</td>
+                      </tr>
+                      <tr>
+                        <td>Población Inactiva (personas)</td>
+                        <td>223.551</td>
+                      </tr>
+                      <tr>
+                        <td>Extensión total</td>
+                        <td>46.530 Km<sup>2</sup></td>
+                      </tr>
+                      <tr>
+                        <td>Densidad Poblacional</td>
+                        <td>485,47 Hab/Km<sup>2</sup></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div>
+                    <p>
+                      <small>
+                        <i>Fuente:</i><br>
+                       DANE, 2015
+                     </small>
+                   </p>
+                  </div>
+                </div>
+                <div id="piramid_pob_dpto" class="col-sm-7">
+                  <div class="text-center">
+                    <h5>Población de Chocó - Año <span id="ttl_year">2015</span></h5>
+                  </div>
+          		    <script type="text/javascript" src="js/pob_piramid.js"></script>
+                  <div class="col-xs-12">
+                    <div class="row">
+            		      <label class="col-xs-2">2005</label>
+            		      <input class="col-xs-8 slider" type="range" min="2005" max="2020" step="1" id="slider" onchange="drawGraph(this.value)">
+            		      <label class="col-xs-2 text-right">2020</label>
+                    </div>
+                  </div>
+          		    <div id="piramid" class="col-md-10 col-md-offset-1"></div>
+          		  </div>
+              </div>
+            </div>
+            <div id="poblacion" class="tab-pane" role="tabpanel">
+              <div class="row">
+                <div class="col-sm-6">
+                  <table class="table small table-hover">
+                    <tbody>
+                      <tr>
+                        <td>Índice de Calidad de Vida (ICV) <sup>1</sup></td>
+                        <td>54,12 %</td>
+                      </tr>
+                      <tr>
+                        <td>Necesidades Básicas Insatisfechas(NBI) <sup>1</sup></td>
+                        <td>79,84 %</td>
+                      </tr>
+                      <tr>
+                        <td>Cobertura Salud <sup>2</sup></td>
+                        <td>99,84 %</td>
+                      </tr>
+                      <tr>
+                        <td>Cobertura Educación Media <sup>3</sup></td>
+                        <td>43,35 %</td>
+                      </tr>
+                      <tr>
+                        <td>Deserción Educación Media <sup>3</sup></td>
+                        <td>4,46 %</td>
+                      </tr>
+                      <tr>
+                        <td>Déficit Vivienda <sup>1</sup></td>
+                        <td>93,16 %</td>
+                      </tr>
+                      <tr>
+                        <td>Cobertura Acueducto <sup>4</sup></td>
+                        <td>21,49 %</td>
+                      </tr>
+                      <tr>
+                        <td>Tasa General de Participación <sup>5</sup></td>
+                        <td>60,79 %</td>
+                      </tr>
+                      <tr>
+                        <td>Tasa de Ocupados <sup>5</sup></td>
+                        <td>51,13 %</td>
+                      </tr>
+                      <tr>
+                        <td>Tasa de Desempleo <sup>5</sup></td>
+                        <td>15,89 %</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>
+                    <small>
+                      <i>Fuentes:</i><br>
+                      <sup>1</sup> DANE, 2015<br>
+                      <sup>2</sup> MinSalud, 2015<br>
+                      <sup>3</sup> MinEduc, 2013 - GET, DDTS, DNP - 2014<br>
+                      <sup>4</sup> IGAC - SIGOT, 2012<br>
+                      <sup>5</sup> DANE, Jul-Sept 2015<br>
+                    </small>
+                  </p>
+                </div>
+                <div id="radar_dpto" class="col-sm-6"></div>
+              </div>
+            </div>
+            <div id="geoestrategico" class="tab-pane" role="tabpanel">
+              <div class="row">
+                <div class="col-sm-5">
+                  <table class="table small table-hover">
+                    <tbody>
+                      <tr>
+                        <td>% Área Agrícola<sup>1</sup></td>
+                        <td>27,09 %</td>
+                      </tr>
+                      <tr>
+                        <td>% Área Bosques<sup>1</sup></td>
+                        <td>72,65 %</td>
+                      </tr>
+                      <tr>
+                        <td>% Área Otros Usos<sup>1</sup></td>
+                        <td>0,25 %</td>
+                      </tr>
+                      <tr>
+                        <td>Valor Agregado Municipal<sup>2</sup></td>
+                        <td>281,71 Miles de millones de pesos</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>
+                    <small>
+                      <i>Fuentes:</i><br>
+                      <sup>1</sup> IGAC - SIGOT, 2012<br>
+                      <sup>2</sup> DANE, 2015<br>
+                    </small>
+                  </p>
+                </div>
+                <div class="col-sm-7">
+                  <div id="donut_area_dpto" class="col-sm-8 col-md-offset-2">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="economia" class="tab-pane" role="tabpanel">
+              <div class="row">
+                <div class="col-sm-5">
+                  <table class="table small table-hover">
+                    <tbody>
+                      <tr>
+                        <td>Ingresos Totales<sup>1</sup></td>
+                        <td>78.405,27 Millones de pesos</td>
+                      </tr>
+                      <tr>
+                        <td>Ingresos Corrientes<sup>1</sup></td>
+                        <td>5.804,87  Millones de pesos</td>
+                      </tr>
+                      <tr>
+                        <td>Ingresos De Capital<sup>1</sup></td>
+                        <td>72.600,40 Millones de pesos</td>
+                      </tr>
+                      <tr>
+                        <td>SGP 2014<sup>2</sup></td>
+                        <td>32.594.770,03 Miles de pesos corrientes</td>
+                      </tr>
+                      <tr>
+                        <td>SGR 2013-2014<sup>2</sup></td>
+                        <td>5.471.755,26 Miles de pesos corrientes</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>
+                    <small>
+                      <i>Fuentes:</i><br>
+                      <sup>1</sup> DNP, 2013<br>
+                      <sup>2</sup> DNP<br>
+                    </small>
+                  </p>
+                </div>
+                <div class="col-sm-7">
+                  <div id="donut_financiero_dpto" class="col-sm-8 col-md-offset-2"></div>
+                </div>
+              </div>
+            </div>
+            <div id="security" class="tab-pane" role="tabpanel">
+              <div class="row">
+                <div class="col-sm-6">
+                  <table class="table small table-hover">
+                    <tbody>
+                      <tr>
+                        <td>Número Homicidios</td>
+                        <td>178</td>
+                      </tr>
+                      <tr>
+                        <td>Número de hurto a comercio</td>
+                        <td>11</td>
+                      </tr>
+                      <tr>
+                        <td>Número de hectáreas de coca</td>
+                        <td>1.661</td>
+                      </tr>
+                      <tr>
+                        <td>Número de hurto a personas</td>
+                        <td>346</td>
+                      </tr>
+                      <tr>
+                        <td>Número de hurto a residencias</td>
+                        <td>336</td>
+                      </tr>
+                      <tr>
+                        <td>Número de hurto de celulares</td>
+                        <td>326</td>
+                      </tr>
+                      <tr>
+                        <td>Número de hurto de motos</td>
+                        <td>322</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>
+                    <small>
+                      <i>Fuente:</i><br>
+                      Policia Nacional - SIJIN, 2014<br>
+                    </small>
+                  </p>
+                </div>
+	              <div id="line_sec_dpto" class="col-sm-6"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>    
+    </div>
+        <div class="row mt-5">
+          <div class="col-sm-3 mapa">
+            <h4 id="mcipio-name"></h4>
+            <div id="map" class="mapa">
+              <script src="js/leaflet.js"></script>
+              <script src="js/map3.js"></script>
+            </div>
+          </div>
+          <div class="col-sm-9">
+            <h5 id="dpt-info-title">Seleccione el punto en el mapa y consulte la información por municipio</h5>
+            <div id="dpt-info">
+              <div class="nav nav-tabs nav-justified" role="tab-list" id="second-nav-tab">
+                <a class="nav-item nav-link active" data-toggle="tab" href="#pobl_mpio"><small><br>Población</small></a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#socio_mpio"><small><br>Socioeconómico</small></a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#financiero_mpio"><small><br>Financiero</small></a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#geoest_mpio"><small><br>Geoestratégico</small></a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#security_mpio"><small>Conflicto<br>y seguridad</small></a>
+              </div>
+              <div class="tab-content" id="second-nav-tabContent">
+                <div id="pobl_mpio" class="tab-pane fade show active">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <table id="info_pob_mpio" class="table small table-hover">
+                        <tbody>
+                          <tr>
+                            <td>Subregion</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Total Poblacional (personas)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Cabecera (personas)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Resto (personas)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Hombres</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Mujeres</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Población Económicamente Activa (personas)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Población Inactiva (personas)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Hogares</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Hogares cabecera</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Hogares resto</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Total Indígenas</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Total Rom</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Total afro</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Total Raizal de San Andrés y Providencia</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Total Palenquero</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Negro(a), mulato, afrocolombiano</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Resguardos por municipio</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Población en resguardos, 2014</td>
+                            <td> - </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="col-sm-6">
+                      <div id="population_mpio_1" class="col-sm-12"></div>
+  		                <div id="population_mpio_2" class="col-sm-12"></div>
+                    </div>
+                  </div>
+                </div>
+                <div id="socio_mpio" class="tab-pane fade">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div id="radar_mpio"></div>
+                      <table id="info_socio_mpio" class="table small table-hover">
+                        <tbody>
+                          <tr>
+                            <td>Índice de Calidad de Vida (ICV)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Necesidades Básicas Insatisfechas (NBI)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Cobertura Educación Media</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Deserción Educación Media</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Deficit Vivienda</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Cobertura Acueducto</td>
+                            <td> - </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="col-sm-6">
+                      <table id="info_socio_mpio_sgp1" class="table small table-hover">
+                        <thead>
+                          <tr>
+                            <td colspan="2">Sistema General de Participación (SGP)</td>
+                          </tr>
+                        </thead>
+                      </table>
+                      <table id="info_socio_mpio_sgp2" class="table small table-hover">
+                        <tbody>
+                          <tr>
+                            <td>Educación Prestación de Servicios (2015)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Educación Calidad Matricula (2015)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Educación Calidad (Gratuidad) (2015)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Educación Total (2015)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Salud Régimen Subsidiado (2015)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Salud Pública (2015)</td>
+                            <td> - </td>
+                        </tr>
+                          <tr>
+                            <td>Salud Oferta (2015)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Salud Total (2015)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Agua Potable (2008 en adelante ) (2015)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>PG- Libre Destinación (2015)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>PG - Deporte (2015)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>PG - Cultura (2015)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>PG - Libre Inversión (2015)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>PG - Fonpet (2015)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>PG Total (2015)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Alimentacion Escolar (2015)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Resguardos Indígenas (2015)</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>SGP (2015)</td>
+                            <td> - </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div id="financiero_mpio" class="tab-pane fade">
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <table id="info_financiero_mpio" class="table small table-hover">
+                        <tbody>
+                          <tr>
+                            <td>INGRESOS TOTALES</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>INGRESOS CORRIENTES</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>INGRESOS DE CAPITAL</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>SGP 2014</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>SGR 2013-2014</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>% Gasto de Funcionamiento Vs Límite Ley 617/00 2011</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>% Gasto de Funcionamiento Vs Límite Ley 617/00 2012</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>% Gasto de Funcionamiento Vs Límite Ley 617/00 2013</td>
+                            <td> - </td>
+                          </tr>
+                        </body>
+                      </table>
+                    </div>
+                    <div class="col-sm-4">
+                      <table id="info_financiero_mpio_2" class="table small table-hover">
+                        <tbody>
+                          <tr>
+                            <td>Porcentaje de ingresos que corresponden a transferencias 2011</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Porcentaje de ingresos que corresponden a transferencias 2012</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Porcentaje de ingresos que corresponden a transferencias 2013</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Porcentaje de ingresos que corresponden a recursos propios 2011</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Porcentaje de ingresos que corresponden a recursos propios 2012</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Porcentaje de ingresos que corresponden a recursos propios 2013</td>
+                            <td> - </td>
+                          </tr>
+                          </tbody>
+                      </table>
+                    </div>
+                    <div class="col-sm-4">
+                      <table id="info_financiero_mpio_3" class="table small table-hover">
+                        <tbody>
+                          <tr>
+                            <td>Magnitud de la deuda 2011</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Magnitud de la deuda 2012</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Magnitud de la deuda 2013</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Saldo de la deuda financiera 2011</td>
+                            <td> - </td>
+                          </tr> 
+                          <tr>
+                            <td>Saldo de la deuda financiera 2012</td>
+                            <td> - </td>
+                          </tr> 
+                          <tr>
+                            <td>Saldo de la deuda financiera 2013</td>
+                            <td> - </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div id="geoest_mpio" class="tab-pane fade">
+                  <div class="row">
+                    <div class="col-sm-5">
+                      <table id="info_geoest_mpio" class="table small table-hover">
+                        <tbody>
+                          <tr>
+                            <td>EXTENSIÓN MUNICIPIO KM<sup>2</sup></td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Area Agricola</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Area Bosques</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Area Otros Usos</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>% Area Agricola</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>% Area Bosques</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>% Area Otros Usos</td>
+                            <td> - </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="col-sm-7">
+                      <table id="info_geoest_mpio_2" class="table small table-hover">
+                        <tbody>
+                          <tr>
+                            <td>Valor Agregado Municipal</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Sector 1</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Valor Agregado 1</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Porcentaje 1</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Sector 2</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Valor Agregado 2</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Porcentaje 2</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Sector 3</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Valor Agregado 3</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Porcentaje 3</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Sector 4</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Valor Agregado 4</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Porcentaje 4</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Sector 5</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Valor Agregado 5</td>
+                            <td> - </td>
+                          </tr>
+                          <tr>
+                            <td>Porcentaje 5</td>
+                            <td> - </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div id="security_mpio" class="tab-pane fade">
+                  <div class="col-sm-12">
+                      <div class="text-center">
+                        <h4>Personas expulsadas del municipio</h4>
+                      </div>
+                      <div id="line_security_mpio" class="col-sm-10"></div>
+                      <div class="col-sm-12">
+                        <p>
+                          <small>
+                            <i>Fuente:</i><br>
+                            Policia Nacional - SIJIN, 2014<br>
+                          </small>
+                        </p>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <table id="info_security_mpio" class="table small table-hover">
+                            <tbody>
+                              <tr>
+                                <td>POBLACION DESPLAZADA</td>
+                                <td> - </td>
+                              </tr>
+                              <tr>
+                                <td>Incidencia del conflicto armado</td>
+                                <td> - </td>
+                              </tr>
+                              <tr>
+                                <td>HECTARÉAS DE COCA</td>
+                                <td> - </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="col-sm-6">
+                          <table id="info_security_mpio_2" class="table small table-hover">
+                            <tbody>
+                              <tr>
+                                <td>HOMICIDIOS</td>
+                                <td> - </td>
+                              </tr>
+                              <tr>
+                                <td>SECUESTROS</td>
+                                <td> - </td>
+                              </tr>
+                              <tr>
+                                <td>HURTOS</td>
+                                <td> - </td>
+                              </tr>
+                              <tr>
+                                <td>Homicidios por 1000 habitantes</td>
+                                <td> - </td>
+                              </tr>
+                              <tr>
+                                <td>% Secuestros por 1000 habitantes</td>
+                                <td> - </td>
+                              </tr>
+                              <tr>
+                                <td>% Hurtos por 1000 habitantes</td>
+                                <td> - </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="mt-5">
+          <div class="offset-sm-5 col-sm-7 pull-right text-right credits">
+            <blockquote>
+              <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">
+                <small>Mapa de Chocó - 2015</small>
+              </span>
+              <small>por <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.vizdatalab.com" property="cc:attributionName" rel="cc:attributionURL" target="_blank">Visualiza DataLAB</a> se distribuye bajo una Licencia Creative Commons <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Licencia Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+              <span>
+                Ubicación de Chocó por Shadowxfox [<a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>], <a href="https://commons.wikimedia.org/wiki/File%3AColombia_-_Choc%C3%B3.svg">via Wikimedia Commons</a>
+              </span>
+              </small>
+            </blockquote>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-66798623-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+  </body>
+</html>

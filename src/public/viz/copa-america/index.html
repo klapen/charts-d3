@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Klapen visualizations - Orlando A. Saavedra - Calendario de Partidos de la Copa América Centenario 2016</title>
+    <meta name="description" content="Calendario de Partidos de la Copa América Centenario 2016 - www.golyfutbol.com">
+    <!-- Load required CSSs-->
+    <link rel="stylesheet" type="text/css" href="css/custom.css">
+    <link href="../css/app.css" rel="stylesheet">
+
+    <!-- Load required javascripts-->
+    <script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="js/ca-calendar.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="../index.html">
+        <img src="../img/klapenlogo-inv.svg" width="30" height="30" alt="Logo Klapen" title="Back to Home">
+        <span>KLAPEN</span>
+      </a>
+    </nav>
+
+    <div class="row" role="main">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2 logo_2mad">
+                    <img class="img-fluid" src="img/logo_2mad.png">
+                </div>
+                <div class="col-md-8 title_pral">
+                    <h3>Cronograma</h3>
+                    <h2>Copa América Centenario 2016</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+                <div class="col-md-8">
+                    <div class="col-md-12" id="ca-calendar">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="btn-group" role="group" aria-label="...">
+                            <a type="button" class="btn btn-default" href="http://www.golyfutbol.com/blog/">
+                                <img class="img-responsive" src="img/icon_gol.png">
+                            </a>
+                            <a type="button" class="btn btn-default" href="https://www.facebook.com/gol.futbol">
+                                <img class="img-responsive" src="img/icon_fb.png">
+                            </a>
+                            <a type="button" class="btn btn-default" href="https://twitter.com/golyfutbol">
+                                <img class="img-responsive" src="img/icon_tw.png">
+                            </a>
+                            <a type="button" class="btn btn-default" href="https://www.instagram.com/gol_y_futbol/">
+                                <img class="img-responsive" src="img/icon_in.png">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <div class="col-md-4 pull-right" id="country-table">
+                <div class="well well-sm text-center">
+                    <strong>Instrucciones:</strong> Los puntos negros representan los equipos. La conexión entre los puntos muestran los equipos a enfrentarse. El color de las líneas representa los horarios de juego.
+                    <br>Al seleccionar una bandera, aparecerá una tabla con el total de participaciones de ese país en las versiones anteriores de la Copa América.
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>
