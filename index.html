@@ -6,184 +6,238 @@
     <title>Klapen · D3.js Visualizations</title>
     <meta name="description" content="A gallery of D3.js data visualizations by Orlando A. Saavedra" />
   </head>
-  <body class="bg-neutral-950 text-neutral-100 min-h-screen">
+  <body class="bg-neutral-950 text-neutral-100 min-h-screen antialiased">
+    <a href="#grid" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-brand focus:text-white focus:px-3 focus:py-1 focus:rounded">Skip to gallery</a>
+
     <header class="border-b border-neutral-800">
-      <div class="max-w-6xl mx-auto px-6 py-12">
-        <h1 class="text-4xl font-bold tracking-tight">Klapen</h1>
-        <p class="text-neutral-400 mt-2">D3.js visualizations · Orlando A. Saavedra</p>
+      <div class="max-w-6xl mx-auto px-6 py-12 flex items-start justify-between gap-4">
+        <div>
+          <h1 class="text-4xl font-bold tracking-tight">Klapen</h1>
+          <p class="text-neutral-400 mt-2"
+             data-en="D3.js visualizations · Orlando A. Saavedra"
+             data-es="Visualizaciones en D3.js · Orlando A. Saavedra">
+            D3.js visualizations · Orlando A. Saavedra
+          </p>
+        </div>
+        <div class="flex items-center gap-1 text-sm" role="group" aria-label="Language">
+          <button data-lang="en" class="lang-btn px-2 py-1 rounded cursor-pointer" aria-pressed="false">EN</button>
+          <span class="text-neutral-700" aria-hidden="true">·</span>
+          <button data-lang="es" class="lang-btn px-2 py-1 rounded cursor-pointer" aria-pressed="false">ES</button>
+        </div>
       </div>
     </header>
 
-    <section class="max-w-6xl mx-auto px-6 py-8">
-      <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mb-8">
-        <div class="flex flex-wrap gap-2" id="filters">
-          <button data-filter="all" class="bg-brand text-white px-3 py-1 rounded-full text-sm cursor-pointer">All</button>
-          <button data-filter="colombia" class="bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700">Colombia</button>
-          <button data-filter="sports" class="bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700">Sports</button>
-          <button data-filter="economics" class="bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700">Economics</button>
-          <button data-filter="maps" class="bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700">Maps</button>
-          <button data-filter="charts" class="bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700">Charts</button>
+    <main>
+      <section class="max-w-6xl mx-auto px-6 py-8">
+        <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mb-8">
+          <div class="flex flex-wrap gap-2" role="group" aria-label="Filter by tag">
+            <button data-filter="all" class="filter-btn bg-brand text-white px-3 py-1 rounded-full text-sm cursor-pointer" data-en="All" data-es="Todo">All</button>
+            <button data-filter="colombia" class="filter-btn bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700" data-en="Colombia" data-es="Colombia">Colombia</button>
+            <button data-filter="sports" class="filter-btn bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700" data-en="Sports" data-es="Deportes">Sports</button>
+            <button data-filter="economics" class="filter-btn bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700" data-en="Economics" data-es="Economía">Economics</button>
+            <button data-filter="maps" class="filter-btn bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700" data-en="Maps" data-es="Mapas">Maps</button>
+            <button data-filter="charts" class="filter-btn bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700" data-en="Charts" data-es="Gráficos">Charts</button>
+          </div>
+          <input
+            id="search"
+            type="search"
+            data-en-placeholder="Search…"
+            data-es-placeholder="Buscar…"
+            placeholder="Search…"
+            class="bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-sm w-full sm:w-64 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/40"
+          />
         </div>
-        <input
-          id="search"
-          type="search"
-          placeholder="Search…"
-          class="bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-sm w-full sm:w-64 focus:outline-none focus:border-brand"
-        />
-      </div>
 
-      <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-        <a href="/viz/choco/" data-viz-card data-title="chocó choco" data-tags="colombia,maps"
-           class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand transition">
-          <img src="/img/choco.png" alt="Chocó" class="aspect-video w-full object-cover" loading="lazy" />
-          <div class="p-4">
-            <h3 class="font-semibold group-hover:text-brand transition">Chocó</h3>
-            <p class="text-sm text-neutral-400 mt-1">Información del Departamento de Chocó</p>
-          </div>
-        </a>
+          <a href="/viz/choco/" data-viz-card data-title="chocó choco" data-tags="colombia,maps"
+             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
+            <img src="/img/choco.png" alt="Chocó" class="aspect-video w-full object-cover" loading="lazy" />
+            <div class="p-4">
+              <h3 class="font-semibold group-hover:text-brand transition" data-en="Chocó" data-es="Chocó">Chocó</h3>
+              <p class="text-sm text-neutral-400 mt-1"
+                 data-en="Department of Chocó dashboard"
+                 data-es="Información del Departamento de Chocó">Department of Chocó dashboard</p>
+            </div>
+          </a>
 
-        <a href="/viz/copa-america/" data-viz-card data-title="copa américa america centenario" data-tags="sports"
-           class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand transition">
-          <img src="/img/Calendar.png" alt="Copa América" class="aspect-video w-full object-cover" loading="lazy" />
-          <div class="p-4">
-            <h3 class="font-semibold group-hover:text-brand transition">Copa América</h3>
-            <p class="text-sm text-neutral-400 mt-1">Calendario de partidos · Copa América Centenario 2016</p>
-          </div>
-        </a>
+          <a href="/viz/copa-america/" data-viz-card data-title="copa américa america centenario" data-tags="sports"
+             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
+            <img src="/img/Calendar.png" alt="Copa América" class="aspect-video w-full object-cover" loading="lazy" />
+            <div class="p-4">
+              <h3 class="font-semibold group-hover:text-brand transition" data-en="Copa América" data-es="Copa América">Copa América</h3>
+              <p class="text-sm text-neutral-400 mt-1"
+                 data-en="Match calendar — Copa América Centenario 2016"
+                 data-es="Calendario de partidos · Copa América Centenario 2016">Match calendar — Copa América Centenario 2016</p>
+            </div>
+          </a>
 
-        <a href="/viz/futbol/" data-viz-card data-title="futbol fútbol" data-tags="sports"
-           class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand transition">
-          <img src="/img/Matchs.png" alt="Fútbol" class="aspect-video w-full object-cover" loading="lazy" />
-          <div class="p-4">
-            <h3 class="font-semibold group-hover:text-brand transition">Fútbol</h3>
-            <p class="text-sm text-neutral-400 mt-1">Match-day visualizations</p>
-          </div>
-        </a>
+          <a href="/viz/futbol/" data-viz-card data-title="futbol fútbol football" data-tags="sports"
+             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
+            <img src="/img/Matchs.png" alt="Fútbol" class="aspect-video w-full object-cover" loading="lazy" />
+            <div class="p-4">
+              <h3 class="font-semibold group-hover:text-brand transition" data-en="Football" data-es="Fútbol">Football</h3>
+              <p class="text-sm text-neutral-400 mt-1"
+                 data-en="Match-day visualizations"
+                 data-es="Visualizaciones de partidos">Match-day visualizations</p>
+            </div>
+          </a>
 
-        <a href="/viz/goals/" data-viz-card data-title="goals" data-tags="sports"
-           class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand transition">
-          <img src="/img/Goals.png" alt="Goals" class="aspect-video w-full object-cover" loading="lazy" />
-          <div class="p-4">
-            <h3 class="font-semibold group-hover:text-brand transition">Goals</h3>
-            <p class="text-sm text-neutral-400 mt-1">Football scoring patterns</p>
-          </div>
-        </a>
+          <a href="/viz/goals/" data-viz-card data-title="goals goles" data-tags="sports"
+             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
+            <img src="/img/Goals.png" alt="Goals" class="aspect-video w-full object-cover" loading="lazy" />
+            <div class="p-4">
+              <h3 class="font-semibold group-hover:text-brand transition" data-en="Goals" data-es="Goles">Goals</h3>
+              <p class="text-sm text-neutral-400 mt-1"
+                 data-en="Football scoring patterns"
+                 data-es="Patrones de anotaciones en fútbol">Football scoring patterns</p>
+            </div>
+          </a>
 
-        <a href="/viz/ipc/" data-viz-card data-title="ipc inflación" data-tags="economics"
-           class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand transition">
-          <img src="/img/IPCPond.png" alt="IPC" class="aspect-video w-full object-cover" loading="lazy" />
-          <div class="p-4">
-            <h3 class="font-semibold group-hover:text-brand transition">IPC</h3>
-            <p class="text-sm text-neutral-400 mt-1">Índice de Precios al Consumidor</p>
-          </div>
-        </a>
+          <a href="/viz/ipc/" data-viz-card data-title="ipc inflación inflation" data-tags="economics"
+             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
+            <img src="/img/IPCPond.png" alt="IPC" class="aspect-video w-full object-cover" loading="lazy" />
+            <div class="p-4">
+              <h3 class="font-semibold group-hover:text-brand transition" data-en="IPC" data-es="IPC">IPC</h3>
+              <p class="text-sm text-neutral-400 mt-1"
+                 data-en="Consumer Price Index"
+                 data-es="Índice de Precios al Consumidor">Consumer Price Index</p>
+            </div>
+          </a>
 
-        <a href="/viz/labour/" data-viz-card data-title="labour empleo" data-tags="economics"
-           class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand transition">
-          <img src="/img/Labour.png" alt="Labour" class="aspect-video w-full object-cover" loading="lazy" />
-          <div class="p-4">
-            <h3 class="font-semibold group-hover:text-brand transition">Labour</h3>
-            <p class="text-sm text-neutral-400 mt-1">Labour market indicators</p>
-          </div>
-        </a>
+          <a href="/viz/labour/" data-viz-card data-title="labour empleo mercado laboral" data-tags="economics"
+             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
+            <img src="/img/Labour.png" alt="Labour" class="aspect-video w-full object-cover" loading="lazy" />
+            <div class="p-4">
+              <h3 class="font-semibold group-hover:text-brand transition" data-en="Labour Market" data-es="Mercado Laboral">Labour Market</h3>
+              <p class="text-sm text-neutral-400 mt-1"
+                 data-en="Labour market indicators"
+                 data-es="Indicadores del mercado laboral">Labour market indicators</p>
+            </div>
+          </a>
 
-        <a href="/viz/presupuesto/" data-viz-card data-title="presupuesto budget" data-tags="colombia,economics"
-           class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand transition">
-          <img src="/img/budget.png" alt="Presupuesto" class="aspect-video w-full object-cover" loading="lazy" />
-          <div class="p-4">
-            <h3 class="font-semibold group-hover:text-brand transition">Presupuesto</h3>
-            <p class="text-sm text-neutral-400 mt-1">Presupuesto General de la Nación</p>
-          </div>
-        </a>
+          <a href="/viz/presupuesto/" data-viz-card data-title="presupuesto budget" data-tags="colombia,economics"
+             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
+            <img src="/img/budget.png" alt="Presupuesto" class="aspect-video w-full object-cover" loading="lazy" />
+            <div class="p-4">
+              <h3 class="font-semibold group-hover:text-brand transition" data-en="Budget" data-es="Presupuesto">Budget</h3>
+              <p class="text-sm text-neutral-400 mt-1"
+                 data-en="Colombian national budget"
+                 data-es="Presupuesto General de la Nación">Colombian national budget</p>
+            </div>
+          </a>
 
-        <a href="/viz/map-and-horizontal-bars/" data-viz-card data-title="map and horizontal bars" data-tags="colombia,maps,charts"
-           class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand transition">
-          <img src="/img/map-n-bars.png" alt="Map and Horizontal Bars" class="aspect-video w-full object-cover" loading="lazy" />
-          <div class="p-4">
-            <h3 class="font-semibold group-hover:text-brand transition">Map &amp; Horizontal Bars</h3>
-            <p class="text-sm text-neutral-400 mt-1">Geographic data with paired bar chart</p>
-          </div>
-        </a>
+          <a href="/viz/map-and-horizontal-bars/" data-viz-card data-title="map horizontal bars mapa barras" data-tags="colombia,maps,charts"
+             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
+            <img src="/img/map-n-bars.png" alt="Map and Horizontal Bars" class="aspect-video w-full object-cover" loading="lazy" />
+            <div class="p-4">
+              <h3 class="font-semibold group-hover:text-brand transition" data-en="Map &amp; Bars" data-es="Mapa y Barras">Map &amp; Bars</h3>
+              <p class="text-sm text-neutral-400 mt-1"
+                 data-en="Geographic data with paired bar chart"
+                 data-es="Datos geográficos con barras paralelas">Geographic data with paired bar chart</p>
+            </div>
+          </a>
 
-        <a href="/viz/population-pyramid/" data-viz-card data-title="population pyramid pirámide" data-tags="charts"
-           class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand transition">
-          <img src="/img/Pyramid.png" alt="Population Pyramid" class="aspect-video w-full object-cover" loading="lazy" />
-          <div class="p-4">
-            <h3 class="font-semibold group-hover:text-brand transition">Population Pyramid</h3>
-            <p class="text-sm text-neutral-400 mt-1">Pirámide poblacional</p>
-          </div>
-        </a>
+          <a href="/viz/population-pyramid/" data-viz-card data-title="population pyramid pirámide poblacional" data-tags="charts"
+             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
+            <img src="/img/Pyramid.png" alt="Population Pyramid" class="aspect-video w-full object-cover" loading="lazy" />
+            <div class="p-4">
+              <h3 class="font-semibold group-hover:text-brand transition" data-en="Population Pyramid" data-es="Pirámide Poblacional">Population Pyramid</h3>
+              <p class="text-sm text-neutral-400 mt-1"
+                 data-en="Demographic age structure"
+                 data-es="Estructura demográfica por edad">Demographic age structure</p>
+            </div>
+          </a>
 
-        <a href="/viz/circular-bar-chart/" data-viz-card data-title="circular bar chart" data-tags="charts"
-           class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand transition">
-          <img src="/img/circular-bar.png" alt="Circular Bar Chart" class="aspect-video w-full object-cover" loading="lazy" />
-          <div class="p-4">
-            <h3 class="font-semibold group-hover:text-brand transition">Circular Bar Chart</h3>
-            <p class="text-sm text-neutral-400 mt-1">Radial bar visualization</p>
-          </div>
-        </a>
+          <a href="/viz/circular-bar-chart/" data-viz-card data-title="circular bar chart barras circular" data-tags="charts"
+             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
+            <img src="/img/circular-bar.png" alt="Circular Bar Chart" class="aspect-video w-full object-cover" loading="lazy" />
+            <div class="p-4">
+              <h3 class="font-semibold group-hover:text-brand transition" data-en="Circular Bar Chart" data-es="Gráfico Circular de Barras">Circular Bar Chart</h3>
+              <p class="text-sm text-neutral-400 mt-1"
+                 data-en="Radial bar visualization"
+                 data-es="Visualización de barras radiales">Radial bar visualization</p>
+            </div>
+          </a>
 
-        <a href="/viz/conceptual-map/" data-viz-card data-title="conceptual map" data-tags="charts"
-           class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand transition">
-          <img src="/img/D3charts.png" alt="Conceptual Map" class="aspect-video w-full object-cover" loading="lazy" />
-          <div class="p-4">
-            <h3 class="font-semibold group-hover:text-brand transition">Conceptual Map</h3>
-            <p class="text-sm text-neutral-400 mt-1">Network of connected concepts</p>
-          </div>
-        </a>
+          <a href="/viz/conceptual-map/" data-viz-card data-title="conceptual map mapa conceptual" data-tags="charts"
+             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
+            <img src="/img/D3charts.png" alt="Conceptual Map" class="aspect-video w-full object-cover" loading="lazy" />
+            <div class="p-4">
+              <h3 class="font-semibold group-hover:text-brand transition" data-en="Conceptual Map" data-es="Mapa Conceptual">Conceptual Map</h3>
+              <p class="text-sm text-neutral-400 mt-1"
+                 data-en="Network of connected concepts"
+                 data-es="Red de conceptos conectados">Network of connected concepts</p>
+            </div>
+          </a>
 
-        <a href="/viz/focaldata/" data-viz-card data-title="focaldata focal data" data-tags="charts"
-           class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand transition">
-          <img src="/img/focaldata.png" alt="FocalData" class="aspect-video w-full object-cover" loading="lazy" />
-          <div class="p-4">
-            <h3 class="font-semibold group-hover:text-brand transition">FocalData</h3>
-            <p class="text-sm text-neutral-400 mt-1">Survey response visualization</p>
-          </div>
-        </a>
+          <a href="/viz/focaldata/" data-viz-card data-title="focaldata focal data encuestas" data-tags="charts"
+             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
+            <img src="/img/focaldata.png" alt="FocalData" class="aspect-video w-full object-cover" loading="lazy" />
+            <div class="p-4">
+              <h3 class="font-semibold group-hover:text-brand transition" data-en="FocalData" data-es="FocalData">FocalData</h3>
+              <p class="text-sm text-neutral-400 mt-1"
+                 data-en="Survey response visualization"
+                 data-es="Visualización de respuestas de encuestas">Survey response visualization</p>
+            </div>
+          </a>
 
-        <a href="/viz/temp/" data-viz-card data-title="temperature temp" data-tags="charts"
-           class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand transition">
-          <img src="/img/Temp.png" alt="Temperature" class="aspect-video w-full object-cover" loading="lazy" />
-          <div class="p-4">
-            <h3 class="font-semibold group-hover:text-brand transition">Temperature</h3>
-            <p class="text-sm text-neutral-400 mt-1">Time-series temperature plots</p>
-          </div>
-        </a>
+          <a href="/viz/temp/" data-viz-card data-title="temperature temperatura" data-tags="charts,colombia"
+             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
+            <img src="/img/Temp.png" alt="Temperature" class="aspect-video w-full object-cover" loading="lazy" />
+            <div class="p-4">
+              <h3 class="font-semibold group-hover:text-brand transition" data-en="Temperature" data-es="Temperatura">Temperature</h3>
+              <p class="text-sm text-neutral-400 mt-1"
+                 data-en="Time-series temperature plots"
+                 data-es="Series temporales de temperatura">Time-series temperature plots</p>
+            </div>
+          </a>
 
-        <a href="/viz/zoom-treemap/" data-viz-card data-title="zoomable treemap" data-tags="charts"
-           class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand transition">
-          <img src="/img/zoomtreemap.png" alt="Zoomable Treemap" class="aspect-video w-full object-cover" loading="lazy" />
-          <div class="p-4">
-            <h3 class="font-semibold group-hover:text-brand transition">Zoomable Treemap</h3>
-            <p class="text-sm text-neutral-400 mt-1">Hierarchical drill-down</p>
-          </div>
-        </a>
+          <a href="/viz/zoom-treemap/" data-viz-card data-title="zoomable treemap zoomable" data-tags="charts"
+             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
+            <img src="/img/zoomtreemap.png" alt="Zoomable Treemap" class="aspect-video w-full object-cover" loading="lazy" />
+            <div class="p-4">
+              <h3 class="font-semibold group-hover:text-brand transition" data-en="Zoomable Treemap" data-es="Treemap Zoomable">Zoomable Treemap</h3>
+              <p class="text-sm text-neutral-400 mt-1"
+                 data-en="Hierarchical drill-down"
+                 data-es="Exploración jerárquica">Hierarchical drill-down</p>
+            </div>
+          </a>
 
-        <a href="/viz/zoom-aggr-treemap/" data-viz-card data-title="zoomable aggregated treemap" data-tags="charts"
-           class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand transition">
-          <img src="/img/zoomaggrtreemap.png" alt="Zoomable Aggregated Treemap" class="aspect-video w-full object-cover" loading="lazy" />
-          <div class="p-4">
-            <h3 class="font-semibold group-hover:text-brand transition">Zoomable Aggregated Treemap</h3>
-            <p class="text-sm text-neutral-400 mt-1">Aggregated hierarchical view</p>
-          </div>
-        </a>
+          <a href="/viz/zoom-aggr-treemap/" data-viz-card data-title="zoomable aggregated treemap agregado" data-tags="charts"
+             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
+            <img src="/img/zoomaggrtreemap.png" alt="Zoomable Aggregated Treemap" class="aspect-video w-full object-cover" loading="lazy" />
+            <div class="p-4">
+              <h3 class="font-semibold group-hover:text-brand transition" data-en="Aggregated Treemap" data-es="Treemap Agregado">Aggregated Treemap</h3>
+              <p class="text-sm text-neutral-400 mt-1"
+                 data-en="Aggregated hierarchical view"
+                 data-es="Vista jerárquica agregada">Aggregated hierarchical view</p>
+            </div>
+          </a>
 
-        <a href="/viz/d3-charts/" data-viz-card data-title="d3 charts gallery" data-tags="charts"
-           class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand transition">
-          <img src="/img/D3charts.png" alt="D3 Charts" class="aspect-video w-full object-cover" loading="lazy" />
-          <div class="p-4">
-            <h3 class="font-semibold group-hover:text-brand transition">D3 Charts Gallery</h3>
-            <p class="text-sm text-neutral-400 mt-1">Reusable D3 chart collection</p>
-          </div>
-        </a>
+          <a href="/viz/d3-charts/" data-viz-card data-title="d3 charts gallery galería" data-tags="charts"
+             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
+            <img src="/img/D3charts.png" alt="D3 Charts" class="aspect-video w-full object-cover" loading="lazy" />
+            <div class="p-4">
+              <h3 class="font-semibold group-hover:text-brand transition" data-en="D3 Charts Gallery" data-es="Galería D3 Charts">D3 Charts Gallery</h3>
+              <p class="text-sm text-neutral-400 mt-1"
+                 data-en="Reusable D3 chart collection"
+                 data-es="Colección de gráficos D3 reutilizables">Reusable D3 chart collection</p>
+            </div>
+          </a>
 
-      </div>
-    </section>
+        </div>
+
+        <p id="empty-state" class="hidden text-center text-neutral-500 py-12"
+           data-en="No visualizations match."
+           data-es="No hay visualizaciones que coincidan.">No visualizations match.</p>
+      </section>
+    </main>
 
     <footer class="border-t border-neutral-800 mt-16">
-      <div class="max-w-6xl mx-auto px-6 py-8 text-sm text-neutral-500">
-        <a href="https://github.com/klapen/charts-d3" class="hover:text-brand">github.com/klapen/charts-d3</a>
+      <div class="max-w-6xl mx-auto px-6 py-8 text-sm text-neutral-500 flex flex-wrap gap-4 justify-between">
+        <a href="https://github.com/klapen/charts-d3" class="hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand rounded">github.com/klapen/charts-d3</a>
+        <span data-en="© Orlando A. Saavedra" data-es="© Orlando A. Saavedra">© Orlando A. Saavedra</span>
       </div>
     </footer>
 

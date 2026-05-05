@@ -4,3 +4,12 @@
   --color-brand: #ff6b35;
   --color-brand-dark: #e8521c;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
