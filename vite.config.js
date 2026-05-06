@@ -40,6 +40,10 @@ export default defineConfig({
           __dirname,
           'viz/population-pyramid/index.html',
         ),
+        'zoom-treemap': resolve(
+          __dirname,
+          'viz/zoom-treemap/index.html',
+        ),
       },
     },
   },
