@@ -1,11 +1,31 @@
 import '../../src/styles/main.css'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
-import * as echarts from 'echarts'
+import * as echarts from 'echarts/core'
+import { BarChart, LineChart, PieChart, RadarChart } from 'echarts/charts'
+import {
+  GridComponent,
+  TooltipComponent,
+  LegendComponent,
+  TitleComponent,
+} from 'echarts/components'
+import { SVGRenderer } from 'echarts/renderers'
 import municipalities from './data/municipalities.geojson?url'
 import department from './data/department.geojson?url'
 import infoMpio from './data/info_mpio.json'
 import deptPopulation from './data/pob_choco.json'
+
+echarts.use([
+  BarChart,
+  LineChart,
+  PieChart,
+  RadarChart,
+  GridComponent,
+  TooltipComponent,
+  LegendComponent,
+  TitleComponent,
+  SVGRenderer,
+])
 
 const STORAGE_KEY = 'klapen.lang'
 const SUPPORTED = ['en', 'es']
