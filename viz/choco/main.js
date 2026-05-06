@@ -176,6 +176,7 @@ function selectFeature(feature, layer) {
   layer.setStyle(STYLES.selected)
   layer.bringToFront()
   populatePanel(feature)
+  populateDrilldown(feature)
 }
 
 function populatePanel(feature) {
@@ -610,16 +611,454 @@ window.addEventListener('resize', () => {
   }, 150)
 })
 
+// ============================================================================
+// Municipality drill-down (tables + per-municipality charts)
+// ============================================================================
+
+const MTAB_LABELS = {
+  // Population (subset to highlight)
+  Subregion: { en: 'Subregion', es: 'Subregión' },
+  'Total Poblacional (personas)': { en: 'Total population', es: 'Población total' },
+  'Cabecera (personas)': { en: 'Urban', es: 'Cabecera' },
+  'Resto (personas)': { en: 'Rural', es: 'Resto' },
+  Hombres: { en: 'Men', es: 'Hombres' },
+  Mujeres: { en: 'Women', es: 'Mujeres' },
+  'Población Económicamente Activa (personas)': { en: 'Economically active', es: 'Población activa' },
+  'Población Inactiva (personas)': { en: 'Inactive', es: 'Población inactiva' },
+  Hogares: { en: 'Households', es: 'Hogares' },
+  'Hogares cabecera': { en: 'Urban households', es: 'Hogares cabecera' },
+  'Hogares resto': { en: 'Rural households', es: 'Hogares resto' },
+
+  // Ethnic
+  'Total Indígenas': { en: 'Indigenous', es: 'Indígenas' },
+  'Total Afro': { en: 'Afro', es: 'Afrocolombianos' },
+  'Total Raizal De San Andrés Y Providencia': { en: 'Raizal', es: 'Raizales' },
+  'Total Palenquero': { en: 'Palenquero', es: 'Palenqueros' },
+  'Total Rom': { en: 'Rom', es: 'Rom' },
+  'Negro (A), Mulato, Afrocolombiano': { en: 'Black/Mulatto/Afro', es: 'Negro/Mulato/Afro' },
+  'Resguardos Por Municipio': { en: 'Indigenous reserves', es: 'Resguardos' },
+  'Población En Resguardos, 2014': { en: 'Population in reserves (2014)', es: 'Población en resguardos (2014)' },
+
+  // Socioeconomic
+  'Índice de Calidad de Vida (ICV)': { en: 'Quality of Life Index (ICV)', es: 'Índice de Calidad de Vida (ICV)' },
+  'Necesidades Básicas Insatisfechas (NBI)': { en: 'Unmet Basic Needs (NBI)', es: 'NBI' },
+  'Cobertura Salud': { en: 'Health coverage', es: 'Cobertura salud' },
+  'Cobertura Educación Media': { en: 'Secondary education coverage', es: 'Cobertura educación media' },
+  'Deserción Educación Media': { en: 'Secondary education dropout', es: 'Deserción educación media' },
+  'Deficit Vivienda': { en: 'Housing deficit', es: 'Déficit vivienda' },
+  'Cobertura Acueducto': { en: 'Water coverage', es: 'Cobertura acueducto' },
+
+  // Financial (key indicators)
+  'Ingresos Totales': { en: 'Total income', es: 'Ingresos totales' },
+  'Ingresos Corrientes': { en: 'Current income', es: 'Ingresos corrientes' },
+  'Ingresos De Capital': { en: 'Capital income', es: 'Ingresos de capital' },
+  'Sgp 2014': { en: 'SGP 2014', es: 'SGP 2014' },
+  'Sgr 2013-2014': { en: 'SGR 2013–2014', es: 'SGR 2013–2014' },
+  'Magnitud De La Deuda 2013': { en: 'Debt level (2013)', es: 'Magnitud de la deuda (2013)' },
+  'Saldo De La Deuda Financiera 2013': { en: 'Debt balance (2013)', es: 'Saldo deuda financiera (2013)' },
+  'Porcentaje De Ingresos Que Corresponden A Transferencias 2013': { en: 'Transfers as % of income (2013)', es: '% Transferencias (2013)' },
+  'Porcentaje De Ingresos Que Corresponden A Recursos Propios 2013': { en: 'Own resources as % of income (2013)', es: '% Recursos propios (2013)' },
+
+  // Security
+  Homicidios: { en: 'Homicides', es: 'Homicidios' },
+  Secuestros: { en: 'Kidnappings', es: 'Secuestros' },
+  'Hectaréas De Coca': { en: 'Coca hectares', es: 'Hectáreas de coca' },
+  Hurtos: { en: 'Thefts', es: 'Hurtos' },
+  'Homicidios Por 1000 Habitantes': { en: 'Homicides / 1,000', es: 'Homicidios / 1.000' },
+  '% Secuestros Por 1000 Habitantes': { en: 'Kidnappings / 1,000', es: 'Secuestros / 1.000' },
+  '% Hurtos Por 1000 Habitantes': { en: 'Thefts / 1,000', es: 'Hurtos / 1.000' },
+  'Poblacion Desplazada': { en: 'Displaced population', es: 'Población desplazada' },
+  'Incidencia Del Conflicto Armado': { en: 'Armed conflict impact', es: 'Incidencia del conflicto armado' },
+}
+
+const POP_MAIN_FIELDS = [
+  'Subregion', 'Total Poblacional (personas)',
+  'Cabecera (personas)', 'Resto (personas)',
+  'Hombres', 'Mujeres',
+  'Población Económicamente Activa (personas)',
+  'Población Inactiva (personas)',
+  'Hogares', 'Hogares cabecera', 'Hogares resto',
+]
+const POP_ETHNIC_FIELDS = [
+  'Total Indígenas', 'Total Afro',
+  'Negro (A), Mulato, Afrocolombiano',
+  'Total Raizal De San Andrés Y Providencia',
+  'Total Palenquero', 'Total Rom',
+  'Resguardos Por Municipio',
+  'Población En Resguardos, 2014',
+]
+const FIN_KEY_FIELDS = [
+  'Ingresos Totales', 'Ingresos Corrientes', 'Ingresos De Capital',
+  'Sgp 2014', 'Sgr 2013-2014',
+  'Porcentaje De Ingresos Que Corresponden A Transferencias 2013',
+  'Porcentaje De Ingresos Que Corresponden A Recursos Propios 2013',
+  'Magnitud De La Deuda 2013', 'Saldo De La Deuda Financiera 2013',
+]
+const SEC_PER_THOUSAND_FIELDS = [
+  'Homicidios Por 1000 Habitantes',
+  '% Secuestros Por 1000 Habitantes',
+  '% Hurtos Por 1000 Habitantes',
+]
+
+const MUNI_RADAR_AXES = [
+  { key: 'Índice de Calidad de Vida (ICV)', invert: false, max: 100 },
+  { key: 'Necesidades Básicas Insatisfechas (NBI)', invert: true, max: 100 },
+  { key: 'Cobertura Salud', invert: false, max: 100 },
+  { key: 'Cobertura Educación Media', invert: false, max: 100 },
+  { key: 'Cobertura Acueducto', invert: false, max: 100 },
+]
+
+let activeMTab = 'population'
+const muniCharts = new Map()
+
+function muniLabel(key) {
+  return MTAB_LABELS[key]?.[lang] ?? key
+}
+
+function getValue(items, name) {
+  return items.find((d) => d.name === name)?.data
+}
+
+function tableRows(items, fields) {
+  return fields
+    .map((f) => {
+      const v = getValue(items, f)
+      if (v == null) return ''
+      return `
+        <tr class="border-b border-neutral-800/60">
+          <td class="py-2 pr-3 text-neutral-400">${muniLabel(f)}</td>
+          <td class="py-2 text-right tabular-nums text-neutral-100">${formatValue(v)}</td>
+        </tr>
+      `
+    })
+    .join('')
+}
+
+function fmtMillions(n) {
+  if (typeof n !== 'number') return n
+  if (Math.abs(n) >= 1e6) return `${(n / 1e6).toLocaleString(lang === 'en' ? 'en-US' : 'es-CO', { maximumFractionDigits: 2 })}M`
+  if (Math.abs(n) >= 1e3) return `${(n / 1e3).toLocaleString(lang === 'en' ? 'en-US' : 'es-CO', { maximumFractionDigits: 1 })}K`
+  return n.toLocaleString(lang === 'en' ? 'en-US' : 'es-CO')
+}
+
+function ensureMuniChart(id) {
+  if (muniCharts.has(id)) return muniCharts.get(id)
+  const el = document.getElementById(id)
+  if (!el) return null
+  const inst = echarts.init(el, null, { renderer: 'svg' })
+  muniCharts.set(id, inst)
+  return inst
+}
+
+function muniRadarOption(socio, name) {
+  return {
+    ...baseChartTheme,
+    tooltip: {
+      backgroundColor: '#171717',
+      borderColor: '#404040',
+      textStyle: { color: '#f5f5f5' },
+    },
+    legend: { textStyle: { color: '#d4d4d4' }, bottom: 0 },
+    radar: {
+      indicator: MUNI_RADAR_AXES.map((a) => ({
+        name: muniLabel(a.key) + (a.invert ? ' ↓' : ''),
+        max: a.max,
+      })),
+      axisName: { color: '#d4d4d4', fontSize: 10 },
+      splitLine: { lineStyle: { color: '#262626' } },
+      splitArea: { areaStyle: { color: ['#0a0a0a', '#171717'] } },
+      axisLine: { lineStyle: { color: '#404040' } },
+    },
+    series: [
+      {
+        type: 'radar',
+        data: [
+          {
+            name,
+            value: MUNI_RADAR_AXES.map((a) => {
+              const raw = getValue(socio, a.key) ?? 0
+              return a.invert ? Math.max(0, 100 - raw) : raw
+            }),
+            lineStyle: { color: '#ff6b35', width: 2 },
+            itemStyle: { color: '#ff6b35' },
+            areaStyle: { color: 'rgba(255, 107, 53, 0.25)' },
+          },
+        ],
+      },
+    ],
+  }
+}
+
+function muniDonutOption(items, title) {
+  const total = items.reduce((s, d) => s + d.value, 0) || 1
+  return {
+    ...baseChartTheme,
+    legend: { textStyle: { color: '#d4d4d4' }, bottom: 0 },
+    tooltip: {
+      trigger: 'item',
+      backgroundColor: '#171717',
+      borderColor: '#404040',
+      textStyle: { color: '#f5f5f5' },
+      formatter: (p) =>
+        `<b>${p.name}</b><br/>${fmtMillions(p.value)} (${(
+          (p.value / total) *
+          100
+        ).toFixed(1)}%)`,
+    },
+    color: ['#ff6b35', '#38bdf8', '#fbbf24', '#a3e635', '#a78bfa'],
+    title: {
+      text: title,
+      left: 'center',
+      top: 0,
+      textStyle: { color: '#d4d4d4', fontSize: 13, fontWeight: 500 },
+    },
+    series: [
+      {
+        type: 'pie',
+        radius: ['52%', '78%'],
+        avoidLabelOverlap: true,
+        itemStyle: { borderColor: '#0a0a0a', borderWidth: 2 },
+        label: {
+          color: '#d4d4d4',
+          formatter: (p) => `${p.name}\n${p.percent.toFixed(1)}%`,
+        },
+        labelLine: { lineStyle: { color: '#525252' } },
+        data: items,
+      },
+    ],
+  }
+}
+
+function muniSectorsOption(geo) {
+  const t = lang === 'en' ? 'Top economic sectors (% value-added)' : 'Sectores económicos principales (% valor agregado)'
+  const sectors = []
+  for (let i = 1; i <= 5; i++) {
+    const name = getValue(geo, `Sector ${i}`)
+    const pct = getValue(geo, `Porcentaje ${i}`)
+    if (name != null && pct != null) sectors.push({ name: String(name), value: Number(pct) })
+  }
+  sectors.reverse()
+  return {
+    ...baseChartTheme,
+    grid: { left: 8, right: 56, top: 36, bottom: 16, containLabel: true },
+    title: {
+      text: t,
+      left: 'center',
+      top: 0,
+      textStyle: { color: '#d4d4d4', fontSize: 13, fontWeight: 500 },
+    },
+    tooltip: {
+      backgroundColor: '#171717',
+      borderColor: '#404040',
+      textStyle: { color: '#f5f5f5' },
+      formatter: (p) => `<b>${p.name}</b><br/>${p.value.toFixed(2)}%`,
+    },
+    xAxis: {
+      type: 'value',
+      axisLine: { lineStyle: { color: '#404040' } },
+      splitLine: { lineStyle: { color: '#262626' } },
+      axisLabel: { color: '#a3a3a3', formatter: (v) => `${v}%` },
+    },
+    yAxis: {
+      type: 'category',
+      data: sectors.map((s) => truncate(s.name, 32)),
+      axisLine: { lineStyle: { color: '#404040' } },
+      axisTick: { show: false },
+      axisLabel: { color: '#a3a3a3', fontSize: 11 },
+    },
+    series: [
+      {
+        type: 'bar',
+        data: sectors.map((s) => s.value),
+        itemStyle: { color: '#ff6b35', borderRadius: [0, 4, 4, 0] },
+        barWidth: '70%',
+        label: {
+          show: true,
+          position: 'right',
+          color: '#d4d4d4',
+          formatter: (p) => `${p.value.toFixed(1)}%`,
+        },
+      },
+    ],
+  }
+}
+
+function truncate(s, n) {
+  return s.length > n ? s.slice(0, n - 1) + '…' : s
+}
+
+function muniSecurityOption(sec) {
+  const t = lang === 'en' ? 'Reported incidents (2014)' : 'Incidentes reportados (2014)'
+  const fields = ['Homicidios', 'Secuestros', 'Hectaréas De Coca', 'Hurtos', 'Poblacion Desplazada']
+  const data = fields
+    .map((f) => ({ name: muniLabel(f), value: Number(getValue(sec, f) ?? 0) }))
+    .filter((d) => d.value > 0)
+    .sort((a, b) => a.value - b.value)
+  return {
+    ...baseChartTheme,
+    grid: { left: 8, right: 64, top: 36, bottom: 16, containLabel: true },
+    title: {
+      text: t,
+      left: 'center',
+      top: 0,
+      textStyle: { color: '#d4d4d4', fontSize: 13, fontWeight: 500 },
+    },
+    tooltip: {
+      backgroundColor: '#171717',
+      borderColor: '#404040',
+      textStyle: { color: '#f5f5f5' },
+      formatter: (p) => `<b>${p.name}</b><br/>${fmtNumber(p.value)}`,
+    },
+    xAxis: {
+      type: 'log',
+      logBase: 10,
+      axisLine: { lineStyle: { color: '#404040' } },
+      splitLine: { lineStyle: { color: '#262626' } },
+      axisLabel: { color: '#a3a3a3' },
+    },
+    yAxis: {
+      type: 'category',
+      data: data.map((d) => d.name),
+      axisLine: { lineStyle: { color: '#404040' } },
+      axisTick: { show: false },
+      axisLabel: { color: '#a3a3a3', fontSize: 11 },
+    },
+    series: [
+      {
+        type: 'bar',
+        data: data.map((d) => d.value),
+        itemStyle: { color: '#c0392b', borderRadius: [0, 4, 4, 0] },
+        barWidth: '70%',
+        label: {
+          show: true,
+          position: 'right',
+          color: '#d4d4d4',
+          formatter: (p) => fmtNumber(p.value),
+        },
+      },
+    ],
+  }
+}
+
+function activateMTab(name) {
+  activeMTab = name
+  document.querySelectorAll('.mtab-btn').forEach((btn) => {
+    const active = btn.dataset.mtab === name
+    btn.setAttribute('aria-selected', active)
+    btn.classList.toggle('text-neutral-100', active)
+    btn.classList.toggle('border-brand', active)
+    btn.classList.toggle('text-neutral-400', !active)
+    btn.classList.toggle('border-transparent', !active)
+  })
+  document.querySelectorAll('[data-mtab-panel]').forEach((panel) => {
+    const active = panel.dataset.mtabPanel === name
+    panel.classList.toggle('hidden', !active)
+  })
+  if (selectedFeature) renderMuniCharts(selectedFeature)
+}
+
+function setupMuniTabs() {
+  document.querySelectorAll('.mtab-btn').forEach((btn) => {
+    btn.addEventListener('click', () => activateMTab(btn.dataset.mtab))
+  })
+  activateMTab(activeMTab)
+}
+
+function populateDrilldown(feature) {
+  const id = feature.properties.ID_ESPACIA
+  const info = infoMpio[id]
+  const drill = document.getElementById('mpio-drilldown')
+  if (!info) {
+    drill.classList.add('hidden')
+    return
+  }
+  drill.classList.remove('hidden')
+  document.getElementById('drill-name').textContent = mpioName(feature)
+
+  const data = info.data
+  document.getElementById('mt-pop-main').innerHTML = tableRows(data.population, POP_MAIN_FIELDS)
+  document.getElementById('mt-pop-ethnic').innerHTML = tableRows(data.population, POP_ETHNIC_FIELDS)
+  document.getElementById('mt-socio').innerHTML = tableRows(
+    data.socioeconomic,
+    MUNI_RADAR_AXES.map((a) => a.key).concat(['Deserción Educación Media', 'Deficit Vivienda']),
+  )
+  document.getElementById('mt-fin').innerHTML = tableRows(data.finantial, FIN_KEY_FIELDS)
+  document.getElementById('mt-sec').innerHTML = tableRows(data.security, SEC_PER_THOUSAND_FIELDS)
+
+  renderMuniCharts(feature)
+}
+
+function renderMuniCharts(feature) {
+  const id = feature.properties.ID_ESPACIA
+  const info = infoMpio[id]
+  if (!info) return
+  const data = info.data
+  const name = mpioName(feature)
+
+  if (activeMTab === 'socio') {
+    const inst = ensureMuniChart('mchart-radar')
+    inst?.setOption(muniRadarOption(data.socioeconomic, name), true)
+    inst?.resize()
+  } else if (activeMTab === 'finantial') {
+    const corr = Number(getValue(data.finantial, 'Ingresos Corrientes') ?? 0)
+    const cap = Number(getValue(data.finantial, 'Ingresos De Capital') ?? 0)
+    const inst = ensureMuniChart('mchart-income')
+    const t = lang === 'en' ? 'Income split' : 'Composición de ingresos'
+    inst?.setOption(
+      muniDonutOption(
+        [
+          { name: lang === 'en' ? 'Current' : 'Corrientes', value: corr },
+          { name: lang === 'en' ? 'Capital' : 'De capital', value: cap },
+        ],
+        t,
+      ),
+      true,
+    )
+    inst?.resize()
+  } else if (activeMTab === 'geostrategic') {
+    const land = ['Area Agricola', 'Area Bosques', 'Area Otrosusos']
+    const landData = land.map((f) => {
+      const v = Number(getValue(data.geostrategic, f) ?? 0)
+      const labels = {
+        'Area Agricola': { en: 'Agricultural', es: 'Agrícola' },
+        'Area Bosques': { en: 'Forests', es: 'Bosques' },
+        'Area Otrosusos': { en: 'Other', es: 'Otros' },
+      }
+      return { name: labels[f][lang], value: v }
+    })
+    const lInst = ensureMuniChart('mchart-land')
+    const lt = lang === 'en' ? 'Land use (km²)' : 'Uso del suelo (km²)'
+    lInst?.setOption(muniDonutOption(landData, lt), true)
+    lInst?.resize()
+    const sInst = ensureMuniChart('mchart-sectors')
+    sInst?.setOption(muniSectorsOption(data.geostrategic), true)
+    sInst?.resize()
+  } else if (activeMTab === 'security') {
+    const inst = ensureMuniChart('mchart-security')
+    inst?.setOption(muniSecurityOption(data.security), true)
+    inst?.resize()
+  }
+}
+
 function applyLangWithCharts(next) {
   applyLang(next)
   refreshChartsForLang()
+  if (selectedFeature) populateDrilldown(selectedFeature)
 }
 
 document.querySelectorAll('.lang-btn').forEach((btn) => {
   btn.addEventListener('click', () => applyLangWithCharts(btn.dataset.lang))
 })
 
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer)
+  resizeTimer = setTimeout(() => {
+    muniCharts.forEach((inst) => inst.resize())
+  }, 150)
+})
+
 applyLang(lang)
 setupTabs()
+setupMuniTabs()
 setupPyramidSlider()
 init()

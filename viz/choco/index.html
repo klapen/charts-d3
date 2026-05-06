@@ -82,6 +82,110 @@
         </aside>
       </div>
 
+      <section id="mpio-drilldown" class="mt-12 hidden">
+        <h2 class="text-2xl font-bold tracking-tight">
+          <span data-en="Detail:" data-es="Detalle:">Detalle:</span>
+          <span id="drill-name" class="text-brand">—</span>
+        </h2>
+        <p class="text-neutral-400 mt-2 text-sm"
+           data-en="Per-municipality breakdown. Click another municipality on the map to switch."
+           data-es="Datos del municipio seleccionado. Haz clic en otro en el mapa para cambiar.">
+          Datos del municipio seleccionado. Haz clic en otro en el mapa para cambiar.
+        </p>
+
+        <div class="mt-6 border-b border-neutral-800 overflow-x-auto">
+          <nav class="flex gap-1 min-w-max" role="tablist" aria-label="Municipality detail">
+            <button class="mtab-btn px-4 py-2.5 text-sm font-medium border-b-2 border-transparent text-neutral-400 hover:text-neutral-100 cursor-pointer transition-colors"
+                    data-mtab="population" role="tab" aria-selected="true"
+                    data-en="Population" data-es="Población">Población</button>
+            <button class="mtab-btn px-4 py-2.5 text-sm font-medium border-b-2 border-transparent text-neutral-400 hover:text-neutral-100 cursor-pointer transition-colors"
+                    data-mtab="socio" role="tab" aria-selected="false"
+                    data-en="Socioeconomic" data-es="Socioeconómico">Socioeconómico</button>
+            <button class="mtab-btn px-4 py-2.5 text-sm font-medium border-b-2 border-transparent text-neutral-400 hover:text-neutral-100 cursor-pointer transition-colors"
+                    data-mtab="finantial" role="tab" aria-selected="false"
+                    data-en="Financial" data-es="Financiero">Financiero</button>
+            <button class="mtab-btn px-4 py-2.5 text-sm font-medium border-b-2 border-transparent text-neutral-400 hover:text-neutral-100 cursor-pointer transition-colors"
+                    data-mtab="geostrategic" role="tab" aria-selected="false"
+                    data-en="Geostrategic" data-es="Geoestratégico">Geoestratégico</button>
+            <button class="mtab-btn px-4 py-2.5 text-sm font-medium border-b-2 border-transparent text-neutral-400 hover:text-neutral-100 cursor-pointer transition-colors"
+                    data-mtab="security" role="tab" aria-selected="false"
+                    data-en="Security" data-es="Seguridad">Seguridad</button>
+          </nav>
+        </div>
+
+        <div class="mt-6">
+          <div data-mtab-panel="population" role="tabpanel" class="mtab-panel">
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <h3 class="text-sm uppercase tracking-wider text-neutral-500 mb-3"
+                    data-en="Demographics" data-es="Demografía">Demografía</h3>
+                <table class="w-full text-sm">
+                  <tbody id="mt-pop-main"></tbody>
+                </table>
+              </div>
+              <div>
+                <h3 class="text-sm uppercase tracking-wider text-neutral-500 mb-3"
+                    data-en="Ethnic groups" data-es="Grupos étnicos">Grupos étnicos</h3>
+                <table class="w-full text-sm">
+                  <tbody id="mt-pop-ethnic"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div data-mtab-panel="socio" role="tabpanel" class="mtab-panel hidden">
+            <div class="grid md:grid-cols-2 gap-6">
+              <div id="mchart-radar" style="height: 360px;"
+                   role="img" aria-label="Socioeconomic radar"></div>
+              <div>
+                <h3 class="text-sm uppercase tracking-wider text-neutral-500 mb-3"
+                    data-en="Indicators" data-es="Indicadores">Indicadores</h3>
+                <table class="w-full text-sm">
+                  <tbody id="mt-socio"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div data-mtab-panel="finantial" role="tabpanel" class="mtab-panel hidden">
+            <div class="grid md:grid-cols-2 gap-6">
+              <div id="mchart-income" style="height: 360px;"
+                   role="img" aria-label="Income split"></div>
+              <div>
+                <h3 class="text-sm uppercase tracking-wider text-neutral-500 mb-3"
+                    data-en="Income & debt" data-es="Ingresos y deuda">Ingresos y deuda</h3>
+                <table class="w-full text-sm">
+                  <tbody id="mt-fin"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div data-mtab-panel="geostrategic" role="tabpanel" class="mtab-panel hidden">
+            <div class="grid md:grid-cols-2 gap-6">
+              <div id="mchart-land" style="height: 360px;"
+                   role="img" aria-label="Land use"></div>
+              <div id="mchart-sectors" style="height: 360px;"
+                   role="img" aria-label="Top economic sectors"></div>
+            </div>
+          </div>
+
+          <div data-mtab-panel="security" role="tabpanel" class="mtab-panel hidden">
+            <div class="grid md:grid-cols-2 gap-6">
+              <div id="mchart-security" style="height: 360px;"
+                   role="img" aria-label="Crime indicators"></div>
+              <div>
+                <h3 class="text-sm uppercase tracking-wider text-neutral-500 mb-3"
+                    data-en="Per 1,000 inhabitants" data-es="Por cada 1.000 habitantes">Por cada 1.000 habitantes</h3>
+                <table class="w-full text-sm">
+                  <tbody id="mt-sec"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="mt-12">
         <h2 class="text-2xl font-bold tracking-tight"
             data-en="Department indicators"
