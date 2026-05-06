@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Map and ranked bars · Klapen</title>
+    <meta name="description" content="Colombia choropleth + ranked bars across 5 economic metrics by department." />
+    <link rel="icon" href="/img/klapenlogo.svg" />
+  </head>
+  <body class="bg-neutral-950 text-neutral-100 min-h-screen antialiased">
+    <a href="#chart" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-brand focus:text-white focus:px-3 focus:py-1 focus:rounded">Skip to chart</a>
+
+    <header class="border-b border-neutral-800">
+      <div class="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between gap-4">
+        <a href="/" class="flex items-center gap-3 text-neutral-300 hover:text-white transition-colors">
+          <span aria-hidden="true">←</span>
+          <span data-en="Back to gallery" data-es="Volver a la galería">Volver a la galería</span>
+        </a>
+        <div class="flex items-center gap-1 text-sm" role="group" aria-label="Language">
+          <button data-lang="en" class="lang-btn px-2 py-1 rounded cursor-pointer" aria-pressed="false">EN</button>
+          <span class="text-neutral-700" aria-hidden="true">·</span>
+          <button data-lang="es" class="lang-btn px-2 py-1 rounded cursor-pointer" aria-pressed="false">ES</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-10">
+      <h1 class="text-3xl font-bold tracking-tight"
+          data-en="Colombia by department"
+          data-es="Colombia por departamento">Colombia por departamento</h1>
+      <p class="text-neutral-400 mt-2"
+         data-en="Pick a metric. Click a department on the map or a bar to highlight it across both views."
+         data-es="Elige una métrica. Haz clic en un departamento del mapa o una barra para resaltarlo en ambas vistas.">
+        Elige una métrica. Haz clic en un departamento del mapa o una barra para resaltarlo en ambas vistas.
+      </p>
+
+      <div class="mt-6 grid lg:grid-cols-12 gap-6">
+        <aside class="lg:col-span-3" id="chart">
+          <fieldset class="space-y-2" role="radiogroup" aria-label="Metric">
+            <legend class="text-sm uppercase tracking-wider text-neutral-500 mb-3"
+                    data-en="Metric" data-es="Métrica">Métrica</legend>
+            <label class="metric-option block rounded border border-neutral-800 bg-neutral-900 p-3 cursor-pointer hover:border-neutral-700 transition-colors">
+              <input type="radio" name="metric" value="pop_density_2015" class="sr-only" checked />
+              <div class="text-sm font-medium text-neutral-100"
+                   data-en="Population density" data-es="Densidad de población">Densidad de población</div>
+              <div class="text-xs text-neutral-500"
+                   data-en="2015 · pop / km²" data-es="2015 · hab / km²">2015 · hab / km²</div>
+            </label>
+            <label class="metric-option block rounded border border-neutral-800 bg-neutral-900 p-3 cursor-pointer hover:border-neutral-700 transition-colors">
+              <input type="radio" name="metric" value="pib_corriente_2014pr" class="sr-only" />
+              <div class="text-sm font-medium text-neutral-100"
+                   data-en="GDP at current prices" data-es="PIB precios corrientes">PIB precios corrientes</div>
+              <div class="text-xs text-neutral-500"
+                   data-en="2014pr · billion COP" data-es="2014pr · miles de millones COP">2014pr · miles de millones COP</div>
+            </label>
+            <label class="metric-option block rounded border border-neutral-800 bg-neutral-900 p-3 cursor-pointer hover:border-neutral-700 transition-colors">
+              <input type="radio" name="metric" value="pib_cons_2005_2014pr" class="sr-only" />
+              <div class="text-sm font-medium text-neutral-100"
+                   data-en="GDP at constant 2005 prices" data-es="PIB precios constantes 2005">PIB precios constantes 2005</div>
+              <div class="text-xs text-neutral-500"
+                   data-en="2014pr · billion COP" data-es="2014pr · miles de millones COP">2014pr · miles de millones COP</div>
+            </label>
+            <label class="metric-option block rounded border border-neutral-800 bg-neutral-900 p-3 cursor-pointer hover:border-neutral-700 transition-colors">
+              <input type="radio" name="metric" value="expo_2015" class="sr-only" />
+              <div class="text-sm font-medium text-neutral-100"
+                   data-en="Exports" data-es="Exportaciones">Exportaciones</div>
+              <div class="text-xs text-neutral-500"
+                   data-en="2014 FOB · M USD" data-es="2014 FOB · millones USD">2014 FOB · millones USD</div>
+            </label>
+            <label class="metric-option block rounded border border-neutral-800 bg-neutral-900 p-3 cursor-pointer hover:border-neutral-700 transition-colors">
+              <input type="radio" name="metric" value="impo_2015" class="sr-only" />
+              <div class="text-sm font-medium text-neutral-100"
+                   data-en="Imports" data-es="Importaciones">Importaciones</div>
+              <div class="text-xs text-neutral-500"
+                   data-en="2014 CIF · K USD" data-es="2014 CIF · miles USD">2014 CIF · miles USD</div>
+            </label>
+          </fieldset>
+
+          <div id="selected-info"
+               class="mt-6 rounded border border-dashed border-neutral-800 p-4 text-sm text-neutral-500 text-center"
+               data-en="Click a department to see its value"
+               data-es="Haz clic en un departamento para ver su valor">
+            Haz clic en un departamento para ver su valor
+          </div>
+        </aside>
+
+        <section class="lg:col-span-4 flex justify-center">
+          <div id="map-container" class="w-full max-w-sm" aria-label="Colombia choropleth map"></div>
+        </section>
+
+        <section class="lg:col-span-5">
+          <h2 id="bars-title" class="text-sm uppercase tracking-wider text-neutral-500 mb-3">Densidad de población</h2>
+          <div id="bars-chart"></div>
+        </section>
+      </div>
+
+      <p class="mt-8 text-xs text-neutral-500">
+        <span data-en="Source:" data-es="Fuente:">Fuente:</span>
+        <a class="underline decoration-neutral-700 hover:decoration-brand"
+           href="http://www.andi.com.co/SitEco" target="_blank" rel="noopener">
+          ANDI — Indicadores Económicos
+        </a>
+      </p>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

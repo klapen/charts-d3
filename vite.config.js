@@ -49,6 +49,10 @@ export default defineConfig({
           'viz/conceptual-map/index.html',
         ),
         choco: resolve(__dirname, 'viz/choco/index.html'),
+        'map-and-horizontal-bars': resolve(
+          __dirname,
+          'viz/map-and-horizontal-bars/index.html',
+        ),
       },
     },
   },
