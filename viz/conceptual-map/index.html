@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conceptual map · Klapen</title>
+    <meta name="description" content="Force-directed graph linking categories to shared imports" />
+    <link rel="icon" href="/img/klapenlogo.svg" />
+  </head>
+  <body class="bg-neutral-950 text-neutral-100 min-h-screen antialiased">
+    <a href="#chart" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-brand focus:text-white focus:px-3 focus:py-1 focus:rounded">Skip to chart</a>
+
+    <header class="border-b border-neutral-800">
+      <div class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between gap-4">
+        <a href="/" class="flex items-center gap-3 text-neutral-300 hover:text-white transition-colors">
+          <span aria-hidden="true">←</span>
+          <span data-en="Back to gallery" data-es="Volver a la galería">Back to gallery</span>
+        </a>
+        <div class="flex items-center gap-1 text-sm" role="group" aria-label="Language">
+          <button data-lang="en" class="lang-btn px-2 py-1 rounded cursor-pointer" aria-pressed="false">EN</button>
+          <span class="text-neutral-700" aria-hidden="true">·</span>
+          <button data-lang="es" class="lang-btn px-2 py-1 rounded cursor-pointer" aria-pressed="false">ES</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-10">
+      <h1 class="text-3xl font-bold tracking-tight"
+          data-en="Conceptual map"
+          data-es="Mapa conceptual">Conceptual map</h1>
+      <p class="text-neutral-400 mt-2"
+         data-en="Drag a node to rearrange · hover to highlight its connections"
+         data-es="Arrastra un nodo para moverlo · pasa el cursor para resaltar sus conexiones">
+        Drag a node to rearrange · hover to highlight its connections
+      </p>
+
+      <div class="mt-6 flex items-center gap-3 text-sm">
+        <span class="inline-flex items-center gap-2 text-neutral-300">
+          <span class="w-3 h-3 rounded-full bg-brand"></span>
+          <span data-en="Category" data-es="Categoría">Category</span>
+        </span>
+        <span class="inline-flex items-center gap-2 text-neutral-300">
+          <span class="w-3 h-3 rounded-full bg-sky-400"></span>
+          <span data-en="Link" data-es="Enlace">Link</span>
+        </span>
+        <button id="restart-btn"
+                class="ml-auto text-sm text-neutral-400 hover:text-brand cursor-pointer transition-colors"
+                data-en="Restart layout" data-es="Reiniciar disposición">Restart layout</button>
+      </div>
+
+      <div id="chart" class="mt-4 rounded border border-neutral-800 bg-neutral-950"
+           role="img" aria-label="Force-directed conceptual map"></div>
+
+      <p class="mt-6 text-xs text-neutral-500"
+         data-en="Sample dataset linking categories to shared link nodes."
+         data-es="Conjunto de datos de ejemplo que asocia categorías con nodos compartidos.">
+        Sample dataset linking categories to shared link nodes.
+      </p>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

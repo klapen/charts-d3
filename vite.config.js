@@ -44,6 +44,10 @@ export default defineConfig({
           __dirname,
           'viz/zoom-treemap/index.html',
         ),
+        'conceptual-map': resolve(
+          __dirname,
+          'viz/conceptual-map/index.html',
+        ),
       },
     },
   },
