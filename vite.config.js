@@ -48,6 +48,7 @@ export default defineConfig({
           __dirname,
           'viz/conceptual-map/index.html',
         ),
+        choco: resolve(__dirname, 'viz/choco/index.html'),
       },
     },
   },

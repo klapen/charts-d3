@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Departamento de Chocó · Klapen</title>
+    <meta name="description" content="Mapa interactivo del Departamento de Chocó, Colombia — datos demográficos por municipio." />
+    <link rel="icon" href="/img/klapenlogo.svg" />
+  </head>
+  <body class="bg-neutral-950 text-neutral-100 min-h-screen antialiased">
+    <a href="#map" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-brand focus:text-white focus:px-3 focus:py-1 focus:rounded">Skip to map</a>
+
+    <header class="border-b border-neutral-800">
+      <div class="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between gap-4">
+        <a href="/" class="flex items-center gap-3 text-neutral-300 hover:text-white transition-colors">
+          <span aria-hidden="true">←</span>
+          <span data-en="Back to gallery" data-es="Volver a la galería">Volver a la galería</span>
+        </a>
+        <div class="flex items-center gap-1 text-sm" role="group" aria-label="Language">
+          <button data-lang="en" class="lang-btn px-2 py-1 rounded cursor-pointer" aria-pressed="false">EN</button>
+          <span class="text-neutral-700" aria-hidden="true">·</span>
+          <button data-lang="es" class="lang-btn px-2 py-1 rounded cursor-pointer" aria-pressed="false">ES</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-10">
+      <div class="flex items-baseline gap-3">
+        <h1 class="text-3xl font-bold tracking-tight"
+            data-en="Department of Chocó"
+            data-es="Departamento de Chocó">Departamento de Chocó</h1>
+        <span class="text-neutral-500 text-sm">Colombia</span>
+      </div>
+      <p class="text-neutral-400 mt-2"
+         data-en="Click a municipality on the map to see its data."
+         data-es="Haz clic en un municipio del mapa para ver su información.">
+        Haz clic en un municipio del mapa para ver su información.
+      </p>
+
+      <div class="mt-8 grid lg:grid-cols-3 gap-6">
+        <section class="lg:col-span-2">
+          <div id="map" class="rounded-lg overflow-hidden border border-neutral-800 bg-neutral-900"
+               style="height: 540px;" role="region" aria-label="Mapa de Chocó"></div>
+          <p class="mt-2 text-xs text-neutral-500"
+             data-en="Map: © OpenStreetMap · Tiles: CARTO · Polygons: DANE / IGAC"
+             data-es="Mapa: © OpenStreetMap · Tiles: CARTO · Polígonos: DANE / IGAC">
+            Mapa: © OpenStreetMap · Tiles: CARTO · Polígonos: DANE / IGAC
+          </p>
+        </section>
+
+        <aside class="lg:col-span-1 space-y-6">
+          <section class="rounded-lg border border-neutral-800 bg-neutral-900 p-5">
+            <h2 class="text-sm uppercase tracking-wider text-neutral-500"
+                data-en="Department" data-es="Departamento">Departamento</h2>
+            <h3 class="text-xl font-semibold mt-1">Chocó</h3>
+            <dl class="mt-4 grid grid-cols-2 gap-y-2 text-sm">
+              <dt class="text-neutral-400" data-en="Capital" data-es="Capital">Capital</dt>
+              <dd class="text-right">Quibdó</dd>
+              <dt class="text-neutral-400" data-en="Population" data-es="Población">Población</dt>
+              <dd class="text-right">500.093</dd>
+              <dt class="text-neutral-400" data-en="Area" data-es="Extensión">Extensión</dt>
+              <dd class="text-right">46.530 km²</dd>
+              <dt class="text-neutral-400" data-en="Demonym" data-es="Gentilicio">Gentilicio</dt>
+              <dd class="text-right">Chocoano</dd>
+            </dl>
+          </section>
+
+          <section id="mpio-card"
+                   class="rounded-lg border border-neutral-800 bg-neutral-900 p-5 hidden">
+            <h2 class="text-sm uppercase tracking-wider text-neutral-500"
+                data-en="Municipality" data-es="Municipio">Municipio</h2>
+            <h3 id="mpio-name" class="text-xl font-semibold mt-1"></h3>
+            <dl id="mpio-stats" class="mt-4 grid grid-cols-2 gap-y-2 text-sm"></dl>
+          </section>
+
+          <section id="mpio-empty"
+                   class="rounded-lg border border-dashed border-neutral-800 p-5 text-center text-neutral-500 text-sm"
+                   data-en="Select a municipality on the map"
+                   data-es="Selecciona un municipio en el mapa">
+            Selecciona un municipio en el mapa
+          </section>
+        </aside>
+      </div>
+
+      <p class="mt-8 text-xs text-neutral-500"
+         data-en="Phase 1: map + selection. Charts (population pyramid, radar, donut, line) coming in Phase 2."
+         data-es="Fase 1: mapa + selección. Las gráficas (pirámide poblacional, radar, donut, línea) llegan en la fase 2.">
+        Fase 1: mapa + selección. Las gráficas (pirámide poblacional, radar, donut, línea) llegan en la fase 2.
+      </p>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
