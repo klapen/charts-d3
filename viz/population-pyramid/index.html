@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Population pyramid · Klapen</title>
+    <meta name="description" content="Colombia population pyramid 1985–2020 (DANE projections)" />
+    <link rel="icon" href="/img/klapenlogo.svg" />
+  </head>
+  <body class="bg-neutral-950 text-neutral-100 min-h-screen antialiased">
+    <a href="#chart" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-brand focus:text-white focus:px-3 focus:py-1 focus:rounded">Skip to chart</a>
+
+    <header class="border-b border-neutral-800">
+      <div class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between gap-4">
+        <a href="/" class="flex items-center gap-3 text-neutral-300 hover:text-white transition-colors">
+          <span aria-hidden="true">←</span>
+          <span data-en="Back to gallery" data-es="Volver a la galería">Back to gallery</span>
+        </a>
+        <div class="flex items-center gap-1 text-sm" role="group" aria-label="Language">
+          <button data-lang="en" class="lang-btn px-2 py-1 rounded cursor-pointer" aria-pressed="false">EN</button>
+          <span class="text-neutral-700" aria-hidden="true">·</span>
+          <button data-lang="es" class="lang-btn px-2 py-1 rounded cursor-pointer" aria-pressed="false">ES</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-10">
+      <h1 class="text-3xl font-bold tracking-tight"
+          data-en="Colombia population"
+          data-es="Población de Colombia">Población de Colombia</h1>
+      <p class="text-neutral-400 mt-2"
+         data-en='Year <span id="ttl_year" class="text-brand font-semibold">2015</span> · DANE 2005 census projections'
+         data-es='Año <span id="ttl_year" class="text-brand font-semibold">2015</span> · Proyecciones Censo DANE 2005'>
+        Año <span id="ttl_year" class="text-brand font-semibold">2015</span> · Proyecciones Censo DANE 2005
+      </p>
+
+      <div class="mt-8 flex items-center gap-3">
+        <span class="text-sm text-neutral-500 tabular-nums">1985</span>
+        <input
+          id="slider"
+          class="flex-1 accent-brand"
+          type="range"
+          min="1985"
+          max="2020"
+          step="1"
+          value="2015"
+          aria-label="Year"
+        />
+        <span class="text-sm text-neutral-500 tabular-nums">2020</span>
+      </div>
+      <p class="mt-2 text-xs text-neutral-500"
+         data-en="Tip: use ← / → arrow keys"
+         data-es="Tip: usa las flechas ← / →">
+        Tip: use ← / → arrow keys
+      </p>
+
+      <div id="chart" class="mt-8" role="img" aria-label="Population pyramid"></div>
+
+      <p class="mt-8 text-xs text-neutral-500">
+        <span data-en="Source:" data-es="Fuente:">Fuente:</span>
+        <a class="underline decoration-neutral-700 hover:decoration-brand"
+           href="https://www.dane.gov.co/" target="_blank" rel="noopener">
+          Departamento Administrativo Nacional de Estadística (DANE) — Colombia
+        </a>
+      </p>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

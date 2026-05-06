@@ -1,19 +1,24 @@
 import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 import { existsSync } from 'node:fs'
-import { join } from 'node:path'
+import { resolve, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-// Resolve `/dir/` URLs to `/dir/index.html` for files in publicDir.
-// Vite's dev server doesn't do this by default; static hosts (S3, nginx) typically do.
-function publicDirIndexFallback(publicDir) {
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
+
+// Resolve `/dir/` URLs to `/dir/index.html`. Vite's dev server doesn't do this
+// for files in publicDir; static hosts (S3, nginx) typically do.
+function dirIndexFallback(publicDir) {
   return {
-    name: 'public-dir-index-fallback',
+    name: 'dir-index-fallback',
     configureServer(server) {
       server.middlewares.use((req, _res, next) => {
         if (req.url && req.url.endsWith('/') && !req.url.startsWith('/@')) {
-          const candidate = join(publicDir, req.url, 'index.html')
-          if (existsSync(candidate)) {
-            req.url = req.url + 'index.html'
+          const path = req.url.split('?')[0]
+          const inPublic = join(publicDir, path, 'index.html')
+          const inRoot = join(__dirname, path, 'index.html')
+          if (existsSync(inPublic) || existsSync(inRoot)) {
+            req.url = req.url.replace(/\/(\?|$)/, '/index.html$1')
           }
         }
         next()
@@ -26,5 +31,16 @@ const publicDir = 'src/public'
 
 export default defineConfig({
   publicDir,
-  plugins: [tailwindcss(), publicDirIndexFallback(publicDir)],
+  plugins: [tailwindcss(), dirIndexFallback(publicDir)],
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        'population-pyramid': resolve(
+          __dirname,
+          'viz/population-pyramid/index.html',
+        ),
+      },
+    },
+  },
 })
