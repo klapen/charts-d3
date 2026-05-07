@@ -53,6 +53,7 @@ export default defineConfig({
           __dirname,
           'viz/map-and-horizontal-bars/index.html',
         ),
+        labour: resolve(__dirname, 'viz/labour/index.html'),
       },
     },
   },

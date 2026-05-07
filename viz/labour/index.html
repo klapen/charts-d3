@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Colombia labour market · Klapen</title>
+    <meta name="description" content="Colombia national labour-market indicators 2001–2014 (DANE GEIH)" />
+    <link rel="icon" href="/img/klapenlogo.svg" />
+  </head>
+  <body class="bg-neutral-950 text-neutral-100 min-h-screen antialiased">
+    <a href="#chart" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-brand focus:text-white focus:px-3 focus:py-1 focus:rounded">Skip to chart</a>
+
+    <header class="border-b border-neutral-800">
+      <div class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between gap-4">
+        <a href="/" class="flex items-center gap-3 text-neutral-300 hover:text-white transition-colors">
+          <span aria-hidden="true">←</span>
+          <span data-en="Back to gallery" data-es="Volver a la galería">Back to gallery</span>
+        </a>
+        <div class="flex items-center gap-1 text-sm" role="group" aria-label="Language">
+          <button data-lang="en" class="lang-btn px-2 py-1 rounded cursor-pointer" aria-pressed="false">EN</button>
+          <span class="text-neutral-700" aria-hidden="true">·</span>
+          <button data-lang="es" class="lang-btn px-2 py-1 rounded cursor-pointer" aria-pressed="false">ES</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 py-10">
+      <h1 class="text-3xl font-bold tracking-tight"
+          data-en="Colombia labour market"
+          data-es="Mercado laboral colombiano">Mercado laboral colombiano</h1>
+      <p class="text-neutral-400 mt-2"
+         data-en="National total · monthly · 2001–2014 · DANE GEIH"
+         data-es="Total nacional · mensual · 2001–2014 · DANE GEIH">
+        Total nacional · mensual · 2001–2014 · DANE GEIH
+      </p>
+
+      <fieldset class="mt-8 flex flex-wrap items-center gap-2 text-sm">
+        <legend class="sr-only" data-en="Series" data-es="Series">Series</legend>
+        <button type="button" data-metric="TGP"
+                class="metric-btn px-3 py-1.5 rounded border border-neutral-800 bg-neutral-900 hover:border-neutral-600 cursor-pointer"
+                aria-pressed="true">
+          <span class="inline-block w-2 h-2 rounded-full mr-2 align-middle" style="background:#ff6b35"></span>
+          <span data-en="Participation (TGP)" data-es="Participación (TGP)">Participación (TGP)</span>
+        </button>
+        <button type="button" data-metric="TO"
+                class="metric-btn px-3 py-1.5 rounded border border-neutral-800 bg-neutral-900 hover:border-neutral-600 cursor-pointer"
+                aria-pressed="true">
+          <span class="inline-block w-2 h-2 rounded-full mr-2 align-middle" style="background:#5ec5ee"></span>
+          <span data-en="Employment (TO)" data-es="Ocupación (TO)">Ocupación (TO)</span>
+        </button>
+        <button type="button" data-metric="TD"
+                class="metric-btn px-3 py-1.5 rounded border border-neutral-800 bg-neutral-900 hover:border-neutral-600 cursor-pointer"
+                aria-pressed="true">
+          <span class="inline-block w-2 h-2 rounded-full mr-2 align-middle" style="background:#ff5f7a"></span>
+          <span data-en="Unemployment (TD)" data-es="Desempleo (TD)">Desempleo (TD)</span>
+        </button>
+      </fieldset>
+
+      <div id="chart" class="mt-6" role="img" aria-label="Labour market time series"></div>
+
+      <dl class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+        <div class="rounded border border-neutral-800 bg-neutral-900 p-4">
+          <dt class="text-neutral-400" data-en="TGP — Participation rate" data-es="TGP — Tasa global de participación">TGP — Tasa global de participación</dt>
+          <dd class="mt-1 text-neutral-300"
+              data-en="Working-age population that is economically active."
+              data-es="Población en edad de trabajar que es económicamente activa.">Población en edad de trabajar que es económicamente activa.</dd>
+        </div>
+        <div class="rounded border border-neutral-800 bg-neutral-900 p-4">
+          <dt class="text-neutral-400" data-en="TO — Employment rate" data-es="TO — Tasa de ocupación">TO — Tasa de ocupación</dt>
+          <dd class="mt-1 text-neutral-300"
+              data-en="Working-age population that is employed."
+              data-es="Población en edad de trabajar que está ocupada.">Población en edad de trabajar que está ocupada.</dd>
+        </div>
+        <div class="rounded border border-neutral-800 bg-neutral-900 p-4">
+          <dt class="text-neutral-400" data-en="TD — Unemployment rate" data-es="TD — Tasa de desempleo">TD — Tasa de desempleo</dt>
+          <dd class="mt-1 text-neutral-300"
+              data-en="Labour force that is unemployed."
+              data-es="Fuerza laboral que está desempleada.">Fuerza laboral que está desempleada.</dd>
+        </div>
+      </dl>
+
+      <p class="mt-8 text-xs text-neutral-500">
+        <span data-en="Source:" data-es="Fuente:">Fuente:</span>
+        <a class="underline decoration-neutral-700 hover:decoration-brand"
+           href="https://www.dane.gov.co/" target="_blank" rel="noopener">
+          DANE — Gran Encuesta Integrada de Hogares (GEIH)
+        </a>
+      </p>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
