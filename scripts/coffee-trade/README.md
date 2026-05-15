@@ -1,23 +1,18 @@
 # Coffee trade — data pipeline
 
-Pre-fetches and transforms coffee trade flows from UN Comtrade + ICO into the
-JSON files served by `viz/coffee-trade/`. Run manually, ~once a year.
+Pre-fetches and transforms coffee trade flows from UN Comtrade into the JSON
+files served by `viz/coffee-trade/`. Run manually, ~once a year.
 
 ## When to run
 
-| Source     | Refresh recommendation                       |
-|------------|----------------------------------------------|
-| Comtrade   | June of year Y+1, to capture year Y cleanly  |
-| ICO        | Same yearly cadence; ICO is the cross-check  |
-
-Re-running mid-year wastes API quota — Comtrade's current-year numbers stay
-partial until ~Q2 of the following year.
+Re-run in **June of year Y+1** to capture year Y cleanly. Re-running mid-year
+wastes API quota — Comtrade's current-year numbers stay partial until ~Q2 of
+the following year.
 
 ## Run
 
     uv sync
     uv run python download_comtrade.py        # ~30 min, resumable
-    uv run python download_ico.py             # ~30 sec
     uv run python transform.py                # ~10 sec
     uv run python build_viz_data.py           # ~5 sec
 
