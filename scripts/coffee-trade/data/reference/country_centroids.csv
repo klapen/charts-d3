@@ -1,0 +1,248 @@
+iso3,name,lat,lon,region
+AFG,Afghanistan,33.939,67.710,Asia
+ALA,Aland Islands,60.178,19.916,Europe
+ALB,Albania,41.153,20.169,Europe
+DZA,Algeria,28.034,1.659,Africa
+ASM,American Samoa,-14.271,-170.132,Asia
+AND,Andorra,42.546,1.602,Europe
+AGO,Angola,-11.203,17.874,Africa
+AIA,Anguilla,18.221,-63.069,North America
+ATA,Antarctica,-90.000,0.000,Asia
+ATG,Antigua and Barbuda,17.060,-61.797,North America
+ARG,Argentina,-38.416,-63.617,South America
+ARM,Armenia,40.070,45.038,Asia
+ABW,Aruba,12.521,-69.969,North America
+AUS,Australia,-25.274,133.775,Asia
+AUT,Austria,47.516,14.550,Europe
+AZE,Azerbaijan,40.143,47.577,Asia
+BHS,Bahamas,25.025,-77.396,North America
+BHR,Bahrain,25.930,50.638,Asia
+BGD,Bangladesh,23.685,90.356,Asia
+BRB,Barbados,13.194,-59.543,North America
+BLR,Belarus,53.710,27.954,Europe
+BEL,Belgium,50.503,4.470,Europe
+BLZ,Belize,17.189,-88.498,North America
+BEN,Benin,9.308,2.316,Africa
+BMU,Bermuda,32.321,-64.758,North America
+BTN,Bhutan,27.515,90.434,Asia
+BOL,Bolivia,-16.290,-63.589,South America
+BES,Bonaire Sint Eustatius and Saba,12.201,-68.262,North America
+BIH,Bosnia and Herzegovina,43.916,17.679,Europe
+BWA,Botswana,-22.329,24.685,Africa
+BVT,Bouvet Island,-54.423,3.414,Africa
+BRA,Brazil,-14.235,-51.925,South America
+IOT,British Indian Ocean Territory,-6.343,71.876,Asia
+VGB,British Virgin Islands,18.421,-64.640,North America
+BRN,Brunei Darussalam,4.536,114.728,Asia
+BGR,Bulgaria,42.734,25.486,Europe
+BFA,Burkina Faso,12.365,-1.562,Africa
+BDI,Burundi,-3.373,29.919,Africa
+CPV,Cabo Verde,16.002,-24.013,Africa
+KHM,Cambodia,12.566,104.991,Asia
+CMR,Cameroon,7.370,12.355,Africa
+CAN,Canada,56.130,-106.347,North America
+CYM,Cayman Islands,19.514,-80.567,North America
+CAF,Central African Republic,6.612,20.940,Africa
+TCD,Chad,15.454,18.732,Africa
+CHL,Chile,-35.675,-71.543,South America
+CHN,China,35.861,104.195,Asia
+HKG,Hong Kong,22.397,114.109,Asia
+MAC,Macao,22.167,113.550,Asia
+CXR,Christmas Island,-10.448,105.690,Asia
+CCK,Cocos Islands,-12.164,96.870,Asia
+COL,Colombia,4.571,-74.297,South America
+COM,Comoros,-11.875,43.873,Africa
+COG,Congo,-0.228,15.827,Africa
+COK,Cook Islands,-21.237,-159.778,Asia
+CRI,Costa Rica,9.748,-83.753,North America
+HRV,Croatia,45.100,15.202,Europe
+CUB,Cuba,21.522,-77.782,North America
+CUW,Curacao,12.170,-69.024,North America
+CYP,Cyprus,35.127,33.430,Asia
+CZE,Czechia,49.818,15.473,Europe
+PRK,Democratic People's Republic of Korea,40.340,127.510,Asia
+COD,Democratic Republic of the Congo,-4.038,21.759,Africa
+DNK,Denmark,56.263,9.502,Europe
+DJI,Djibouti,11.826,42.590,Africa
+DMA,Dominica,15.415,-61.371,North America
+DOM,Dominican Republic,18.736,-70.163,North America
+ECU,Ecuador,-1.832,-78.183,South America
+EGY,Egypt,26.821,30.802,Africa
+SLV,El Salvador,13.794,-88.897,North America
+GNQ,Equatorial Guinea,1.651,10.268,Africa
+ERI,Eritrea,15.180,39.782,Africa
+EST,Estonia,58.595,25.014,Europe
+SWZ,Eswatini,-26.523,31.466,Africa
+ETH,Ethiopia,9.145,40.489,Africa
+FLK,Falkland Islands,-51.797,-59.524,South America
+FRO,Faroe Islands,61.893,-6.911,Europe
+FJI,Fiji,-16.578,179.415,Asia
+FIN,Finland,61.924,25.748,Europe
+FRA,France,46.228,2.214,Europe
+GUF,French Guiana,3.934,-53.126,South America
+PYF,French Polynesia,-17.680,-149.407,Asia
+ATF,French Southern Territories,-49.281,69.348,Africa
+GAB,Gabon,-0.804,11.609,Africa
+GMB,Gambia,13.444,-15.310,Africa
+GEO,Georgia,42.315,43.357,Asia
+DEU,Germany,51.166,10.452,Europe
+GHA,Ghana,7.946,-1.023,Africa
+GIB,Gibraltar,36.138,-5.346,Europe
+GRC,Greece,39.074,21.824,Europe
+GRL,Greenland,71.707,-42.604,North America
+GRD,Grenada,12.117,-61.679,North America
+GLP,Guadeloupe,16.265,-61.551,North America
+GUM,Guam,13.444,144.794,Asia
+GTM,Guatemala,15.784,-90.230,North America
+GGY,Guernsey,49.465,-2.585,Europe
+GIN,Guinea,9.946,-11.240,Africa
+GNB,Guinea-Bissau,11.804,-15.180,Africa
+GUY,Guyana,4.860,-58.930,South America
+HTI,Haiti,18.972,-72.285,North America
+HMD,Heard Island and McDonald Islands,-53.101,73.504,Asia
+VAT,Holy See,41.903,12.453,Europe
+HND,Honduras,15.200,-86.242,North America
+HUN,Hungary,47.162,19.504,Europe
+ISL,Iceland,64.963,-19.021,Europe
+IND,India,20.594,78.963,Asia
+IDN,Indonesia,-0.790,113.922,Asia
+IRN,Iran,32.428,53.688,Asia
+IRQ,Iraq,33.224,43.679,Asia
+IRL,Ireland,53.412,-8.244,Europe
+IMN,Isle of Man,54.236,-4.548,Europe
+ISR,Israel,31.047,34.852,Asia
+ITA,Italy,41.872,12.568,Europe
+CIV,Ivory Coast,7.540,-5.547,Africa
+JAM,Jamaica,18.110,-77.297,North America
+JPN,Japan,36.205,138.253,Asia
+JEY,Jersey,49.215,-2.131,Europe
+JOR,Jordan,30.586,36.238,Asia
+KAZ,Kazakhstan,48.020,66.924,Asia
+KEN,Kenya,-0.023,37.906,Africa
+KIR,Kiribati,-3.370,-168.734,Asia
+KWT,Kuwait,29.312,47.482,Asia
+KGZ,Kyrgyzstan,41.205,74.766,Asia
+LAO,Lao People's Democratic Republic,19.856,102.495,Asia
+LVA,Latvia,56.880,24.604,Europe
+LBN,Lebanon,33.855,35.862,Asia
+LSO,Lesotho,-29.610,28.234,Africa
+LBR,Liberia,6.428,-9.430,Africa
+LBY,Libya,26.335,17.229,Africa
+LIE,Liechtenstein,47.141,9.555,Europe
+LTU,Lithuania,55.170,23.881,Europe
+LUX,Luxembourg,49.816,6.130,Europe
+MDG,Madagascar,-18.767,46.869,Africa
+MWI,Malawi,-13.254,34.302,Africa
+MYS,Malaysia,4.211,101.976,Asia
+MDV,Maldives,3.202,73.220,Asia
+MLI,Mali,17.571,-4.000,Africa
+MLT,Malta,35.938,14.375,Europe
+MHL,Marshall Islands,7.131,171.184,Asia
+MTQ,Martinique,14.641,-61.024,North America
+MRT,Mauritania,21.008,-10.941,Africa
+MUS,Mauritius,-20.349,57.552,Africa
+MYT,Mayotte,-12.827,45.166,Africa
+MEX,Mexico,23.634,-102.553,North America
+FSM,Micronesia,6.888,158.215,Asia
+MCO,Monaco,43.751,7.402,Europe
+MNG,Mongolia,46.863,103.847,Asia
+MNE,Montenegro,42.709,19.374,Europe
+MSR,Montserrat,16.743,-62.188,North America
+MAR,Morocco,31.792,-7.093,Africa
+MOZ,Mozambique,-18.665,35.530,Africa
+MMR,Myanmar,21.914,95.956,Asia
+NAM,Namibia,-22.958,18.490,Africa
+NRU,Nauru,-0.523,166.932,Asia
+NPL,Nepal,28.395,84.124,Asia
+NLD,Netherlands,52.133,5.291,Europe
+NCL,New Caledonia,-20.904,165.618,Asia
+NZL,New Zealand,-40.901,174.886,Asia
+NIC,Nicaragua,12.866,-85.207,North America
+NER,Niger,17.608,8.082,Africa
+NGA,Nigeria,9.082,8.675,Africa
+NIU,Niue,-19.054,-169.867,Asia
+NFK,Norfolk Island,-29.041,167.955,Asia
+MNP,Northern Mariana Islands,17.338,145.384,Asia
+MKD,North Macedonia,41.609,21.745,Europe
+NOR,Norway,60.472,8.469,Europe
+OMN,Oman,21.513,55.923,Asia
+PAK,Pakistan,30.376,69.345,Asia
+PLW,Palau,7.515,134.583,Asia
+PAN,Panama,8.538,-80.783,North America
+PNG,Papua New Guinea,-6.315,143.956,Asia
+PRY,Paraguay,-23.443,-58.444,South America
+PER,Peru,-9.190,-75.016,South America
+PHL,Philippines,12.880,121.774,Asia
+PCN,Pitcairn,-24.703,-127.440,Asia
+POL,Poland,51.920,19.145,Europe
+PRT,Portugal,39.400,-8.225,Europe
+PRI,Puerto Rico,18.221,-66.590,North America
+QAT,Qatar,25.354,51.184,Asia
+KOR,Republic of Korea,35.908,127.767,Asia
+MDA,Republic of Moldova,47.412,28.370,Europe
+REU,Reunion,-21.115,55.536,Africa
+ROU,Romania,45.944,24.967,Europe
+RUS,Russian Federation,61.524,105.319,Europe
+RWA,Rwanda,-1.940,29.874,Africa
+BLM,Saint Barthelemy,17.900,-62.833,North America
+SHN,Saint Helena,-15.965,-5.706,Africa
+KNA,Saint Kitts and Nevis,17.358,-62.783,North America
+LCA,Saint Lucia,13.910,-60.979,North America
+MAF,Saint Martin,18.075,-63.060,North America
+SPM,Saint Pierre and Miquelon,46.942,-56.271,North America
+VCT,Saint Vincent and the Grenadines,12.984,-61.287,North America
+WSM,Samoa,-13.760,-172.105,Asia
+SMR,San Marino,43.942,12.458,Europe
+STP,Sao Tome and Principe,0.186,6.613,Africa
+SAU,Saudi Arabia,23.886,45.079,Asia
+SEN,Senegal,14.497,-14.453,Africa
+SRB,Serbia,44.017,21.006,Europe
+SYC,Seychelles,-4.680,55.492,Africa
+SLE,Sierra Leone,8.460,-11.779,Africa
+SGP,Singapore,1.352,103.820,Asia
+SXM,Sint Maarten,18.043,-63.055,North America
+SVK,Slovakia,48.669,19.699,Europe
+SVN,Slovenia,46.151,14.995,Europe
+SLB,Solomon Islands,-9.645,160.157,Asia
+SOM,Somalia,5.152,46.200,Africa
+ZAF,South Africa,-30.560,22.938,Africa
+SGS,South Georgia and South Sandwich Islands,-54.429,-36.588,South America
+SSD,South Sudan,4.859,31.572,Africa
+ESP,Spain,40.464,-3.750,Europe
+LKA,Sri Lanka,7.873,80.772,Asia
+PSE,State of Palestine,31.952,35.233,Asia
+SDN,Sudan,12.863,30.218,Africa
+SUR,Suriname,3.919,-56.028,South America
+SJM,Svalbard and Jan Mayen,77.554,23.670,Europe
+SWE,Sweden,60.128,18.644,Europe
+CHE,Switzerland,46.818,8.228,Europe
+SYR,Syrian Arab Republic,34.802,38.997,Asia
+TWN,Taiwan,23.698,120.961,Asia
+TJK,Tajikistan,38.861,71.276,Asia
+THA,Thailand,15.870,100.993,Asia
+TLS,Timor-Leste,-8.874,125.728,Asia
+TGO,Togo,8.620,0.825,Africa
+TKL,Tokelau,-8.968,-171.836,Asia
+TON,Tonga,-21.179,-175.199,Asia
+TTO,Trinidad and Tobago,10.692,-61.223,North America
+TUN,Tunisia,33.887,9.538,Africa
+TUR,Turkey,38.964,35.243,Asia
+TKM,Turkmenistan,38.970,59.556,Asia
+TCA,Turks and Caicos Islands,21.695,-71.798,North America
+TUV,Tuvalu,-7.109,177.649,Asia
+UGA,Uganda,1.374,32.290,Africa
+UKR,Ukraine,48.380,31.165,Europe
+ARE,United Arab Emirates,23.424,53.848,Asia
+GBR,United Kingdom,55.378,-3.436,Europe
+USA,United States,37.090,-95.713,North America
+URY,Uruguay,-32.523,-55.765,South America
+UZB,Uzbekistan,41.377,64.586,Asia
+VUT,Vanuatu,-15.377,166.959,Asia
+VEN,Venezuela,6.424,-66.590,South America
+VNM,Viet Nam,14.058,108.278,Asia
+VIR,Virgin Islands,18.336,-64.896,North America
+WLF,Wallis and Futuna,-13.768,-177.157,Asia
+ESH,Western Sahara,24.216,-12.886,Africa
+YEM,Yemen,15.552,48.516,Asia
+ZMB,Zambia,-13.134,27.849,Africa
+ZWE,Zimbabwe,-19.015,29.155,Africa
