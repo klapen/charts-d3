@@ -21,6 +21,8 @@ partial until ~Q2 of the following year.
     uv run python transform.py                # ~10 sec
     uv run python build_viz_data.py           # ~5 sec
 
+No API key is needed — the pipeline uses the free public Comtrade endpoint.
+
 Then `git status` should show new/updated files only under `viz/coffee-trade/data/`.
 Commit those.
 
@@ -32,3 +34,7 @@ all four steps. The downloader skips years already on disk under `raw/comtrade/`
 ## Refreshing a single year
 
 Delete `raw/comtrade/{year}/` and re-run. Everything else stays cached.
+
+## Notes
+
+- `uv.lock` is committed so a yearly re-run resolves to the same dependency versions. Delete and re-run `uv sync` if you want to refresh.
