@@ -15,8 +15,12 @@ import duckdb
 ROOT = Path(__file__).parent
 RAW = ROOT / "data" / "raw"
 PROCESSED = ROOT / "data" / "processed"
-REFERENCE = ROOT / "data" / "reference"
 log = logging.getLogger("transform")
+
+
+def _sql_path(p: Path) -> str:
+    """Escape a Path for inline use in a DuckDB SQL string literal."""
+    return str(p).replace("'", "''")
 
 
 def build_reporter_lookup(con: duckdb.DuckDBPyConnection) -> None:
@@ -34,9 +38,12 @@ def build_reporter_lookup(con: duckdb.DuckDBPyConnection) -> None:
         return
     entries = json.loads(reporters_path.read_text())
     rows = [
-        (int(e["id"]), e["reporterCodeIsoAlpha3"])
+        (int(e["id"]), e["reporterCodeIsoAlpha3"].strip())
         for e in entries
-        if e.get("reporterCodeIsoAlpha3") and len(e["reporterCodeIsoAlpha3"]) == 3
+        if e.get("id") is not None
+        and not e.get("isGroup", False)
+        and e.get("reporterCodeIsoAlpha3")
+        and len(e["reporterCodeIsoAlpha3"].strip()) == 3
     ]
     log.info("Loaded %d reporter codes from reporters.json", len(rows))
     con.execute("CREATE TABLE reporters (code INTEGER, iso3 VARCHAR)")
@@ -49,21 +56,10 @@ def main() -> int:
 
     con = duckdb.connect(":memory:")
 
-    # --- Reference tables ---
-    con.execute(f"""
-        CREATE TABLE iso AS
-        SELECT * FROM read_csv_auto('{REFERENCE / "iso_3166.csv"}', header=true);
-    """)
-    con.execute(f"""
-        CREATE TABLE centroids AS
-        SELECT * FROM read_csv_auto('{REFERENCE / "country_centroids.csv"}', header=true);
-    """)
-
     # --- Reporter code -> iso3 lookup, built from data/raw/reporters.json ---
     build_reporter_lookup(con)
 
     # --- Comtrade raw -> normalized flows ---
-    comtrade_glob = str(RAW / "comtrade" / "**" / "*.json")
     have_raw = any((RAW / "comtrade").glob("**/*.json"))
     if not have_raw:
         log.warning(
@@ -78,7 +74,7 @@ def main() -> int:
                                 exports_usd DOUBLE, imports_usd DOUBLE);
         """)
     else:
-        log.info("Loading Comtrade raw JSON from %s", comtrade_glob)
+        log.info("Loading Comtrade raw JSON from %s", RAW / "comtrade")
         con.execute(f"""
             CREATE TABLE comtrade_raw AS
             SELECT
@@ -90,7 +86,7 @@ def main() -> int:
                 CAST(primaryValue AS DOUBLE)    AS value_usd,
                 CAST(netWgt AS DOUBLE)          AS quantity_kg
             FROM read_json_auto(
-                '{comtrade_glob}',
+                '{_sql_path(RAW / "comtrade" / "**" / "*.json")}',
                 format = 'array',
                 filename = true,
                 union_by_name = true,
@@ -116,8 +112,9 @@ def main() -> int:
             JOIN reporters r1 ON c.reporter_code = r1.code
             JOIN reporters r2 ON c.partner_code  = r2.code;
         """)
-        log.info("Comtrade rows after iso3 resolution: %d",
-                 con.execute("SELECT COUNT(*) FROM comtrade_iso").fetchone()[0])
+        resolved = con.execute("SELECT COUNT(*) FROM comtrade_iso").fetchone()[0]
+        log.info("Comtrade rows after iso3 resolution: %d (dropped %d unresolvable)",
+                 resolved, n - resolved)
 
         # Prefer importer-side report when available
         # For Brazil -> USA, USA reports flow='M' (imports from BRA); Brazil reports flow='X'.
@@ -187,8 +184,8 @@ def main() -> int:
             ) i USING (year, iso3);
         """)
 
-    con.execute(f"COPY flows TO '{PROCESSED / 'flows.parquet'}' (FORMAT PARQUET);")
-    con.execute(f"COPY nodes TO '{PROCESSED / 'nodes.parquet'}' (FORMAT PARQUET);")
+    con.execute(f"COPY flows TO '{_sql_path(PROCESSED / 'flows.parquet')}' (FORMAT PARQUET);")
+    con.execute(f"COPY nodes TO '{_sql_path(PROCESSED / 'nodes.parquet')}' (FORMAT PARQUET);")
     log.info("Wrote flows.parquet (%d rows) and nodes.parquet (%d rows)",
              con.execute("SELECT COUNT(*) FROM flows").fetchone()[0],
              con.execute("SELECT COUNT(*) FROM nodes").fetchone()[0])
