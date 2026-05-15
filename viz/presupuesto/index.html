@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bogotá 2015 budget · Klapen</title>
+    <meta name="description" content="Bogotá 2015 approved budget — sector and line-item view by year-over-year variation." />
+    <link rel="icon" href="/img/klapenlogo.svg" />
+  </head>
+  <body class="bg-neutral-950 text-neutral-100 min-h-screen antialiased">
+    <a href="#chart" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-brand focus:text-white focus:px-3 focus:py-1 focus:rounded">Skip to chart</a>
+
+    <header class="border-b border-neutral-800">
+      <div class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between gap-4">
+        <a href="/" class="flex items-center gap-3 text-neutral-300 hover:text-white transition-colors">
+          <span aria-hidden="true">←</span>
+          <span data-en="Back to gallery" data-es="Volver a la galería">Back to gallery</span>
+        </a>
+        <div class="flex items-center gap-1 text-sm" role="group" aria-label="Language">
+          <button data-lang="en" class="lang-btn px-2 py-1 rounded cursor-pointer" aria-pressed="false">EN</button>
+          <span class="text-neutral-700" aria-hidden="true">·</span>
+          <button data-lang="es" class="lang-btn px-2 py-1 rounded cursor-pointer" aria-pressed="false">ES</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-10">
+      <h1 class="text-3xl font-bold tracking-tight"
+          data-en="Approved Bogotá budget — 2015"
+          data-es="Presupuesto aprobado de Bogotá — 2015">Presupuesto aprobado de Bogotá — 2015</h1>
+      <p class="text-neutral-400 mt-2"
+         data-en='Central administration and public entities · <span class="text-brand font-semibold">$17.3T COP</span> (+17.5% vs. 2014)'
+         data-es='Administración central y establecimientos públicos · <span class="text-brand font-semibold">$17,3 billones</span> (+17,5% frente a 2014)'>
+        Administración central y establecimientos públicos · <span class="text-brand font-semibold">$17,3 billones</span> (+17,5% frente a 2014)
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-2 text-sm" role="group" aria-label="Mode">
+        <button type="button" data-mode="total" class="mode-btn px-3 py-1.5 rounded border border-neutral-800 bg-neutral-900 hover:border-neutral-600 cursor-pointer" aria-pressed="true"
+                data-en="Total budget" data-es="Presupuesto total">Presupuesto total</button>
+        <button type="button" data-mode="movilidad" class="mode-btn px-3 py-1.5 rounded border border-neutral-800 bg-neutral-900 hover:border-neutral-600 cursor-pointer" aria-pressed="false"
+                data-en="Highlight Movilidad" data-es="Resaltar Movilidad">Resaltar Movilidad</button>
+        <button type="button" data-mode="sector" class="mode-btn px-3 py-1.5 rounded border border-neutral-800 bg-neutral-900 hover:border-neutral-600 cursor-pointer" aria-pressed="false"
+                data-en="By sector" data-es="Por sector">Por sector</button>
+        <select id="sector-select" class="hidden ml-2 bg-neutral-900 border border-neutral-800 rounded px-2 py-1.5 text-sm cursor-pointer"></select>
+        <span id="mode-stat" class="ml-2 text-neutral-400"></span>
+      </div>
+
+      <div class="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-8 items-start">
+        <div id="chart" class="relative bg-neutral-900 border border-neutral-800 rounded-lg" role="img" aria-label="Budget bubble chart"></div>
+
+        <aside class="space-y-4">
+          <section class="bg-neutral-900 border border-neutral-800 rounded-lg p-4">
+            <h2 class="text-sm font-semibold text-neutral-300"
+                data-en="Variation legend"
+                data-es="Leyenda de variación">Leyenda de variación</h2>
+            <p class="mt-1 text-xs text-neutral-500"
+               data-en="Color = year-over-year change vs. 2014. Size = budget amount."
+               data-es="Color = variación interanual vs. 2014. Tamaño = monto.">
+              Color = variación interanual vs. 2014. Tamaño = monto.
+            </p>
+            <ul id="legend" class="mt-3 grid grid-cols-2 gap-x-3 gap-y-1 text-xs"></ul>
+          </section>
+
+          <section class="bg-neutral-900 border border-neutral-800 rounded-lg p-4">
+            <h2 class="text-sm font-semibold text-neutral-300"
+                data-en="Selected item"
+                data-es="Ítem seleccionado">Ítem seleccionado</h2>
+            <div id="detail" class="mt-3 text-xs text-neutral-400"
+                 data-en="Click any bubble to see details."
+                 data-es="Haz clic en una burbuja para ver detalles.">
+              Haz clic en una burbuja para ver detalles.
+            </div>
+          </section>
+        </aside>
+      </div>
+
+      <p class="mt-10 text-xs text-neutral-500">
+        <span data-en="Source:" data-es="Fuente:">Fuente:</span>
+        <span data-en="Secretaría de Hacienda Distrital · processed by " data-es="Secretaría de Hacienda Distrital · procesado por ">Secretaría de Hacienda Distrital · procesado por </span>
+        <a class="underline decoration-neutral-700 hover:decoration-brand"
+           href="http://www.vizdatalab.com" target="_blank" rel="noopener">Visualiza DataLAB</a>
+      </p>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

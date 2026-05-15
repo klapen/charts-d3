@@ -55,6 +55,7 @@ export default defineConfig({
         ),
         labour: resolve(__dirname, 'viz/labour/index.html'),
         ipc: resolve(__dirname, 'viz/ipc/index.html'),
+        presupuesto: resolve(__dirname, 'viz/presupuesto/index.html'),
       },
     },
   },
