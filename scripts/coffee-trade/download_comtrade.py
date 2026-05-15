@@ -1,4 +1,3 @@
-# This is a manual, ~yearly job. See README.md before running.
 """Download coffee trade flows from UN Comtrade free-tier API.
 
 Manual, ~yearly job. See README.md before running.
@@ -36,6 +35,7 @@ def fetch_reporters(client: httpx.Client) -> list[dict]:
     )
     r.raise_for_status()
     data = r.json()["results"]
+    REPORTERS_CACHE.parent.mkdir(parents=True, exist_ok=True)
     REPORTERS_CACHE.write_text(json.dumps(data))
     return data
 
@@ -118,7 +118,9 @@ def main() -> int:
                 if data is None:
                     log_failure(year, iso3, "fetch_failed")
                 else:
-                    out.write_text(json.dumps(data))
+                    tmp = out.with_suffix(".tmp")
+                    tmp.write_text(json.dumps(data))
+                    tmp.replace(out)  # atomic on POSIX
                 time.sleep(REQ_SLEEP_SECONDS)
 
     return 0
