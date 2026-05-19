@@ -12,8 +12,10 @@ import { createParticleLayer } from './modules/particles.js'
 import { wireControls } from './modules/controls.js'
 import { createProjection } from './modules/geo.js'
 import { createInfoPanel } from './modules/info-panel.js'
+import { observeBreakpoint, pickBreakpoint } from './modules/responsive.js'
 
-const W = 1080, H = 660  // temporary canonical size; Task B7 replaces with breakpoints
+// Canonical drawing size; rebuilt at each breakpoint snap.
+let current = { w: 1080, h: 660 }
 
 let meta, renderer, particles, sim, project, infoPanel
 let chartEl
@@ -33,7 +35,7 @@ async function applyYearType(year, type, tier) {
   const file = await loadYear(year, type)
   const { nodes, edges } = buildActiveSet(file, tier)
   for (const e of edges) e._color = colorFor(meta, e.source.id || e.source)
-  const scales = buildScales(nodes, edges, { w: W, h: H })
+  const scales = buildScales(nodes, edges, { w: current.w, h: current.h })
 
   // Attract each node to its geographic centroid; forceCollide pushes
   // overlapping neighbors apart so dense regions stay readable. We don't
@@ -79,11 +81,15 @@ async function boot() {
   const initialYear = meta.years.at(-1)
   setState({ year: initialYear })
 
-  project = createProjection({ w: W, h: H })
-  renderer = createSvgRenderer(chartEl, meta, { w: W, h: H })
+  // Pick the right canonical size BEFORE we create anything that bakes it in.
+  const bp = pickBreakpoint(chartEl.clientWidth)
+  current = { w: bp.w, h: bp.h }
+
+  project = createProjection({ w: current.w, h: current.h })
+  renderer = createSvgRenderer(chartEl, meta, { w: current.w, h: current.h })
   infoPanel = createInfoPanel(meta)
   particles = createParticleLayer(chartEl, {
-    w: W, h: H, dpr: window.devicePixelRatio || 1,
+    w: current.w, h: current.h, dpr: window.devicePixelRatio || 1,
   })
   particles.start()
 
@@ -104,6 +110,34 @@ async function boot() {
     async type => { await applyYearType(getState().year, type, getState().tier) },
     async tier => { await applyYearType(getState().year, getState().type, tier) },
   )
+
+  // Snap canonical size + reflow when the chart container crosses a threshold.
+  observeBreakpoint(chartEl, (next, prev) => {
+    // On xs, lock to top tier and hide the "All countries" button.
+    const onXs = next.name === 'xs'
+    if (onXs && getState().tier !== 'top') setState({ tier: 'top' })
+    for (const b of document.querySelectorAll('.tier-btn[data-tier="full"]')) {
+      b.style.display = onXs ? 'none' : ''
+    }
+    if (!prev) return  // first fire — boot already used the picked size
+    reflow(next)
+  })
+}
+
+function reflow(next) {
+  current = { w: next.w, h: next.h }
+  const dpr = window.devicePixelRatio || 1
+
+  // Rebuild the projection + resize the render surfaces in the new canonical
+  // space. Then re-run applyYearType so scales (which depend on w/h) and the
+  // per-node radius bake-in get refreshed cleanly. loadYear is cached so this
+  // costs basically nothing beyond rebuilding the simulation.
+  project = createProjection({ w: current.w, h: current.h })
+  renderer.resize({ w: current.w, h: current.h })
+  particles.resize({ w: current.w, h: current.h, dpr })
+
+  const { year, type, tier } = getState()
+  applyYearType(year, type, tier).catch(err => console.error('reflow failed', err))
 }
 
 boot().catch(err => console.error('coffee-trade boot failed', err))
