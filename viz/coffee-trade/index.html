@@ -34,47 +34,48 @@
     </header>
 
     <main class="max-w-6xl mx-auto px-6 py-6">
-      <div id="chart" role="img" aria-label="Global coffee trade flows"
-           class="relative w-full rounded-xl border border-neutral-800 bg-neutral-950 overflow-hidden">
-        <!-- SVG + Canvas inserted here by main.js -->
-      </div>
+      <div class="grid gap-4 lg:grid-cols-3">
+        <div class="lg:col-span-2 min-w-0">
+          <div id="chart" role="img" aria-label="Global coffee trade flows"
+               class="relative w-full rounded-xl border border-neutral-800 bg-neutral-950 overflow-hidden">
+            <!-- SVG + Canvas inserted here by main.js -->
+          </div>
 
-      <div id="controls" class="mt-4 flex flex-wrap items-center gap-4">
-        <button id="play-btn" type="button" class="px-3 py-1 rounded border border-neutral-700 bg-neutral-900 text-sm hover:border-brand"
-                data-en="Play" data-es="Reproducir">Play</button>
+          <div id="controls" class="mt-4 flex flex-wrap items-center gap-4">
+            <button id="play-btn" type="button" class="px-3 py-1 rounded border border-neutral-700 bg-neutral-900 text-sm hover:border-brand"
+                    data-en="Play" data-es="Reproducir">Play</button>
 
-        <div class="flex-1 min-w-[200px] flex items-center gap-2">
-          <input id="year-slider" type="range" min="0" max="0" step="1" value="0"
-                 class="flex-1 accent-brand cursor-pointer" />
-          <output id="year-label" class="text-sm tabular-nums text-neutral-300 w-12 text-right">—</output>
+            <div class="flex-1 min-w-[200px] flex items-center gap-2">
+              <input id="year-slider" type="range" min="0" max="0" step="1" value="0"
+                     class="flex-1 accent-brand cursor-pointer" />
+              <output id="year-label" class="text-sm tabular-nums text-neutral-300 w-12 text-right">—</output>
+            </div>
+
+            <select id="type-select" class="px-2 py-1 rounded border border-neutral-700 bg-neutral-900 text-sm">
+              <option value="all" data-en="All coffee" data-es="Todo el café">All coffee</option>
+              <option value="green" data-en="Green" data-es="Verde">Green</option>
+              <option value="roasted" data-en="Roasted" data-es="Tostado">Roasted</option>
+            </select>
+          </div>
+
+          <div class="mt-2 flex flex-wrap items-center gap-3 text-xs">
+            <span class="text-neutral-500" data-en="Detail:" data-es="Detalle:">Detail:</span>
+            <button data-tier="top" class="tier-btn px-2 py-1 rounded border border-neutral-700 bg-neutral-900 hover:border-brand"
+                    data-en="Top flows" data-es="Flujos principales">Top flows</button>
+            <button data-tier="full" class="tier-btn px-2 py-1 rounded border border-neutral-700 bg-neutral-900 hover:border-brand"
+                    data-en="All countries" data-es="Todos los países">All countries</button>
+          </div>
+
+          <ul id="legend" class="mt-4 flex flex-wrap gap-3 text-xs text-neutral-400"></ul>
         </div>
 
-        <select id="type-select" class="px-2 py-1 rounded border border-neutral-700 bg-neutral-900 text-sm">
-          <option value="all" data-en="All coffee" data-es="Todo el café">All coffee</option>
-          <option value="green" data-en="Green" data-es="Verde">Green</option>
-          <option value="roasted" data-en="Roasted" data-es="Tostado">Roasted</option>
-        </select>
+        <aside id="info-panel"
+               class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 text-sm lg:sticky lg:top-4 lg:self-start"
+               aria-live="polite">
+          <p class="text-neutral-500"
+             data-en="Loading summary…" data-es="Cargando resumen…">Loading summary…</p>
+        </aside>
       </div>
-
-      <div class="mt-2 flex flex-wrap items-center gap-3 text-xs">
-        <span class="text-neutral-500" data-en="Detail:" data-es="Detalle:">Detail:</span>
-        <button data-tier="top" class="tier-btn px-2 py-1 rounded border border-neutral-700 bg-neutral-900 hover:border-brand"
-                data-en="Top flows" data-es="Flujos principales">Top flows</button>
-        <button data-tier="full" class="tier-btn px-2 py-1 rounded border border-neutral-700 bg-neutral-900 hover:border-brand"
-                data-en="All countries" data-es="Todos los países">All countries</button>
-      </div>
-
-      <ul id="legend" class="mt-4 flex flex-wrap gap-3 text-xs text-neutral-400"></ul>
-
-      <aside id="info-panel"
-             class="mt-4 rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 text-sm"
-             aria-live="polite">
-        <p class="text-neutral-500"
-           data-en="Click a country to see its trade partners."
-           data-es="Haz clic en un país para ver sus socios comerciales.">
-          Click a country to see its trade partners.
-        </p>
-      </aside>
     </main>
 
     <script type="module" src="./main.js"></script>
