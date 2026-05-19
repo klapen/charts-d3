@@ -125,12 +125,15 @@ def main() -> int:
                         continue  # resumable: skip already-downloaded
 
                     log.info("year=%d reporter=%s (%s)", year, iso3, c.get("text"))
-                    data = fetch_year_reporter(client, year, reporter_code)
-                    if data is None:
+                    response = fetch_year_reporter(client, year, reporter_code)
+                    if response is None:
                         log_failure(year, iso3, "fetch_failed")
                     else:
+                        # Strip the {elapsedTime, count, data:[...]} wrapper —
+                        # transform.py reads each file as a JSON array of records.
+                        records = response.get("data", [])
                         tmp = out.with_suffix(".tmp")
-                        tmp.write_text(json.dumps(data))
+                        tmp.write_text(json.dumps(records))
                         tmp.replace(out)  # atomic on POSIX
                     time.sleep(REQ_SLEEP_SECONDS)
         except QuotaExceeded as exc:
