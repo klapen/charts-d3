@@ -30,18 +30,23 @@ def _sql_path(p: Path) -> str:
     return str(p).replace("'", "''")
 
 
-def query_year_type(con, year: int, type_filter: str) -> tuple[list[dict], list[dict]]:
+def query_year_type(
+    con: duckdb.DuckDBPyConnection, year: int, type_filter: str
+) -> tuple[list[dict], list[dict]]:
+    """Return (nodes, edges) for one (year, type) slice. Edges are sorted DESC by value_usd."""
     if type_filter == "all":
         hs_predicate = "TRUE"
     elif type_filter == "green":
         hs_predicate = f"hs_code IN {GREEN_HS}"
-    else:
+    elif type_filter == "roasted":
         hs_predicate = f"hs_code IN {ROASTED_HS}"
+    else:
+        raise ValueError(f"unknown type_filter: {type_filter!r}")
 
     edges_df = con.execute(f"""
         SELECT source, target,
-               SUM(value_usd)   AS value_usd,
-               SUM(quantity_kg) AS quantity_kg
+               COALESCE(SUM(value_usd), 0)   AS value_usd,
+               COALESCE(SUM(quantity_kg), 0) AS quantity_kg
         FROM read_parquet('{_sql_path(PROCESSED / "flows.parquet")}')
         WHERE year = {year} AND {hs_predicate}
         GROUP BY source, target
@@ -78,13 +83,18 @@ def query_year_type(con, year: int, type_filter: str) -> tuple[list[dict], list[
     ]
     edges = [
         {"source": r.source, "target": r.target,
-         "value_usd": float(r.value_usd), "quantity_kg": float(r.quantity_kg or 0)}
+         "value_usd": float(r.value_usd), "quantity_kg": float(r.quantity_kg)}
         for r in edges_df.itertuples(index=False)
     ]
     return nodes, edges
 
 
 def compute_tiers(nodes: list[dict], edges: list[dict]) -> dict:
+    """Return SVG-tier (top ~30 nodes, top ~100 edges by value) and Canvas-tier (all) index sets.
+
+    Edges are assumed pre-sorted DESC by value_usd, so the first TOP_EDGE_CAP that
+    land entirely inside the top-node set are the highest-value ones.
+    """
     top_node_ids = [n["id"] for n in nodes[:TOP_NODE_COUNT]]
     top_set = set(top_node_ids)
     top_edge_indices: list[int] = []
