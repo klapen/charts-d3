@@ -34,17 +34,24 @@ async function applyYearType(year, type, tier) {
   for (const e of edges) e._color = colorFor(meta, e.source.id || e.source)
   const scales = buildScales(nodes, edges, { w: W, h: H })
 
-  // Pin each node to its geographic centroid so the same country always
-  // lands at the same screen position across years/types/tiers.
+  // Attract each node to its geographic centroid; forceCollide pushes
+  // overlapping neighbors apart so dense regions stay readable. We don't
+  // hard-pin (fx/fy) because that lets countries stack on top of each other.
   for (const n of nodes) {
     const xy = project(meta.countries[n.id])
-    if (xy) { n.fx = xy[0]; n.fy = xy[1] }
+    if (xy) {
+      n.targetX = xy[0]
+      n.targetY = xy[1]
+      // Seed the starting position so nodes don't fly in from origin.
+      if (n.x == null) n.x = xy[0]
+      if (n.y == null) n.y = xy[1]
+    }
   }
 
   renderer.update(nodes, edges, scales)
 
   if (sim) sim.stop()
-  sim = buildSimulation(nodes, edges, { w: W, h: H })
+  sim = buildSimulation(nodes, edges)
   sim.on('tick', renderer.tick)
   // d3-force mutates source/target to objects after first tick — wait one frame
   requestAnimationFrame(() => particles.rebuild(edges, scales))

@@ -31,9 +31,9 @@ export function createSvgRenderer(container, meta, { w, h }) {
       .join('circle')
         .attr('r', d => d.radius)
         .attr('fill', d => colorFor(meta, d.id))
-        .attr('fill-opacity', 0.85)
+        .attr('fill-opacity', 1)
         .attr('stroke', '#0a0a0b')
-        .attr('stroke-width', 0.6)
+        .attr('stroke-width', 1.25)
 
     labelSel = labelG.selectAll('text')
       .data(nodes, d => d.id)
