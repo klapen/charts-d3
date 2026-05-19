@@ -4,6 +4,9 @@ import { getState, setState, subscribe } from './state.js'
 
 const DIM_OPACITY = 0.08
 const FOCUS_LINK_OPACITY = 0.7
+const REGION_DIM_NODE = 0.12
+const REGION_LINK_INSIDE = 0.3
+const REGION_LINK_OUTSIDE = 0.03
 
 export function createSvgRenderer(container, meta, { w, h }) {
   const svg = d3.select(container)
@@ -68,34 +71,51 @@ export function createSvgRenderer(container, meta, { w, h }) {
     applyHighlight()
   }
 
-  function applyHighlight() {
-    const { pinnedId } = getState()
+  function regionOf(id) { return meta.countries[id]?.region }
 
-    if (!pinnedId) {
-      nodeSel.attr('fill-opacity', 1).attr('stroke-opacity', 1)
-      labelSel.attr('opacity', 1)
-      linkSel.attr('stroke-opacity', 0.18)
+  function applyHighlight() {
+    const { pinnedId, regionFilter } = getState()
+
+    // Pin wins over region: a pinned country shows only its incident network.
+    if (pinnedId) {
+      const connected = new Set([pinnedId])
+      for (const e of currentEdges) {
+        if (srcId(e) === pinnedId) connected.add(tgtId(e))
+        else if (tgtId(e) === pinnedId) connected.add(srcId(e))
+      }
+      nodeSel
+        .attr('fill-opacity', d => (connected.has(d.id) ? 1 : DIM_OPACITY))
+        .attr('stroke-opacity', d => (connected.has(d.id) ? 1 : DIM_OPACITY))
+      labelSel.attr('opacity', d => (connected.has(d.id) ? 1 : DIM_OPACITY))
+      linkSel.attr('stroke-opacity', d => (
+        (srcId(d) === pinnedId || tgtId(d) === pinnedId) ? FOCUS_LINK_OPACITY : DIM_OPACITY * 0.4
+      ))
       return
     }
 
-    const connected = new Set([pinnedId])
-    for (const e of currentEdges) {
-      if (srcId(e) === pinnedId) connected.add(tgtId(e))
-      else if (tgtId(e) === pinnedId) connected.add(srcId(e))
+    if (regionFilter) {
+      const inRegion = id => regionOf(id) === regionFilter
+      nodeSel
+        .attr('fill-opacity', d => (inRegion(d.id) ? 1 : REGION_DIM_NODE))
+        .attr('stroke-opacity', d => (inRegion(d.id) ? 1 : REGION_DIM_NODE))
+      labelSel.attr('opacity', d => (inRegion(d.id) ? 1 : REGION_DIM_NODE))
+      linkSel.attr('stroke-opacity', d => (
+        (inRegion(srcId(d)) || inRegion(tgtId(d))) ? REGION_LINK_INSIDE : REGION_LINK_OUTSIDE
+      ))
+      return
     }
 
-    nodeSel
-      .attr('fill-opacity', d => (connected.has(d.id) ? 1 : DIM_OPACITY))
-      .attr('stroke-opacity', d => (connected.has(d.id) ? 1 : DIM_OPACITY))
-    labelSel.attr('opacity', d => (connected.has(d.id) ? 1 : DIM_OPACITY))
-    linkSel.attr('stroke-opacity', d => (
-      (srcId(d) === pinnedId || tgtId(d) === pinnedId) ? FOCUS_LINK_OPACITY : DIM_OPACITY * 0.4
-    ))
+    // No filter: defaults.
+    nodeSel.attr('fill-opacity', 1).attr('stroke-opacity', 1)
+    labelSel.attr('opacity', 1)
+    linkSel.attr('stroke-opacity', 0.18)
   }
 
   // Subscribe so click → state → re-style happens automatically.
   const unsubscribe = subscribe((next, prev) => {
-    if (next.pinnedId !== prev.pinnedId) applyHighlight()
+    if (next.pinnedId !== prev.pinnedId || next.regionFilter !== prev.regionFilter) {
+      applyHighlight()
+    }
   })
 
   function tick() {

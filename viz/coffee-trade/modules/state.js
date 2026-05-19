@@ -9,6 +9,7 @@ let state = Object.freeze({
   playing: false,
   hoveredId: null,    // ISO3 of hovered node or null
   pinnedId: null,     // ISO3 of pinned node
+  regionFilter: null, // 'South America' | 'Africa' | 'Asia' | 'Europe' | 'North America' | null
   lang: 'en',         // 'en' | 'es'
 })
 

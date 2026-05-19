@@ -7,6 +7,9 @@ const FOCUS_LINK_OPACITY = 0.7
 const BASE_LINK_OPACITY = 0.18
 const NODE_OPACITY = 1
 const TOP_LABEL_COUNT = 15
+const REGION_DIM_NODE = 0.12
+const REGION_LINK_INSIDE = 0.3
+const REGION_LINK_OUTSIDE = 0.03
 
 export function createCanvasRenderer(container, meta, { w, h, dpr }) {
   const canvas = document.createElement('canvas')
@@ -38,21 +41,40 @@ export function createCanvasRenderer(container, meta, { w, h, dpr }) {
     _quadtree = null  // rebuild lazily on next pointAt
   }
 
+  function regionOf(id) { return meta.countries[id]?.region }
+
   function tick() {
     if (!_scales) return
     const cw = canvas.width / currentDpr
     const ch = canvas.height / currentDpr
     ctx.clearRect(0, 0, cw, ch)
 
-    const { pinnedId } = getState()
+    const { pinnedId, regionFilter } = getState()
     const connected = pinnedId ? collectConnected(pinnedId) : null
+
+    // Helpers: pin wins over region filter when both are set.
+    const nodeAlpha = id => {
+      if (pinnedId) return connected.has(id) ? NODE_OPACITY : DIM_OPACITY
+      if (regionFilter) return regionOf(id) === regionFilter ? NODE_OPACITY : REGION_DIM_NODE
+      return NODE_OPACITY
+    }
+    const linkAlpha = e => {
+      if (pinnedId) {
+        return (srcId(e) === pinnedId || tgtId(e) === pinnedId)
+          ? FOCUS_LINK_OPACITY : DIM_OPACITY * 0.4
+      }
+      if (regionFilter) {
+        return (regionOf(srcId(e)) === regionFilter || regionOf(tgtId(e)) === regionFilter)
+          ? REGION_LINK_INSIDE : REGION_LINK_OUTSIDE
+      }
+      return BASE_LINK_OPACITY
+    }
 
     // Links
     for (const e of _edges) {
       const sx = e.source.x, sy = e.source.y, tx = e.target.x, ty = e.target.y
       if (sx == null || tx == null) continue
-      const incident = pinnedId && (srcId(e) === pinnedId || tgtId(e) === pinnedId)
-      ctx.globalAlpha = pinnedId ? (incident ? FOCUS_LINK_OPACITY : DIM_OPACITY * 0.4) : BASE_LINK_OPACITY
+      ctx.globalAlpha = linkAlpha(e)
       ctx.strokeStyle = e._color || colorFor(meta, srcId(e))
       ctx.lineWidth = _scales.linkWidth(e.value_usd)
       ctx.beginPath()
@@ -65,9 +87,8 @@ export function createCanvasRenderer(container, meta, { w, h, dpr }) {
     // Nodes
     for (const n of _nodes) {
       if (n.x == null) continue
-      const dim = pinnedId && !connected.has(n.id)
       ctx.beginPath()
-      ctx.globalAlpha = dim ? DIM_OPACITY : NODE_OPACITY
+      ctx.globalAlpha = nodeAlpha(n.id)
       ctx.fillStyle = colorFor(meta, n.id)
       ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2)
       ctx.fill()
@@ -77,7 +98,7 @@ export function createCanvasRenderer(container, meta, { w, h, dpr }) {
     }
     ctx.globalAlpha = 1
 
-    // Labels — top N by total trade, plus the pinned country if it's outside that set
+    // Labels — top N by total trade, plus the pinned country if outside that set
     const topNodes = [..._nodes]
       .sort((a, b) => (b.exports_usd + b.imports_usd) - (a.exports_usd + a.imports_usd))
       .slice(0, TOP_LABEL_COUNT)
@@ -90,8 +111,7 @@ export function createCanvasRenderer(container, meta, { w, h, dpr }) {
     ctx.textAlign = 'center'
     for (const n of labelSet.values()) {
       if (n.x == null) continue
-      const dim = pinnedId && !connected.has(n.id)
-      ctx.globalAlpha = dim ? DIM_OPACITY : 1
+      ctx.globalAlpha = nodeAlpha(n.id)
       const name = meta.countries[n.id]?.name || n.id
       ctx.strokeStyle = '#0a0a0b'
       ctx.lineWidth = 3
@@ -131,10 +151,11 @@ export function createCanvasRenderer(container, meta, { w, h, dpr }) {
     else if (cur) setState({ pinnedId: null })
   })
 
-  // Force a redraw the next tick when the pin changes. The simulation runs
-  // perpetually so a fresh tick is at most one frame away.
+  // Force a redraw when pin or region filter changes. The simulation runs
+  // perpetually so the next tick already handles it, but force one in case
+  // alpha has settled below the tick threshold.
   const unsubscribe = subscribe((next, prev) => {
-    if (next.pinnedId !== prev.pinnedId) tick()
+    if (next.pinnedId !== prev.pinnedId || next.regionFilter !== prev.regionFilter) tick()
   })
 
   function destroy() {

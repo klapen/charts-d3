@@ -14,6 +14,7 @@ import { wireControls } from './modules/controls.js'
 import { createProjection } from './modules/geo.js'
 import { createInfoPanel } from './modules/info-panel.js'
 import { observeBreakpoint, pickBreakpoint } from './modules/responsive.js'
+import { renderLegend } from './modules/legend.js'
 
 // Canonical drawing size; rebuilt at each breakpoint snap.
 let current = { w: 1080, h: 660 }
@@ -123,6 +124,7 @@ async function boot() {
 
   project = createProjection({ w: current.w, h: current.h })
   infoPanel = createInfoPanel(meta)
+  renderLegend()
   particles = createParticleLayer(chartEl, {
     w: current.w, h: current.h, dpr: window.devicePixelRatio || 1,
   })
