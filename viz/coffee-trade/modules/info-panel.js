@@ -1,4 +1,4 @@
-import { getState, subscribe } from './state.js'
+import { getState, setState, subscribe } from './state.js'
 
 const USD = new Intl.NumberFormat('en-US', {
   style: 'currency', currency: 'USD',
@@ -9,19 +9,20 @@ const STRINGS = {
   summaryTitle:    { en: 'Global summary',     es: 'Resumen global' },
   totalFlow:       { en: 'Total trade',        es: 'Comercio total' },
   countries:       { en: 'Countries trading',  es: 'Países comerciando' },
-  topExporters:    { en: 'Top exporters',      es: 'Principales exportadores' },
-  topImporters:    { en: 'Top importers',      es: 'Principales importadores' },
+  exportersHeader: { en: 'Exporters',          es: 'Exportadores' },
+  importersHeader: { en: 'Importers',          es: 'Importadores' },
   exports:         { en: 'Exports',            es: 'Exportaciones' },
   imports:         { en: 'Imports',            es: 'Importaciones' },
-  topPartners:     { en: 'Top partners',       es: 'Principales socios' },
+  partnersHeader:  { en: 'Partners',           es: 'Socios' },
   outflow:         { en: '→',                  es: '→' },
   inflow:          { en: '←',                  es: '←' },
-  clickHint:       { en: 'Click a country marble to focus.',
-                     es: 'Haz clic en un país para enfocar.' },
+  clickHint:       { en: 'Click a row or a marble to focus a country.',
+                     es: 'Haz clic en una fila o un país para enfocarlo.' },
 }
 
-const TOP_LIST_LEN = 5
-const TOP_PARTNER_COUNT = 6
+// Each scrollable list caps at this height so the side panel stays usable
+// in a sticky lg sidebar but is also free to take more space on mobile.
+const LIST_MAX_H_CLASS = 'max-h-56 overflow-y-auto'
 
 export function createInfoPanel(meta) {
   const root = document.getElementById('info-panel')
@@ -39,6 +40,30 @@ export function createInfoPanel(meta) {
     const { pinnedId } = getState()
     if (pinnedId) renderCountry(pinnedId)
     else renderSummary()
+    wireRowClicks()
+  }
+
+  function wireRowClicks() {
+    for (const li of root.querySelectorAll('li[data-iso3]')) {
+      li.addEventListener('click', () => {
+        const id = li.dataset.iso3
+        const cur = getState().pinnedId
+        setState({ pinnedId: cur === id ? null : id })
+      })
+    }
+  }
+
+  function renderRow(id, value, { arrow = '', pinnedId }) {
+    const name = meta.countries[id]?.name || id
+    const active = id === pinnedId
+    const cls = [
+      'flex items-center justify-between gap-3 py-0.5 px-1.5 rounded cursor-pointer',
+      active ? 'bg-neutral-800 text-neutral-50' : 'hover:bg-neutral-800/60 text-neutral-300',
+    ].join(' ')
+    return `<li data-iso3="${escapeHtml(id)}" class="${cls}">
+      <span class="truncate">${arrow ? `<span class="text-neutral-500 mr-1">${arrow}</span>` : ''}${escapeHtml(name)}</span>
+      <span class="${active ? 'text-neutral-100' : 'text-neutral-400'} tabular-nums shrink-0">${USD.format(value)}</span>
+    </li>`
   }
 
   function renderSummary() {
@@ -51,15 +76,17 @@ export function createInfoPanel(meta) {
     const totalFlow = currentEdges.reduce((s, e) => s + (e.value_usd || 0), 0)
     const countries = currentNodes.length
 
-    const exporters = [...currentNodes]
+    const exporters = currentNodes
       .filter(n => n.exports_usd > 0)
       .sort((a, b) => b.exports_usd - a.exports_usd)
-      .slice(0, TOP_LIST_LEN)
 
-    const importers = [...currentNodes]
+    const importers = currentNodes
       .filter(n => n.imports_usd > 0)
       .sort((a, b) => b.imports_usd - a.imports_usd)
-      .slice(0, TOP_LIST_LEN)
+
+    const opts = { pinnedId: null }   // no pin in summary view
+    const expRows = exporters.map(n => renderRow(n.id, n.exports_usd, opts)).join('')
+    const impRows = importers.map(n => renderRow(n.id, n.imports_usd, opts)).join('')
 
     root.innerHTML = `
       <header class="mb-3">
@@ -72,24 +99,20 @@ export function createInfoPanel(meta) {
         <dd class="text-neutral-200 tabular-nums text-right">${countries}</dd>
       </dl>
 
-      <div class="text-xs uppercase tracking-wide text-neutral-500 mb-1">${STRINGS.topExporters[lang]}</div>
-      <ul class="mb-3">${renderTopList(exporters, 'exports_usd')}</ul>
+      <div class="text-xs uppercase tracking-wide text-neutral-500 mb-1 flex justify-between">
+        <span>${STRINGS.exportersHeader[lang]}</span>
+        <span class="text-neutral-600 normal-case tracking-normal">${exporters.length}</span>
+      </div>
+      <ul class="mb-3 ${LIST_MAX_H_CLASS}">${expRows}</ul>
 
-      <div class="text-xs uppercase tracking-wide text-neutral-500 mb-1">${STRINGS.topImporters[lang]}</div>
-      <ul class="mb-3">${renderTopList(importers, 'imports_usd')}</ul>
+      <div class="text-xs uppercase tracking-wide text-neutral-500 mb-1 flex justify-between">
+        <span>${STRINGS.importersHeader[lang]}</span>
+        <span class="text-neutral-600 normal-case tracking-normal">${importers.length}</span>
+      </div>
+      <ul class="mb-3 ${LIST_MAX_H_CLASS}">${impRows}</ul>
 
       <p class="text-xs text-neutral-500 mt-3">${STRINGS.clickHint[lang]}</p>
     `
-  }
-
-  function renderTopList(nodes, valueField) {
-    return nodes.map(n => {
-      const name = meta.countries[n.id]?.name || n.id
-      return `<li class="flex items-center justify-between gap-3 py-0.5">
-        <span class="text-neutral-300 truncate">${escapeHtml(name)}</span>
-        <span class="text-neutral-400 tabular-nums">${USD.format(n[valueField])}</span>
-      </li>`
-    }).join('')
   }
 
   function renderCountry(pinnedId) {
@@ -101,30 +124,22 @@ export function createInfoPanel(meta) {
       return
     }
 
-    const exports = []
-    const imports = []
+    const partners = []
     for (const e of currentEdges) {
       const src = e.source.id || e.source
       const tgt = e.target.id || e.target
-      if (src === pinnedId) exports.push({ other: tgt, value: e.value_usd })
-      else if (tgt === pinnedId) imports.push({ other: src, value: e.value_usd })
+      if (src === pinnedId) partners.push({ other: tgt, value: e.value_usd, dir: 'out' })
+      else if (tgt === pinnedId) partners.push({ other: src, value: e.value_usd, dir: 'in' })
     }
-    exports.sort((a, b) => b.value - a.value)
-    imports.sort((a, b) => b.value - a.value)
+    partners.sort((a, b) => b.value - a.value)
 
-    const partners = [
-      ...exports.slice(0, TOP_PARTNER_COUNT).map(p => ({ ...p, dir: 'out' })),
-      ...imports.slice(0, TOP_PARTNER_COUNT).map(p => ({ ...p, dir: 'in' })),
-    ].sort((a, b) => b.value - a.value).slice(0, TOP_PARTNER_COUNT)
-
-    const partnerRows = partners.map(p => {
-      const name = meta.countries[p.other]?.name || p.other
-      const arrow = p.dir === 'out' ? STRINGS.outflow[lang] : STRINGS.inflow[lang]
-      return `<li class="flex items-center justify-between gap-3 py-0.5">
-        <span class="text-neutral-300 truncate">${arrow} ${escapeHtml(name)}</span>
-        <span class="text-neutral-400 tabular-nums">${USD.format(p.value)}</span>
-      </li>`
-    }).join('')
+    const opts = { pinnedId }
+    const rows = partners.map(p =>
+      renderRow(p.other, p.value, {
+        ...opts,
+        arrow: p.dir === 'out' ? STRINGS.outflow[lang] : STRINGS.inflow[lang],
+      }),
+    ).join('')
 
     root.innerHTML = `
       <header class="flex items-baseline justify-between gap-3 mb-3">
@@ -137,9 +152,13 @@ export function createInfoPanel(meta) {
         <dt class="text-neutral-500">${STRINGS.imports[lang]}</dt>
         <dd class="text-neutral-200 tabular-nums text-right">${USD.format(node.imports_usd || 0)}</dd>
       </dl>
+
       ${partners.length ? `
-        <div class="mt-3 text-xs uppercase tracking-wide text-neutral-500 mb-1">${STRINGS.topPartners[lang]}</div>
-        <ul>${partnerRows}</ul>
+        <div class="mt-3 text-xs uppercase tracking-wide text-neutral-500 mb-1 flex justify-between">
+          <span>${STRINGS.partnersHeader[lang]}</span>
+          <span class="text-neutral-600 normal-case tracking-normal">${partners.length}</span>
+        </div>
+        <ul class="${LIST_MAX_H_CLASS}">${rows}</ul>
       ` : ''}
     `
   }
