@@ -7,6 +7,8 @@ import { detectLang, applyLang } from './modules/i18n.js'
 import { buildScales } from './modules/scales.js'
 import { buildSimulation } from './modules/force-sim.js'
 import { createSvgRenderer } from './modules/renderer-svg.js'
+import { createParticleLayer } from './modules/particles.js'
+import { colorFor } from './modules/scales.js'
 
 function buildActiveSet(file, tier) {
   const sel = file.tier[tier]
@@ -58,6 +60,22 @@ async function boot() {
   renderer.update(nodes, edges, scales)
 
   const sim = buildSimulation(nodes, edges, { w, h })
+
+  // Annotate edges with cached color (avoid recomputing in the rAF loop)
+  for (const e of edges) e._color = colorFor(meta, e.source.id || e.source)
+
+  const dpr = window.devicePixelRatio || 1
+  const particles = createParticleLayer(chartEl, { w, h, dpr })
+  scales.maxEdgeValue = Math.max(...edges.map(e => e.value_usd))
+  particles.rebuild(edges, scales)
+  particles.start()
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    particles.setReducedMotion(true)
+    sim.alphaTarget(0)   // freeze the always-on drift
+    sim.stop()           // stop further ticks; the static positions remain
+  }
+
   sim.on('tick', renderer.tick)
 }
 
