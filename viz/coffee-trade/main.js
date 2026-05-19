@@ -11,10 +11,11 @@ import { createSvgRenderer } from './modules/renderer-svg.js'
 import { createParticleLayer } from './modules/particles.js'
 import { wireControls } from './modules/controls.js'
 import { createProjection } from './modules/geo.js'
+import { createInfoPanel } from './modules/info-panel.js'
 
 const W = 1080, H = 660  // temporary canonical size; Task B7 replaces with breakpoints
 
-let meta, renderer, particles, sim, project
+let meta, renderer, particles, sim, project, infoPanel
 let chartEl
 
 function buildActiveSet(file, tier) {
@@ -54,7 +55,10 @@ async function applyYearType(year, type, tier) {
   sim = buildSimulation(nodes, edges)
   sim.on('tick', renderer.tick)
   // d3-force mutates source/target to objects after first tick — wait one frame
-  requestAnimationFrame(() => particles.rebuild(edges, scales))
+  requestAnimationFrame(() => {
+    particles.rebuild(edges, scales)
+    infoPanel.setData(nodes, edges)
+  })
 }
 
 async function boot() {
@@ -77,6 +81,7 @@ async function boot() {
 
   project = createProjection({ w: W, h: H })
   renderer = createSvgRenderer(chartEl, meta, { w: W, h: H })
+  infoPanel = createInfoPanel(meta)
   particles = createParticleLayer(chartEl, {
     w: W, h: H, dpr: window.devicePixelRatio || 1,
   })
