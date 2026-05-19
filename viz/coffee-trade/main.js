@@ -4,6 +4,16 @@ import './style.css'
 import { getState, setState, subscribe } from './modules/state.js'
 import { loadMeta, loadYear } from './modules/data-loader.js'
 import { detectLang, applyLang } from './modules/i18n.js'
+import { buildScales } from './modules/scales.js'
+import { buildSimulation } from './modules/force-sim.js'
+import { createSvgRenderer } from './modules/renderer-svg.js'
+
+function buildActiveSet(file, tier) {
+  const sel = file.tier[tier]
+  const nodes = sel.node_ids.map(id => file.nodes.find(n => n.id === id))
+  const edges = sel.edge_indices.map(i => ({ ...file.edges[i] }))
+  return { nodes, edges }
+}
 
 async function boot() {
   const lang = detectLang()
@@ -36,6 +46,19 @@ async function boot() {
   slider.max = meta.years.length - 1
   slider.value = meta.years.length - 1
   label.textContent = initialYear
+
+  // Render top-tier force graph
+  const chartEl = document.getElementById('chart')
+  const w = 1080, h = 660   // temporary; Task B7 replaces with breakpoint-driven values
+
+  const { nodes, edges } = buildActiveSet(first, 'top')
+  const scales = buildScales(nodes, edges, { w, h })
+
+  const renderer = createSvgRenderer(chartEl, meta, { w, h })
+  renderer.update(nodes, edges, scales)
+
+  const sim = buildSimulation(nodes, edges, { w, h })
+  sim.on('tick', renderer.tick)
 }
 
 boot().catch(err => console.error('coffee-trade boot failed', err))
