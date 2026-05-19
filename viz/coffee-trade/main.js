@@ -90,9 +90,19 @@ async function applyYearType(year, type, tier) {
 
   renderer.update(nodes, edges, scales)
 
-  if (sim) sim.stop()
-  sim = buildSimulation(nodes, edges)
+  // Soft sim restart: reuse the existing simulation when possible so nodes
+  // morph from their current positions instead of teleporting back to their
+  // projected targets each year.
+  if (!sim) {
+    sim = buildSimulation(nodes, edges)
+  } else {
+    sim.nodes(nodes)
+    sim.force('link').links(edges)
+  }
+  // Re-bind every call so a fresh tier-swap renderer receives ticks.
   sim.on('tick', renderer.tick)
+  sim.alpha(0.4).restart()
+
   // d3-force mutates source/target to objects after first tick — wait one frame
   requestAnimationFrame(() => {
     particles.rebuild(edges, scales)

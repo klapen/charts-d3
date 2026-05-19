@@ -38,35 +38,52 @@ export function createSvgRenderer(container, meta, { w, h }) {
 
     linkSel = linkG.selectAll('line')
       .data(edges, d => `${srcId(d)}-${tgtId(d)}`)
-      .join('line')
-        .attr('stroke', d => colorFor(meta, srcId(d)))
-        .attr('stroke-width', d => scales.linkWidth(d.value_usd))
+      .join(
+        enter => enter.append('line')
+          .attr('stroke', d => colorFor(meta, srcId(d)))
+          .attr('stroke-width', d => scales.linkWidth(d.value_usd)),
+        update => update
+          .call(sel => sel.transition().duration(600)
+            .attr('stroke-width', d => scales.linkWidth(d.value_usd))),
+        exit => exit.remove(),
+      )
 
     nodeSel = nodeG.selectAll('circle')
       .data(nodes, d => d.id)
-      .join('circle')
-        .attr('r', d => d.radius)
-        .attr('fill', d => colorFor(meta, d.id))
-        .attr('stroke', '#0a0a0b')
-        .attr('stroke-width', 1.25)
-        .style('cursor', 'pointer')
-        .on('click', (event, d) => {
-          event.stopPropagation()
-          const cur = getState().pinnedId
-          setState({ pinnedId: cur === d.id ? null : d.id })
-        })
+      .join(
+        enter => enter.append('circle')
+          .attr('r', 0)
+          .attr('fill', d => colorFor(meta, d.id))
+          .attr('stroke', '#0a0a0b')
+          .attr('stroke-width', 1.25)
+          .style('cursor', 'pointer')
+          .on('click', (event, d) => {
+            event.stopPropagation()
+            const cur = getState().pinnedId
+            setState({ pinnedId: cur === d.id ? null : d.id })
+          })
+          .call(sel => sel.transition().duration(600).attr('r', d => d.radius)),
+        update => update
+          .call(sel => sel.transition().duration(600).attr('r', d => d.radius)),
+        exit => exit
+          .call(sel => sel.transition().duration(300).attr('r', 0).remove()),
+      )
 
     labelSel = labelG.selectAll('text')
       .data(nodes, d => d.id)
-      .join('text')
-        .text(d => (meta.countries[d.id]?.name || d.id))
-        .attr('font-size', 11)
-        .attr('fill', '#d4d4d8')
-        .attr('text-anchor', 'middle')
-        .attr('paint-order', 'stroke')
-        .attr('stroke', '#0a0a0b')
-        .attr('stroke-width', 3)
-        .attr('pointer-events', 'none')
+      .join(
+        enter => enter.append('text')
+          .text(d => (meta.countries[d.id]?.name || d.id))
+          .attr('font-size', 11)
+          .attr('fill', '#d4d4d8')
+          .attr('text-anchor', 'middle')
+          .attr('paint-order', 'stroke')
+          .attr('stroke', '#0a0a0b')
+          .attr('stroke-width', 3)
+          .attr('pointer-events', 'none'),
+        update => update.text(d => (meta.countries[d.id]?.name || d.id)),
+        exit => exit.remove(),
+      )
 
     applyHighlight()
   }
