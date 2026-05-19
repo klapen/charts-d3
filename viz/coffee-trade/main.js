@@ -23,6 +23,10 @@ function buildActiveSet(file, tier) {
   return { nodes, edges }
 }
 
+// TODO: this is racy on cold-network play-throughs — a fast slot can resolve
+// before a slow earlier slot, and the older `await loadYear` resume then
+// overwrites the newer renderer/sim state. Once the cache is warm (every
+// subsequent visit) it's fine. Fix with an AbortController / sequence id.
 async function applyYearType(year, type, tier) {
   const file = await loadYear(year, type)
   const { nodes, edges } = buildActiveSet(file, tier)
@@ -65,6 +69,9 @@ async function boot() {
   await applyYearType(initialYear, getState().type, getState().tier)
 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    // TODO: the sim warms up briefly inside applyYearType before this freezes
+    // it — reduced-motion users still see a frame of motion. Better to pass
+    // a flag into buildSimulation so it starts at alphaTarget(0).
     particles.setReducedMotion(true)
     sim.alphaTarget(0)
     sim.stop()

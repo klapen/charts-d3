@@ -31,6 +31,10 @@ export function wireControls(meta, onYearChange, onTypeChange, onTierChange) {
     play.textContent = playing
       ? (getState().lang === 'es' ? 'Pausar' : 'Pause')
       : (getState().lang === 'es' ? 'Reproducir' : 'Play')
+    // Always clear first so the lang-change re-label path can't stack
+    // a second setInterval on top of the running one.
+    clearInterval(playInterval)
+    playInterval = null
     if (playing) {
       playInterval = setInterval(() => {
         const cur = +slider.value
@@ -38,9 +42,6 @@ export function wireControls(meta, onYearChange, onTypeChange, onTierChange) {
         slider.value = next
         slider.dispatchEvent(new Event('input', { bubbles: true }))
       }, YEAR_STEP_MS)
-    } else {
-      clearInterval(playInterval)
-      playInterval = null
     }
   }
   play.addEventListener('click', () => setPlaying(!getState().playing))
