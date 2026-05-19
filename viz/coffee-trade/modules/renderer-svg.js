@@ -94,7 +94,7 @@ export function createSvgRenderer(container, meta, { w, h }) {
   }
 
   // Subscribe so click → state → re-style happens automatically.
-  subscribe((next, prev) => {
+  const unsubscribe = subscribe((next, prev) => {
     if (next.pinnedId !== prev.pinnedId) applyHighlight()
   })
 
@@ -108,7 +108,7 @@ export function createSvgRenderer(container, meta, { w, h }) {
       .attr('x', d => d.x).attr('y', d => d.y - d.radius - 4)
   }
 
-  function destroy() { svg.remove() }
+  function destroy() { unsubscribe(); svg.remove() }
 
   function resize(next) {
     svg.attr('viewBox', `0 0 ${next.w} ${next.h}`)

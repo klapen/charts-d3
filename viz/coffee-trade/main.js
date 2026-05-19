@@ -8,6 +8,7 @@ import { detectLang, applyLang } from './modules/i18n.js'
 import { buildScales, colorFor } from './modules/scales.js'
 import { buildSimulation } from './modules/force-sim.js'
 import { createSvgRenderer } from './modules/renderer-svg.js'
+import { createCanvasRenderer } from './modules/renderer-canvas.js'
 import { createParticleLayer } from './modules/particles.js'
 import { wireControls } from './modules/controls.js'
 import { createProjection } from './modules/geo.js'
@@ -19,6 +20,16 @@ let current = { w: 1080, h: 660 }
 
 let meta, renderer, particles, sim, project, infoPanel
 let chartEl
+let currentTier = null
+
+function makeRenderer(tier) {
+  if (tier === 'full') {
+    return createCanvasRenderer(chartEl, meta, {
+      w: current.w, h: current.h, dpr: window.devicePixelRatio || 1,
+    })
+  }
+  return createSvgRenderer(chartEl, meta, { w: current.w, h: current.h })
+}
 
 function buildActiveSet(file, tier) {
   const sel = file.tier[tier]
@@ -32,6 +43,15 @@ function buildActiveSet(file, tier) {
 // overwrites the newer renderer/sim state. Once the cache is warm (every
 // subsequent visit) it's fine. Fix with an AbortController / sequence id.
 async function applyYearType(year, type, tier) {
+  // Swap renderer when the tier changes — SVG handles ~30 top nodes with crisp
+  // labels/keyed joins; Canvas handles the full ~150-country tier where DOM
+  // would be a tax.
+  if (tier !== currentTier) {
+    if (renderer) renderer.destroy()
+    renderer = makeRenderer(tier)
+    currentTier = tier
+  }
+
   const file = await loadYear(year, type)
   const { nodes, edges } = buildActiveSet(file, tier)
   for (const e of edges) e._color = colorFor(meta, e.source.id || e.source)
@@ -86,7 +106,6 @@ async function boot() {
   current = { w: bp.w, h: bp.h }
 
   project = createProjection({ w: current.w, h: current.h })
-  renderer = createSvgRenderer(chartEl, meta, { w: current.w, h: current.h })
   infoPanel = createInfoPanel(meta)
   particles = createParticleLayer(chartEl, {
     w: current.w, h: current.h, dpr: window.devicePixelRatio || 1,

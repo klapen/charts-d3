@@ -3,6 +3,9 @@ import { getState } from './state.js'
 export function createParticleLayer(container, { w, h, dpr }) {
   const canvas = document.createElement('canvas')
   canvas.style.pointerEvents = 'none'
+  // Always render on top of the marble renderer (SVG or Canvas) so particles
+  // visibly flow over the nodes rather than under them.
+  canvas.style.zIndex = '2'
   container.appendChild(canvas)
   const ctx = canvas.getContext('2d')
 
