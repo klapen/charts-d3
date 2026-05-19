@@ -53,7 +53,23 @@ async function applyYearType(year, type, tier) {
   }
 
   const file = await loadYear(year, type)
-  const { nodes, edges } = buildActiveSet(file, tier)
+  const raw = buildActiveSet(file, tier)
+
+  // Drop any node we don't have a centroid for — without one the projection
+  // returns null, targetX/targetY stay undefined, and the simulation NaN's
+  // their cx/cy. Also drop edges that reference a dropped endpoint.
+  const validIds = new Set(raw.nodes.filter(n => meta.countries[n.id]).map(n => n.id))
+  if (validIds.size !== raw.nodes.length) {
+    const missing = raw.nodes.filter(n => !validIds.has(n.id)).map(n => n.id)
+    console.warn('coffee-trade: dropping nodes without centroid:', missing)
+  }
+  const nodes = raw.nodes.filter(n => validIds.has(n.id))
+  const edges = raw.edges.filter(e => {
+    const s = e.source.id || e.source
+    const t = e.target.id || e.target
+    return validIds.has(s) && validIds.has(t)
+  })
+
   for (const e of edges) e._color = colorFor(meta, e.source.id || e.source)
   const scales = buildScales(nodes, edges, { w: current.w, h: current.h })
 
