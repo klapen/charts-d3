@@ -1,6 +1,8 @@
-// 30-line pub/sub. setState merges partial; subscribe fires on every change.
+// Pub/sub store. setState merges a partial patch; subscribers fire on every
+// setState — they receive (next, prev) and are expected to diff the slices
+// they care about before doing expensive work.
 const listeners = new Set()
-let state = {
+let state = Object.freeze({
   year: null,         // set from meta.years.at(-1) at boot
   type: 'all',        // 'all' | 'green' | 'roasted'
   tier: 'top',        // 'top' | 'full'
@@ -8,13 +10,13 @@ let state = {
   hoveredId: null,    // ISO3 of hovered node or null
   pinnedId: null,     // ISO3 of pinned node
   lang: 'en',         // 'en' | 'es'
-}
+})
 
 export function getState() { return state }
 
 export function setState(patch) {
   const prev = state
-  state = { ...state, ...patch }
+  state = Object.freeze({ ...state, ...patch })
   for (const fn of listeners) fn(state, prev)
 }
 
