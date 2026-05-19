@@ -24,6 +24,14 @@ FAILURES_CSV = Path(__file__).parent / "data" / "raw" / "failures.csv"
 log = logging.getLogger("comtrade")
 
 
+class QuotaExceeded(Exception):
+    """Raised when Comtrade's daily request quota is exhausted (HTTP 403).
+
+    Treated as stop-the-world: continuing burns wall-clock time on requests
+    that will all 403 until the quota resets. Re-run after midnight UTC.
+    """
+
+
 def fetch_reporters(client: httpx.Client) -> list[dict]:
     """Return Comtrade's current reporter list, cached on disk after first run."""
     if REPORTERS_CACHE.exists():
@@ -60,6 +68,8 @@ def fetch_year_reporter(
             r = client.get(url, timeout=60.0)
             if r.status_code == 200:
                 return r.json()
+            if r.status_code == 403:
+                raise QuotaExceeded(f"403 for {year}/{reporter_code}: {r.text[:200]}")
             if r.status_code in (429, 500, 502, 503, 504):
                 log.warning("  %s on attempt %d, sleeping %.1fs", r.status_code, attempt + 1, backoff)
                 time.sleep(backoff)
@@ -102,26 +112,30 @@ def main() -> int:
         ]
         log.info("%d reporter countries", len(countries))
 
-        for year in YEARS:
-            year_dir = RAW_DIR / str(year)
-            year_dir.mkdir(parents=True, exist_ok=True)
+        try:
+            for year in YEARS:
+                year_dir = RAW_DIR / str(year)
+                year_dir.mkdir(parents=True, exist_ok=True)
 
-            for c in countries:
-                iso3 = c["reporterCodeIsoAlpha3"]
-                reporter_code = str(c["id"])  # Comtrade numeric code
-                out = year_dir / f"{iso3}.json"
-                if out.exists():
-                    continue  # resumable: skip already-downloaded
+                for c in countries:
+                    iso3 = c["reporterCodeIsoAlpha3"]
+                    reporter_code = str(c["id"])  # Comtrade numeric code
+                    out = year_dir / f"{iso3}.json"
+                    if out.exists():
+                        continue  # resumable: skip already-downloaded
 
-                log.info("year=%d reporter=%s (%s)", year, iso3, c.get("text"))
-                data = fetch_year_reporter(client, year, reporter_code)
-                if data is None:
-                    log_failure(year, iso3, "fetch_failed")
-                else:
-                    tmp = out.with_suffix(".tmp")
-                    tmp.write_text(json.dumps(data))
-                    tmp.replace(out)  # atomic on POSIX
-                time.sleep(REQ_SLEEP_SECONDS)
+                    log.info("year=%d reporter=%s (%s)", year, iso3, c.get("text"))
+                    data = fetch_year_reporter(client, year, reporter_code)
+                    if data is None:
+                        log_failure(year, iso3, "fetch_failed")
+                    else:
+                        tmp = out.with_suffix(".tmp")
+                        tmp.write_text(json.dumps(data))
+                        tmp.replace(out)  # atomic on POSIX
+                    time.sleep(REQ_SLEEP_SECONDS)
+        except QuotaExceeded as exc:
+            log.warning("Comtrade quota hit (%s). Re-run after quota resets; already-downloaded files will be skipped.", exc)
+            return 2
 
     return 0
 
