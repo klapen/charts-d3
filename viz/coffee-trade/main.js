@@ -10,10 +10,11 @@ import { buildSimulation } from './modules/force-sim.js'
 import { createSvgRenderer } from './modules/renderer-svg.js'
 import { createParticleLayer } from './modules/particles.js'
 import { wireControls } from './modules/controls.js'
+import { createProjection } from './modules/geo.js'
 
 const W = 1080, H = 660  // temporary canonical size; Task B7 replaces with breakpoints
 
-let meta, renderer, particles, sim
+let meta, renderer, particles, sim, project
 let chartEl
 
 function buildActiveSet(file, tier) {
@@ -32,6 +33,13 @@ async function applyYearType(year, type, tier) {
   const { nodes, edges } = buildActiveSet(file, tier)
   for (const e of edges) e._color = colorFor(meta, e.source.id || e.source)
   const scales = buildScales(nodes, edges, { w: W, h: H })
+
+  // Pin each node to its geographic centroid so the same country always
+  // lands at the same screen position across years/types/tiers.
+  for (const n of nodes) {
+    const xy = project(meta.countries[n.id])
+    if (xy) { n.fx = xy[0]; n.fy = xy[1] }
+  }
 
   renderer.update(nodes, edges, scales)
 
@@ -60,6 +68,7 @@ async function boot() {
   const initialYear = meta.years.at(-1)
   setState({ year: initialYear })
 
+  project = createProjection({ w: W, h: H })
   renderer = createSvgRenderer(chartEl, meta, { w: W, h: H })
   particles = createParticleLayer(chartEl, {
     w: W, h: H, dpr: window.devicePixelRatio || 1,
