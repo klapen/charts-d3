@@ -21,5 +21,6 @@ export function buildScales(nodes, edges, { w, h }) {
     nodeRadius: d3.scaleSqrt().domain([0, maxNodeTotal]).range([3, Math.min(w, h) / 18]),
     linkWidth:  d3.scaleSqrt().domain([0, maxEdgeValue]).range([0.5, 4]),
     particleR:  d3.scaleSqrt().domain([0, maxEdgeValue]).range([1.2, 2.5]),
+    maxEdgeValue,
   }
 }

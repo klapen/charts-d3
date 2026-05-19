@@ -4,11 +4,15 @@ export function createParticleLayer(container, { w, h, dpr }) {
   container.appendChild(canvas)
   const ctx = canvas.getContext('2d')
 
+  // Capture the buffer's true DPR so clearRect doesn't drift if the user
+  // moves the window between displays mid-session.
+  let currentDpr = dpr
   function resize(next) {
     canvas.width  = next.w * next.dpr
     canvas.height = next.h * next.dpr
     ctx.setTransform(1, 0, 0, 1, 0, 0)
     ctx.scale(next.dpr, next.dpr)
+    currentDpr = next.dpr
   }
   resize({ w, h, dpr })
 
@@ -45,8 +49,8 @@ export function createParticleLayer(container, { w, h, dpr }) {
     const dt = Math.min(50, now - lastTime) || 16
     lastTime = now
 
-    const cw = canvas.width / window.devicePixelRatio
-    const ch = canvas.height / window.devicePixelRatio
+    const cw = canvas.width / currentDpr
+    const ch = canvas.height / currentDpr
     ctx.clearRect(0, 0, cw, ch)
 
     if (!reducedMotion && currentScales) {
@@ -83,6 +87,9 @@ export function createParticleLayer(container, { w, h, dpr }) {
   function destroy() {
     stop()
     canvas.remove()
+    particles = []
+    currentEdges = []
+    currentScales = null
   }
 
   return { rebuild, resize, start, stop, destroy, setReducedMotion, canvas }

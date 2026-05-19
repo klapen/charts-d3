@@ -4,11 +4,10 @@ import './style.css'
 import { getState, setState, subscribe } from './modules/state.js'
 import { loadMeta, loadYear } from './modules/data-loader.js'
 import { detectLang, applyLang } from './modules/i18n.js'
-import { buildScales } from './modules/scales.js'
+import { buildScales, colorFor } from './modules/scales.js'
 import { buildSimulation } from './modules/force-sim.js'
 import { createSvgRenderer } from './modules/renderer-svg.js'
 import { createParticleLayer } from './modules/particles.js'
-import { colorFor } from './modules/scales.js'
 
 function buildActiveSet(file, tier) {
   const sel = file.tier[tier]
@@ -66,7 +65,6 @@ async function boot() {
 
   const dpr = window.devicePixelRatio || 1
   const particles = createParticleLayer(chartEl, { w, h, dpr })
-  scales.maxEdgeValue = Math.max(...edges.map(e => e.value_usd))
   particles.rebuild(edges, scales)
   particles.start()
 
