@@ -34,8 +34,14 @@ const REGION_LABEL = {
 // in a sticky lg sidebar but is also free to take more space on mobile.
 const LIST_MAX_H_CLASS = 'max-h-56 overflow-y-auto'
 
+const SEARCH_PLACEHOLDER = { en: 'Search country…', es: 'Buscar país…' }
+
 export function createInfoPanel(meta) {
-  const root = document.getElementById('info-panel')
+  // The static header (search input + datalist) lives outside #info-panel-body
+  // so that re-renders don't blow away the input's focus/value/selection.
+  const root = document.getElementById('info-panel-body')
+
+  wireCountrySearch(meta)
 
   let currentNodes = []
   let currentEdges = []
@@ -271,4 +277,49 @@ function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => (
     { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
   ))
+}
+
+// Populate the country search input and wire two-way sync with pinnedId.
+// Typing or picking a name pins that country; clearing the input unpins;
+// pinning from the chart updates the input so the user always sees the
+// active selection.
+function wireCountrySearch(meta) {
+  const input = document.getElementById('country-select')
+  const list  = document.getElementById('country-options')
+  if (!input || !list) return
+
+  // Sorted by display name so the datalist reads alphabetically.
+  const entries = Object.entries(meta.countries)
+    .filter(([, c]) => c?.name)
+    .sort((a, b) => a[1].name.localeCompare(b[1].name))
+  const nameToIso = new Map()
+  const opts = []
+  for (const [iso3, c] of entries) {
+    nameToIso.set(c.name.toLowerCase(), iso3)
+    opts.push(`<option value="${escapeHtml(c.name)}"></option>`)
+  }
+  list.innerHTML = opts.join('')
+
+  function applyPlaceholder(lang) {
+    input.placeholder = SEARCH_PLACEHOLDER[lang] || SEARCH_PLACEHOLDER.en
+  }
+  applyPlaceholder(getState().lang)
+
+  input.addEventListener('input', () => {
+    const v = input.value.trim().toLowerCase()
+    if (!v) {
+      if (getState().pinnedId) setState({ pinnedId: null })
+      return
+    }
+    const iso3 = nameToIso.get(v)
+    if (iso3 && iso3 !== getState().pinnedId) setState({ pinnedId: iso3 })
+  })
+
+  subscribe((next, prev) => {
+    if (next.pinnedId !== prev.pinnedId) {
+      const name = next.pinnedId ? (meta.countries[next.pinnedId]?.name || '') : ''
+      if (input.value !== name) input.value = name
+    }
+    if (next.lang !== prev.lang) applyPlaceholder(next.lang)
+  })
 }

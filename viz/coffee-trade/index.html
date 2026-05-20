@@ -101,10 +101,19 @@
         </div>
 
         <aside id="info-panel"
-               class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 text-sm lg:sticky lg:top-4 lg:self-start"
-               aria-live="polite">
-          <p class="text-neutral-500"
-             data-en="Loading summary…" data-es="Cargando resumen…">Loading summary…</p>
+               class="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4 text-sm lg:sticky lg:top-4 lg:self-start">
+          <div class="mb-3">
+            <label for="country-select" class="sr-only"
+                   data-en="Search country" data-es="Buscar país">Search country</label>
+            <input id="country-select" list="country-options" autocomplete="off"
+                   class="w-full px-2 py-1 rounded border border-neutral-700 bg-neutral-900 text-sm text-neutral-200 placeholder:text-neutral-500 focus:outline-none focus:border-brand"
+                   placeholder="Search country…" />
+            <datalist id="country-options"></datalist>
+          </div>
+          <div id="info-panel-body" aria-live="polite">
+            <p class="text-neutral-500"
+               data-en="Loading summary…" data-es="Cargando resumen…">Loading summary…</p>
+          </div>
         </aside>
       </div>
     </main>
