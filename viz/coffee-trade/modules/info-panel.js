@@ -40,6 +40,12 @@ export function createInfoPanel(meta) {
   let currentNodes = []
   let currentEdges = []
 
+  // Per-list sort direction. Lives in the panel because it's a view-local
+  // preference: it should survive year/region/flow changes but doesn't belong
+  // in global state (other modules don't care about it).
+  const sort = { exporters: 'desc', importers: 'desc', partners: 'desc' }
+  const sortArrow = dir => (dir === 'asc' ? '▴' : '▾')
+
   function setData(nodes, edges) {
     currentNodes = nodes
     currentEdges = edges
@@ -51,6 +57,7 @@ export function createInfoPanel(meta) {
     if (pinnedId) renderCountry(pinnedId)
     else renderSummary()
     wireRowClicks()
+    wireSortClicks()
   }
 
   function wireRowClicks() {
@@ -59,6 +66,16 @@ export function createInfoPanel(meta) {
         const id = li.dataset.iso3
         const cur = getState().pinnedId
         setState({ pinnedId: cur === id ? null : id })
+      })
+    }
+  }
+
+  function wireSortClicks() {
+    for (const el of root.querySelectorAll('[data-sort-key]')) {
+      el.addEventListener('click', () => {
+        const key = el.dataset.sortKey
+        sort[key] = sort[key] === 'desc' ? 'asc' : 'desc'
+        render()
       })
     }
   }
@@ -106,13 +123,15 @@ export function createInfoPanel(meta) {
     const totalFlow = scopedEdges.reduce((s, e) => s + (e.value_usd || 0), 0)
     const countries = scopedNodes.length
 
+    const expDir = sort.exporters === 'asc' ? 1 : -1
     const exporters = scopedNodes
       .filter(n => n.exports_usd > 0)
-      .sort((a, b) => b.exports_usd - a.exports_usd)
+      .sort((a, b) => expDir * (a.exports_usd - b.exports_usd))
 
+    const impDir = sort.importers === 'asc' ? 1 : -1
     const importers = scopedNodes
       .filter(n => n.imports_usd > 0)
-      .sort((a, b) => b.imports_usd - a.imports_usd)
+      .sort((a, b) => impDir * (a.imports_usd - b.imports_usd))
 
     const opts = { pinnedId: null }
     const expRows = exporters.map(n => renderRow(n.id, n.exports_usd, opts)).join('')
@@ -143,17 +162,19 @@ export function createInfoPanel(meta) {
       </dl>
 
       ${showExporters ? `
-        <div class="text-xs uppercase tracking-wide text-neutral-500 mb-1 flex justify-between">
+        <div data-sort-key="exporters" role="button" aria-label="Sort exporters by value"
+             class="text-xs uppercase tracking-wide text-neutral-500 mb-1 flex justify-between cursor-pointer hover:text-neutral-300 select-none">
           <span>${STRINGS.exportersHeader[lang]}</span>
-          <span class="text-neutral-600 normal-case tracking-normal">${exporters.length}</span>
+          <span class="text-neutral-600 normal-case tracking-normal">${exporters.length} <span class="text-neutral-400">${sortArrow(sort.exporters)}</span></span>
         </div>
         <ul class="mb-3 ${LIST_MAX_H_CLASS}">${expRows}</ul>
       ` : ''}
 
       ${showImporters ? `
-        <div class="text-xs uppercase tracking-wide text-neutral-500 mb-1 flex justify-between">
+        <div data-sort-key="importers" role="button" aria-label="Sort importers by value"
+             class="text-xs uppercase tracking-wide text-neutral-500 mb-1 flex justify-between cursor-pointer hover:text-neutral-300 select-none">
           <span>${STRINGS.importersHeader[lang]}</span>
-          <span class="text-neutral-600 normal-case tracking-normal">${importers.length}</span>
+          <span class="text-neutral-600 normal-case tracking-normal">${importers.length} <span class="text-neutral-400">${sortArrow(sort.importers)}</span></span>
         </div>
         <ul class="mb-3 ${LIST_MAX_H_CLASS}">${impRows}</ul>
       ` : ''}
@@ -188,7 +209,8 @@ export function createInfoPanel(meta) {
     // keeps only incoming ('in'); 'both' is a no-op.
     if (flow === 'exports') scopedPartners = scopedPartners.filter(p => p.dir === 'out')
     else if (flow === 'imports') scopedPartners = scopedPartners.filter(p => p.dir === 'in')
-    scopedPartners.sort((a, b) => b.value - a.value)
+    const partDir = sort.partners === 'asc' ? 1 : -1
+    scopedPartners.sort((a, b) => partDir * (a.value - b.value))
 
     const opts = { pinnedId }
     const rows = scopedPartners.map(p =>
@@ -215,9 +237,10 @@ export function createInfoPanel(meta) {
       </dl>
 
       ${scopedPartners.length ? `
-        <div class="mt-3 text-xs uppercase tracking-wide text-neutral-500 mb-1 flex justify-between">
+        <div data-sort-key="partners" role="button" aria-label="Sort partners by value"
+             class="mt-3 text-xs uppercase tracking-wide text-neutral-500 mb-1 flex justify-between cursor-pointer hover:text-neutral-300 select-none">
           <span>${escapeHtml(partnersHeader)}</span>
-          <span class="text-neutral-600 normal-case tracking-normal">${scopedPartners.length}</span>
+          <span class="text-neutral-600 normal-case tracking-normal">${scopedPartners.length} <span class="text-neutral-400">${sortArrow(sort.partners)}</span></span>
         </div>
         <ul class="${LIST_MAX_H_CLASS}">${rows}</ul>
       ` : ''}
