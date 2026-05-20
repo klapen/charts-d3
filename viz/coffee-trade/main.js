@@ -15,21 +15,44 @@ import { createProjection } from './modules/geo.js'
 import { createInfoPanel } from './modules/info-panel.js'
 import { observeBreakpoint, pickBreakpoint } from './modules/responsive.js'
 import { renderLegend } from './modules/legend.js'
+import { createViewport } from './modules/viewport.js'
 
 // Canonical drawing size; rebuilt at each breakpoint snap.
 let current = { w: 1080, h: 660 }
+const ZOOM_ON_PIN = 1.8
 
-let meta, renderer, particles, sim, project, infoPanel
+let meta, renderer, particles, sim, project, infoPanel, viewport
 let chartEl
 let currentTier = null
+let currentNodes = []
 
 function makeRenderer(tier) {
   if (tier === 'full') {
-    return createCanvasRenderer(chartEl, meta, {
+    return createCanvasRenderer(chartEl, meta, viewport, {
       w: current.w, h: current.h, dpr: window.devicePixelRatio || 1,
     })
   }
-  return createSvgRenderer(chartEl, meta, { w: current.w, h: current.h })
+  return createSvgRenderer(chartEl, meta, viewport, { w: current.w, h: current.h })
+}
+
+// Send the pinned country to the viewBox center at a fixed zoom. When
+// nothing is pinned, snap back to the identity transform.
+function refreshZoom() {
+  const { pinnedId } = getState()
+  if (!pinnedId) {
+    viewport.setTarget({ tx: 0, ty: 0, scale: 1 })
+    return
+  }
+  const n = currentNodes.find(x => x.id === pinnedId)
+  if (!n) {
+    viewport.setTarget({ tx: 0, ty: 0, scale: 1 })
+    return
+  }
+  viewport.setTarget({
+    tx: current.w / 2 - ZOOM_ON_PIN * n.x,
+    ty: current.h / 2 - ZOOM_ON_PIN * n.y,
+    scale: ZOOM_ON_PIN,
+  })
 }
 
 function buildActiveSet(file, tier) {
@@ -88,6 +111,7 @@ async function applyYearType(year, type, tier) {
     }
   }
 
+  currentNodes = nodes
   renderer.update(nodes, edges, scales)
 
   // Soft sim restart: reuse the existing simulation when possible so nodes
@@ -107,6 +131,10 @@ async function applyYearType(year, type, tier) {
   requestAnimationFrame(() => {
     particles.rebuild(edges, scales)
     infoPanel.setData(nodes, edges)
+    // The viewport target depends on the pinned node's position, which may
+    // have just been re-seeded in the new viewBox space. Snap to the new
+    // target so reflow/year-change zooms still land on the right country.
+    refreshZoom()
   })
 }
 
@@ -133,12 +161,19 @@ async function boot() {
   current = { w: bp.w, h: bp.h }
 
   project = createProjection({ w: current.w, h: current.h })
+  viewport = createViewport()
   infoPanel = createInfoPanel(meta)
   renderLegend()
-  particles = createParticleLayer(chartEl, meta, {
+  particles = createParticleLayer(chartEl, meta, viewport, {
     w: current.w, h: current.h, dpr: window.devicePixelRatio || 1,
   })
   particles.start()
+
+  // Pin changes drive the zoom target. The viewport's internal rAF loop
+  // does the actual easing; we just point it at the new destination.
+  subscribe((next, prev) => {
+    if (next.pinnedId !== prev.pinnedId) refreshZoom()
+  })
 
   await applyYearType(initialYear, getState().type, getState().tier)
 

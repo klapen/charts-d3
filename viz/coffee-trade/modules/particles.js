@@ -1,6 +1,6 @@
 import { getState } from './state.js'
 
-export function createParticleLayer(container, meta, { w, h, dpr }) {
+export function createParticleLayer(container, meta, viewport, { w, h, dpr }) {
   const canvas = document.createElement('canvas')
   canvas.style.pointerEvents = 'none'
   // Always render on top of the marble renderer (SVG or Canvas) so particles
@@ -56,9 +56,18 @@ export function createParticleLayer(container, meta, { w, h, dpr }) {
 
     const cw = canvas.width / currentDpr
     const ch = canvas.height / currentDpr
+    // Clear without the zoom transform on the stack.
+    ctx.save()
+    ctx.setTransform(1, 0, 0, 1, 0, 0)
+    ctx.scale(currentDpr, currentDpr)
     ctx.clearRect(0, 0, cw, ch)
+    ctx.restore()
 
     if (!reducedMotion && currentScales) {
+      const vp = viewport.value()
+      ctx.save()
+      ctx.translate(vp.tx, vp.ty)
+      ctx.scale(vp.scale, vp.scale)
       const { pinnedId, regionFilter, flow } = getState()
       for (const p of particles) {
         const e = currentEdges[p.edgeIndex]
@@ -94,6 +103,7 @@ export function createParticleLayer(container, meta, { w, h, dpr }) {
         ctx.fill()
       }
       ctx.globalAlpha = 1
+      ctx.restore()  // pop the zoom transform
     }
     requestAnimationFrame(frame)
   }

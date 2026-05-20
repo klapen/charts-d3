@@ -11,7 +11,7 @@ const REGION_DIM_NODE = 0.12
 const REGION_LINK_INSIDE = 0.3
 const REGION_LINK_OUTSIDE = 0.03
 
-export function createCanvasRenderer(container, meta, { w, h, dpr }) {
+export function createCanvasRenderer(container, meta, viewport, { w, h, dpr }) {
   const canvas = document.createElement('canvas')
   canvas.style.cursor = 'pointer'
   container.appendChild(canvas)
@@ -60,7 +60,18 @@ export function createCanvasRenderer(container, meta, { w, h, dpr }) {
     if (!_scales) return
     const cw = canvas.width / currentDpr
     const ch = canvas.height / currentDpr
+    // clearRect runs in the untransformed coordinate space, before we push
+    // the zoom transform on the stack.
+    ctx.save()
+    ctx.setTransform(1, 0, 0, 1, 0, 0)
+    ctx.scale(currentDpr, currentDpr)
     ctx.clearRect(0, 0, cw, ch)
+    ctx.restore()
+
+    const vp = viewport.value()
+    ctx.save()
+    ctx.translate(vp.tx, vp.ty)
+    ctx.scale(vp.scale, vp.scale)
 
     const { pinnedId, regionFilter, flow } = getState()
     const connected = pinnedId ? collectConnected(pinnedId, flow) : null
@@ -135,6 +146,7 @@ export function createCanvasRenderer(container, meta, { w, h, dpr }) {
       ctx.fillText(name, n.x, n.y - n.radius - 4)
     }
     ctx.globalAlpha = 1
+    ctx.restore()  // pop the zoom transform
   }
 
   function collectConnected(pinnedId, flow) {
@@ -157,11 +169,18 @@ export function createCanvasRenderer(container, meta, { w, h, dpr }) {
     const ch = canvas.height / currentDpr
     const x = (clientX - rect.left) * (cw / rect.width)
     const y = (clientY - rect.top)  * (ch / rect.height)
+    // Invert the viewport transform so we hit-test in viewBox space (where
+    // the node positions live).
+    const vp = viewport.value()
+    const px = (x - vp.tx) / vp.scale
+    const py = (y - vp.ty) / vp.scale
     if (!_quadtree) {
       _quadtree = d3.quadtree().x(d => d.x).y(d => d.y)
         .addAll(_nodes.filter(n => n.x != null))
     }
-    return _quadtree.find(x, y, 30)
+    // The hit radius shrinks because the world is bigger after zoom-in;
+    // 30 viewBox-px / scale keeps the click target the same on-screen.
+    return _quadtree.find(px, py, 30 / vp.scale)
   }
 
   canvas.addEventListener('click', evt => {

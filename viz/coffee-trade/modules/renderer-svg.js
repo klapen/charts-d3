@@ -8,7 +8,7 @@ const REGION_DIM_NODE = 0.12
 const REGION_LINK_INSIDE = 0.3
 const REGION_LINK_OUTSIDE = 0.03
 
-export function createSvgRenderer(container, meta, { w, h }) {
+export function createSvgRenderer(container, meta, viewport, { w, h }) {
   const svg = d3.select(container)
     .append('svg')
     .attr('viewBox', `0 0 ${w} ${h}`)
@@ -19,9 +19,12 @@ export function createSvgRenderer(container, meta, { w, h }) {
     if (getState().pinnedId) setState({ pinnedId: null })
   })
 
-  const linkG = svg.append('g').attr('class', 'links')
-  const nodeG = svg.append('g').attr('class', 'nodes')
-  const labelG = svg.append('g').attr('class', 'labels')
+  // Single group that carries the zoom transform; nodes/links/labels live
+  // inside it so they all scale together.
+  const viewportG = svg.append('g').attr('class', 'viewport')
+  const linkG = viewportG.append('g').attr('class', 'links')
+  const nodeG = viewportG.append('g').attr('class', 'nodes')
+  const labelG = viewportG.append('g').attr('class', 'labels')
 
   let linkSel = linkG.selectAll('line')
   let nodeSel = nodeG.selectAll('circle')
@@ -163,6 +166,8 @@ export function createSvgRenderer(container, meta, { w, h }) {
   })
 
   function tick() {
+    const t = viewport.value()
+    viewportG.attr('transform', `translate(${t.tx},${t.ty}) scale(${t.scale})`)
     linkSel
       .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
       .attr('x2', d => d.target.x).attr('y2', d => d.target.y)
