@@ -2,11 +2,14 @@ import * as d3 from 'd3'
 import { colorFor } from './scales.js'
 import { getState, setState, subscribe } from './state.js'
 
-const DIM_OPACITY = 0.08
+// "Out of scope" elements are hidden entirely so the chart honors the active
+// scope literally — clicking "All" with a region/pin shows only that scope's
+// trade, not the global map dimmed.
+const DIM_OPACITY = 0
 const FOCUS_LINK_OPACITY = 0.7
-const REGION_DIM_NODE = 0.12
+const REGION_DIM_NODE = 0
 const REGION_LINK_INSIDE = 0.3
-const REGION_LINK_OUTSIDE = 0.03
+const REGION_LINK_OUTSIDE = 0
 
 export function createSvgRenderer(container, meta, viewport, { w, h }) {
   const svg = d3.select(container)
