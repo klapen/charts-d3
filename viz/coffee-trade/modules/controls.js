@@ -28,6 +28,7 @@ export function wireControls(meta, onYearChange, onTypeChange, onTierChange) {
   let playInterval = null
   function setPlaying(playing) {
     setState({ playing })
+    play.setAttribute('aria-pressed', String(playing))
     play.textContent = playing
       ? (getState().lang === 'es' ? 'Pausar' : 'Pause')
       : (getState().lang === 'es' ? 'Reproducir' : 'Play')

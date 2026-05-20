@@ -42,16 +42,19 @@
           </div>
 
           <div id="controls" class="mt-4 flex flex-wrap items-center gap-4">
-            <button id="play-btn" type="button" class="px-3 py-1 rounded border border-neutral-700 bg-neutral-900 text-sm hover:border-brand"
+            <button id="play-btn" type="button" aria-pressed="false"
+                    class="shrink-0 px-3 py-1 rounded border border-neutral-700 bg-neutral-900 text-sm hover:border-brand"
                     data-en="Play" data-es="Reproducir">Play</button>
 
-            <div class="flex-1 min-w-[200px] flex items-center gap-2">
+            <div class="basis-full sm:basis-auto flex-1 min-w-[160px] flex items-center gap-2">
               <input id="year-slider" type="range" min="0" max="0" step="1" value="0"
+                     aria-label="Year"
                      class="flex-1 accent-brand cursor-pointer" />
-              <output id="year-label" class="text-sm tabular-nums text-neutral-300 w-12 text-right">—</output>
+              <output id="year-label" for="year-slider" class="text-sm tabular-nums text-neutral-300 w-12 text-right">—</output>
             </div>
 
-            <select id="type-select" class="px-2 py-1 rounded border border-neutral-700 bg-neutral-900 text-sm">
+            <select id="type-select" aria-label="Coffee type"
+                    class="shrink-0 px-2 py-1 rounded border border-neutral-700 bg-neutral-900 text-sm">
               <option value="all" data-en="All coffee" data-es="Todo el café">All coffee</option>
               <option value="green" data-en="Green" data-es="Verde">Green</option>
               <option value="roasted" data-en="Roasted" data-es="Tostado">Roasted</option>
