@@ -7,6 +7,7 @@ const USD = new Intl.NumberFormat('en-US', {
 
 const STRINGS = {
   summaryTitle:    { en: 'Global summary',     es: 'Resumen global' },
+  regionSummary:   { en: 'Region summary',     es: 'Resumen de la región' },
   totalFlow:       { en: 'Total trade',        es: 'Comercio total' },
   countries:       { en: 'Countries trading',  es: 'Países comerciando' },
   exportersHeader: { en: 'Exporters',          es: 'Exportadores' },
@@ -14,10 +15,19 @@ const STRINGS = {
   exports:         { en: 'Exports',            es: 'Exportaciones' },
   imports:         { en: 'Imports',            es: 'Importaciones' },
   partnersHeader:  { en: 'Partners',           es: 'Socios' },
+  partnersInRegion:{ en: 'Partners in region', es: 'Socios en la región' },
   outflow:         { en: '→',                  es: '→' },
   inflow:          { en: '←',                  es: '←' },
   clickHint:       { en: 'Click a row or a marble to focus a country.',
                      es: 'Haz clic en una fila o un país para enfocarlo.' },
+}
+
+const REGION_LABEL = {
+  'South America': { en: 'South America', es: 'Suramérica' },
+  'Africa':        { en: 'Africa',        es: 'África' },
+  'Asia':          { en: 'Asia',          es: 'Asia' },
+  'Europe':        { en: 'Europe',        es: 'Europa' },
+  'North America': { en: 'North America', es: 'Norteamérica' },
 }
 
 // Each scrollable list caps at this height so the side panel stays usable
@@ -66,31 +76,53 @@ export function createInfoPanel(meta) {
     </li>`
   }
 
+  function inRegion(id, region) {
+    if (!region) return true
+    return meta.countries[id]?.region === region
+  }
+
   function renderSummary() {
-    const lang = getState().lang
+    const { lang, regionFilter } = getState()
     if (!currentNodes.length) {
       root.innerHTML = `<p class="text-neutral-500">${STRINGS.clickHint[lang]}</p>`
       return
     }
 
-    const totalFlow = currentEdges.reduce((s, e) => s + (e.value_usd || 0), 0)
-    const countries = currentNodes.length
+    // When a region is active, every count, sum, and table row is scoped to
+    // that region so the panel reads "what's happening here?" rather than
+    // staying global.
+    const scopedNodes  = currentNodes.filter(n => inRegion(n.id, regionFilter))
+    const scopedEdges  = currentEdges.filter(e => (
+      inRegion(e.source.id || e.source, regionFilter) ||
+      inRegion(e.target.id || e.target, regionFilter)
+    ))
 
-    const exporters = currentNodes
+    const totalFlow = scopedEdges.reduce((s, e) => s + (e.value_usd || 0), 0)
+    const countries = scopedNodes.length
+
+    const exporters = scopedNodes
       .filter(n => n.exports_usd > 0)
       .sort((a, b) => b.exports_usd - a.exports_usd)
 
-    const importers = currentNodes
+    const importers = scopedNodes
       .filter(n => n.imports_usd > 0)
       .sort((a, b) => b.imports_usd - a.imports_usd)
 
-    const opts = { pinnedId: null }   // no pin in summary view
+    const opts = { pinnedId: null }
     const expRows = exporters.map(n => renderRow(n.id, n.exports_usd, opts)).join('')
     const impRows = importers.map(n => renderRow(n.id, n.imports_usd, opts)).join('')
 
+    const titleText = regionFilter
+      ? REGION_LABEL[regionFilter][lang]
+      : STRINGS.summaryTitle[lang]
+    const subtitle = regionFilter
+      ? `<span class="text-xs text-neutral-500 shrink-0">${STRINGS.regionSummary[lang]}</span>`
+      : ''
+
     root.innerHTML = `
-      <header class="mb-3">
-        <h2 class="text-base font-semibold text-neutral-100">${STRINGS.summaryTitle[lang]}</h2>
+      <header class="flex items-baseline justify-between gap-3 mb-3">
+        <h2 class="text-base font-semibold text-neutral-100">${escapeHtml(titleText)}</h2>
+        ${subtitle}
       </header>
       <dl class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm mb-4">
         <dt class="text-neutral-500">${STRINGS.totalFlow[lang]}</dt>
@@ -116,7 +148,7 @@ export function createInfoPanel(meta) {
   }
 
   function renderCountry(pinnedId) {
-    const lang = getState().lang
+    const { lang, regionFilter } = getState()
     const node = currentNodes.find(n => n.id === pinnedId)
     const country = meta.countries[pinnedId]
     if (!node || !country) {
@@ -131,15 +163,25 @@ export function createInfoPanel(meta) {
       if (src === pinnedId) partners.push({ other: tgt, value: e.value_usd, dir: 'out' })
       else if (tgt === pinnedId) partners.push({ other: src, value: e.value_usd, dir: 'in' })
     }
-    partners.sort((a, b) => b.value - a.value)
+    // Scope partners to the active region so the panel mirrors what's visible
+    // in the chart. The pinned country itself stays even if it's outside the
+    // region — that's the country the user explicitly asked to focus on.
+    const scopedPartners = regionFilter
+      ? partners.filter(p => inRegion(p.other, regionFilter))
+      : partners
+    scopedPartners.sort((a, b) => b.value - a.value)
 
     const opts = { pinnedId }
-    const rows = partners.map(p =>
+    const rows = scopedPartners.map(p =>
       renderRow(p.other, p.value, {
         ...opts,
         arrow: p.dir === 'out' ? STRINGS.outflow[lang] : STRINGS.inflow[lang],
       }),
     ).join('')
+
+    const partnersHeader = regionFilter
+      ? STRINGS.partnersInRegion[lang]
+      : STRINGS.partnersHeader[lang]
 
     root.innerHTML = `
       <header class="flex items-baseline justify-between gap-3 mb-3">
@@ -153,10 +195,10 @@ export function createInfoPanel(meta) {
         <dd class="text-neutral-200 tabular-nums text-right">${USD.format(node.imports_usd || 0)}</dd>
       </dl>
 
-      ${partners.length ? `
+      ${scopedPartners.length ? `
         <div class="mt-3 text-xs uppercase tracking-wide text-neutral-500 mb-1 flex justify-between">
-          <span>${STRINGS.partnersHeader[lang]}</span>
-          <span class="text-neutral-600 normal-case tracking-normal">${partners.length}</span>
+          <span>${escapeHtml(partnersHeader)}</span>
+          <span class="text-neutral-600 normal-case tracking-normal">${scopedPartners.length}</span>
         </div>
         <ul class="${LIST_MAX_H_CLASS}">${rows}</ul>
       ` : ''}
@@ -164,7 +206,11 @@ export function createInfoPanel(meta) {
   }
 
   subscribe((next, prev) => {
-    if (next.pinnedId !== prev.pinnedId || next.lang !== prev.lang) render()
+    if (
+      next.pinnedId !== prev.pinnedId
+      || next.lang !== prev.lang
+      || next.regionFilter !== prev.regionFilter
+    ) render()
   })
 
   return { setData, render }
