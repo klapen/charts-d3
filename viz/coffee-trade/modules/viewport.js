@@ -28,6 +28,16 @@ export function createViewport() {
   function value() { return current }
   function reset()  { setTarget({ tx: 0, ty: 0, scale: 1 }) }
 
+  // Pan by a canonical-space delta. Snaps both target and current so the
+  // chart tracks the cursor without lerp lag during a drag; any in-progress
+  // zoom lerp is preserved because the (target - current) delta is unchanged.
+  function panBy(dx, dy) {
+    target.tx  += dx
+    target.ty  += dy
+    current.tx += dx
+    current.ty += dy
+  }
+
   // Multiplicative zoom around a fixed viewBox-space point (vbX, vbY).
   // Math: the target maps p -> scale*p + t. After zooming by `factor`,
   // new scale = factor*scale, and we want T'(vbP) == T(vbP) so the cursor
@@ -57,5 +67,5 @@ export function createViewport() {
 
   function destroy() { running = false }
 
-  return { setTarget, value, reset, zoomBy, destroy }
+  return { setTarget, value, reset, zoomBy, panBy, destroy }
 }

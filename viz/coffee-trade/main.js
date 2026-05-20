@@ -205,6 +205,7 @@ async function boot() {
   }
 
   wireZoomControls()
+  wirePanControls()
 
   // Snap canonical size + reflow when the chart container crosses a threshold.
   observeBreakpoint(chartEl, (next, prev) => {
@@ -272,6 +273,79 @@ function wireZoomControls() {
       else viewport.reset()
     })
   }
+}
+
+function wirePanControls() {
+  const DRAG_THRESHOLD_PX = 5
+
+  let dragging = false
+  let captured = false
+  let pointerId = null
+  let startX = 0, startY = 0, lastX = 0, lastY = 0
+  let moved = false
+
+  chartEl.addEventListener('pointerdown', evt => {
+    // Left button (or touch / pen primary) only. Ignore clicks on the zoom
+    // buttons so they keep working normally.
+    if (evt.button !== 0) return
+    if (evt.target.closest('button')) return
+    dragging = true
+    captured = false
+    pointerId = evt.pointerId
+    moved = false
+    startX = lastX = evt.clientX
+    startY = lastY = evt.clientY
+  })
+
+  chartEl.addEventListener('pointermove', evt => {
+    if (!dragging || evt.pointerId !== pointerId) return
+    const totalDx = Math.abs(evt.clientX - startX)
+    const totalDy = Math.abs(evt.clientY - startY)
+    if (!moved && Math.max(totalDx, totalDy) > DRAG_THRESHOLD_PX) {
+      moved = true
+      chartEl.classList.add('dragging')
+      // Capture so we keep getting events even when the cursor leaves the
+      // chart — important for fast drags that overshoot the edges.
+      try { chartEl.setPointerCapture(pointerId); captured = true } catch {}
+    }
+    if (!moved) return
+    const dx = evt.clientX - lastX
+    const dy = evt.clientY - lastY
+    lastX = evt.clientX
+    lastY = evt.clientY
+    const rect = chartEl.getBoundingClientRect()
+    viewport.panBy(
+      dx * (current.w / rect.width),
+      dy * (current.h / rect.height),
+    )
+  })
+
+  function endDrag(evt) {
+    if (!dragging || evt.pointerId !== pointerId) return
+    dragging = false
+    chartEl.classList.remove('dragging')
+    if (captured) {
+      try { chartEl.releasePointerCapture(pointerId) } catch {}
+      captured = false
+    }
+    pointerId = null
+    // `moved` stays true so the click handler below can swallow the click
+    // that the browser fires after pointerup. It's cleared inside that
+    // handler so the next interaction starts fresh.
+  }
+  chartEl.addEventListener('pointerup', endDrag)
+  chartEl.addEventListener('pointercancel', endDrag)
+
+  // If the user dragged, the synthetic click that the browser fires after
+  // pointerup would otherwise reach the SVG/canvas and trigger pin /
+  // clear-pin. Swallow it in the capture phase before it gets there.
+  chartEl.addEventListener('click', evt => {
+    if (moved) {
+      evt.stopPropagation()
+      evt.preventDefault()
+      moved = false
+    }
+  }, true)
 }
 
 function reflow(next) {
