@@ -79,10 +79,14 @@ export function createCanvasRenderer(container, meta, viewport, { w, h, dpr }) {
     const { pinnedId, regionFilter, flow } = getState()
     const connected = pinnedId ? collectConnected(pinnedId, flow) : null
 
-    // Helpers: pin wins over region filter when both are set.
-    const nodeAlpha = id => {
-      if (pinnedId) return connected.has(id) ? NODE_OPACITY : DIM_OPACITY
-      if (regionFilter) return regionOf(id) === regionFilter ? NODE_OPACITY : REGION_DIM_NODE
+    // Helpers: pin wins over region filter when both are set. The node form
+    // takes the whole node so we can check exports_usd/imports_usd in the
+    // no-scope+flow branch.
+    const nodeAlpha = n => {
+      if (pinnedId) return connected.has(n.id) ? NODE_OPACITY : DIM_OPACITY
+      if (regionFilter) return regionOf(n.id) === regionFilter ? NODE_OPACITY : REGION_DIM_NODE
+      if (flow === 'exports') return (n.exports_usd || 0) > 0 ? NODE_OPACITY : 0
+      if (flow === 'imports') return (n.imports_usd || 0) > 0 ? NODE_OPACITY : 0
       return NODE_OPACITY
     }
     const linkAlpha = e => {
@@ -117,7 +121,7 @@ export function createCanvasRenderer(container, meta, viewport, { w, h, dpr }) {
     for (const n of _nodes) {
       if (n.x == null) continue
       ctx.beginPath()
-      ctx.globalAlpha = nodeAlpha(n.id)
+      ctx.globalAlpha = nodeAlpha(n)
       ctx.fillStyle = colorFor(meta, n.id)
       ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2)
       ctx.fill()
@@ -140,7 +144,7 @@ export function createCanvasRenderer(container, meta, viewport, { w, h, dpr }) {
     ctx.textAlign = 'center'
     for (const n of labelSet.values()) {
       if (n.x == null) continue
-      ctx.globalAlpha = nodeAlpha(n.id)
+      ctx.globalAlpha = nodeAlpha(n)
       const name = meta.countries[n.id]?.name || n.id
       ctx.strokeStyle = '#0a0a0b'
       ctx.lineWidth = 3

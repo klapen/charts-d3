@@ -151,9 +151,19 @@ export function createSvgRenderer(container, meta, viewport, { w, h }) {
       return
     }
 
-    // No filter: defaults. Flow has no chart effect without a scope.
-    nodeSel.attr('fill-opacity', 1).attr('stroke-opacity', 1)
-    labelSel.attr('opacity', 1)
+    // No region/pin scope. Flow still narrows the chart by hiding nodes that
+    // don't participate in that direction (pure importers for "exports",
+    // pure exporters for "imports"). Edges stay at default opacity; lines
+    // ending at a hidden node dangle, same as the region case.
+    const nodePasses = d => {
+      if (flow === 'exports') return (d.exports_usd || 0) > 0
+      if (flow === 'imports') return (d.imports_usd || 0) > 0
+      return true
+    }
+    nodeSel
+      .attr('fill-opacity', d => (nodePasses(d) ? 1 : 0))
+      .attr('stroke-opacity', d => (nodePasses(d) ? 1 : 0))
+    labelSel.attr('opacity', d => (nodePasses(d) ? 1 : 0))
     linkSel.attr('stroke-opacity', 0.18)
   }
 
