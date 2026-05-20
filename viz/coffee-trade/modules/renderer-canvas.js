@@ -79,14 +79,16 @@ export function createCanvasRenderer(container, meta, viewport, { w, h, dpr }) {
     const { pinnedId, regionFilter, flow } = getState()
     const connected = pinnedId ? collectConnected(pinnedId, flow) : null
 
-    // Helpers: pin wins over region filter when both are set. The node form
-    // takes the whole node so we can check exports_usd/imports_usd in the
-    // no-scope+flow branch.
+    // Net role helpers for the no-pin flow filter.
+    const isNetExporter = n => (n?.exports_usd || 0) > (n?.imports_usd || 0)
+    const isNetImporter = n => (n?.imports_usd || 0) > (n?.exports_usd || 0)
+    const inScope = id => !regionFilter || regionOf(id) === regionFilter
+
     const nodeAlpha = n => {
       if (pinnedId) return connected.has(n.id) ? NODE_OPACITY : DIM_OPACITY
-      if (regionFilter) return regionOf(n.id) === regionFilter ? NODE_OPACITY : REGION_DIM_NODE
-      if (flow === 'exports') return (n.exports_usd || 0) > 0 ? NODE_OPACITY : 0
-      if (flow === 'imports') return (n.imports_usd || 0) > 0 ? NODE_OPACITY : 0
+      if (!inScope(n.id)) return REGION_DIM_NODE
+      if (flow === 'exports') return isNetExporter(n) ? NODE_OPACITY : 0
+      if (flow === 'imports') return isNetImporter(n) ? NODE_OPACITY : 0
       return NODE_OPACITY
     }
     const linkAlpha = e => {
@@ -95,10 +97,19 @@ export function createCanvasRenderer(container, meta, viewport, { w, h, dpr }) {
         return (srcId(e) === pinnedId || tgtId(e) === pinnedId)
           ? FOCUS_LINK_OPACITY : DIM_OPACITY * 0.4
       }
+      // No pin. Region defines candidate endpoints; flow further narrows by
+      // net role. Edges where the relevant endpoint isn't a visible
+      // net-role match are hidden.
+      const base = regionFilter ? REGION_LINK_INSIDE : BASE_LINK_OPACITY
+      if (flow === 'exports') {
+        return (inScope(srcId(e)) && isNetExporter(e.source)) ? base : REGION_LINK_OUTSIDE
+      }
+      if (flow === 'imports') {
+        return (inScope(tgtId(e)) && isNetImporter(e.target)) ? base : REGION_LINK_OUTSIDE
+      }
+      // 'both'
       if (regionFilter) {
-        if (!edgePassesFlow(e, flow, pinnedId, regionFilter)) return REGION_LINK_OUTSIDE
-        return (regionOf(srcId(e)) === regionFilter || regionOf(tgtId(e)) === regionFilter)
-          ? REGION_LINK_INSIDE : REGION_LINK_OUTSIDE
+        return (inScope(srcId(e)) || inScope(tgtId(e))) ? base : REGION_LINK_OUTSIDE
       }
       return BASE_LINK_OPACITY
     }

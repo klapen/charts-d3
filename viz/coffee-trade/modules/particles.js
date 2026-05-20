@@ -78,19 +78,29 @@ export function createParticleLayer(container, meta, viewport, { w, h, dpr }) {
         if (p.t > 1) p.t -= 1
         const srcId = e.source.id || e.source
         const tgtId = e.target.id || e.target
-        // When a country is pinned, only animate its incident edges.
-        if (pinnedId && srcId !== pinnedId && tgtId !== pinnedId) continue
-        // Apply the flow filter relative to the active scope so particles
-        // disappear from excluded directions (no chart effect with no scope).
-        if (flow !== 'both') {
-          if (pinnedId) {
-            if (flow === 'exports' && srcId !== pinnedId) continue
-            if (flow === 'imports' && tgtId !== pinnedId) continue
-          } else if (regionFilter) {
-            const srcRegion = meta.countries[srcId]?.region
-            const tgtRegion = meta.countries[tgtId]?.region
-            if (flow === 'exports' && srcRegion !== regionFilter) continue
-            if (flow === 'imports' && tgtRegion !== regionFilter) continue
+        // Pin path: only animate incident edges, with optional flow narrowing.
+        if (pinnedId) {
+          if (srcId !== pinnedId && tgtId !== pinnedId) continue
+          if (flow === 'exports' && srcId !== pinnedId) continue
+          if (flow === 'imports' && tgtId !== pinnedId) continue
+        } else {
+          // No pin. Region filters in-scope endpoints; flow further narrows
+          // by net trade role. e.source / e.target are node objects after the
+          // first sim tick.
+          const sExp = e.source?.exports_usd || 0
+          const sImp = e.source?.imports_usd || 0
+          const tExp = e.target?.exports_usd || 0
+          const tImp = e.target?.imports_usd || 0
+          const srcInRegion = !regionFilter || meta.countries[srcId]?.region === regionFilter
+          const tgtInRegion = !regionFilter || meta.countries[tgtId]?.region === regionFilter
+          if (flow === 'both') {
+            // Region scope only — show particles touching the region; no role
+            // narrowing. With no region this is the global default.
+            if (regionFilter && !(srcInRegion || tgtInRegion)) continue
+          } else if (flow === 'exports') {
+            if (!(srcInRegion && sExp > sImp)) continue
+          } else if (flow === 'imports') {
+            if (!(tgtInRegion && tImp > tExp)) continue
           }
         }
         const x = sx + (tx - sx) * p.t

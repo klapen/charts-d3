@@ -138,33 +138,34 @@ export function createSvgRenderer(container, meta, viewport, { w, h }) {
       return
     }
 
-    if (regionFilter) {
-      const inRegion = id => regionOf(id) === regionFilter
-      nodeSel
-        .attr('fill-opacity', d => (inRegion(d.id) ? 1 : REGION_DIM_NODE))
-        .attr('stroke-opacity', d => (inRegion(d.id) ? 1 : REGION_DIM_NODE))
-      labelSel.attr('opacity', d => (inRegion(d.id) ? 1 : REGION_DIM_NODE))
-      linkSel.attr('stroke-opacity', d => {
-        if (!edgePassesFlow(d, flow, pinnedId, regionFilter)) return REGION_LINK_OUTSIDE
-        return (inRegion(srcId(d)) || inRegion(tgtId(d))) ? REGION_LINK_INSIDE : REGION_LINK_OUTSIDE
-      })
-      return
-    }
+    // No pin. Region (when set) acts as an in-scope filter; flow further
+    // narrows by net trade role. "Exports" reveals net-exporter countries
+    // (exports_usd > imports_usd) and the edges leaving them; "Imports"
+    // reveals net-importer countries and the edges arriving at them.
+    const isNetExporter = n => (n?.exports_usd || 0) > (n?.imports_usd || 0)
+    const isNetImporter = n => (n?.imports_usd || 0) > (n?.exports_usd || 0)
+    const inScope = id => !regionFilter || regionOf(id) === regionFilter
 
-    // No region/pin scope. Flow still narrows the chart by hiding nodes that
-    // don't participate in that direction (pure importers for "exports",
-    // pure exporters for "imports"). Edges stay at default opacity; lines
-    // ending at a hidden node dangle, same as the region case.
-    const nodePasses = d => {
-      if (flow === 'exports') return (d.exports_usd || 0) > 0
-      if (flow === 'imports') return (d.imports_usd || 0) > 0
+    const nodeVisible = d => {
+      if (!inScope(d.id)) return false
+      if (flow === 'exports') return isNetExporter(d)
+      if (flow === 'imports') return isNetImporter(d)
+      return true  // flow === 'both'
+    }
+    const edgeVisible = d => {
+      if (flow === 'exports') return inScope(srcId(d)) && isNetExporter(d.source)
+      if (flow === 'imports') return inScope(tgtId(d)) && isNetImporter(d.target)
+      // 'both': region keeps touching edges; no region keeps all
+      if (regionFilter) return inScope(srcId(d)) || inScope(tgtId(d))
       return true
     }
+
+    const baseEdgeOpacity = regionFilter ? REGION_LINK_INSIDE : 0.18
     nodeSel
-      .attr('fill-opacity', d => (nodePasses(d) ? 1 : 0))
-      .attr('stroke-opacity', d => (nodePasses(d) ? 1 : 0))
-    labelSel.attr('opacity', d => (nodePasses(d) ? 1 : 0))
-    linkSel.attr('stroke-opacity', 0.18)
+      .attr('fill-opacity', d => (nodeVisible(d) ? 1 : 0))
+      .attr('stroke-opacity', d => (nodeVisible(d) ? 1 : 0))
+    labelSel.attr('opacity', d => (nodeVisible(d) ? 1 : 0))
+    linkSel.attr('stroke-opacity', d => (edgeVisible(d) ? baseEdgeOpacity : 0))
   }
 
   // Subscribe so click → state → re-style happens automatically.
