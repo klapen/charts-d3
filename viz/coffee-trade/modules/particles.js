@@ -1,6 +1,6 @@
 import { getState } from './state.js'
 
-export function createParticleLayer(container, { w, h, dpr }) {
+export function createParticleLayer(container, meta, { w, h, dpr }) {
   const canvas = document.createElement('canvas')
   canvas.style.pointerEvents = 'none'
   // Always render on top of the marble renderer (SVG or Canvas) so particles
@@ -59,7 +59,7 @@ export function createParticleLayer(container, { w, h, dpr }) {
     ctx.clearRect(0, 0, cw, ch)
 
     if (!reducedMotion && currentScales) {
-      const { pinnedId } = getState()
+      const { pinnedId, regionFilter, flow } = getState()
       for (const p of particles) {
         const e = currentEdges[p.edgeIndex]
         const sx = e.source.x, sy = e.source.y
@@ -67,11 +67,22 @@ export function createParticleLayer(container, { w, h, dpr }) {
         if (sx == null || tx == null) continue
         p.t += p.speed * (dt / 16)
         if (p.t > 1) p.t -= 1
+        const srcId = e.source.id || e.source
+        const tgtId = e.target.id || e.target
         // When a country is pinned, only animate its incident edges.
-        if (pinnedId) {
-          const srcId = e.source.id || e.source
-          const tgtId = e.target.id || e.target
-          if (srcId !== pinnedId && tgtId !== pinnedId) continue
+        if (pinnedId && srcId !== pinnedId && tgtId !== pinnedId) continue
+        // Apply the flow filter relative to the active scope so particles
+        // disappear from excluded directions (no chart effect with no scope).
+        if (flow !== 'both') {
+          if (pinnedId) {
+            if (flow === 'exports' && srcId !== pinnedId) continue
+            if (flow === 'imports' && tgtId !== pinnedId) continue
+          } else if (regionFilter) {
+            const srcRegion = meta.countries[srcId]?.region
+            const tgtRegion = meta.countries[tgtId]?.region
+            if (flow === 'exports' && srcRegion !== regionFilter) continue
+            if (flow === 'imports' && tgtRegion !== regionFilter) continue
+          }
         }
         const x = sx + (tx - sx) * p.t
         const y = sy + (ty - sy) * p.t

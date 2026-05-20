@@ -43,14 +43,27 @@ export function createCanvasRenderer(container, meta, { w, h, dpr }) {
 
   function regionOf(id) { return meta.countries[id]?.region }
 
+  function edgePassesFlow(e, flow, pinnedId, regionFilter) {
+    if (flow === 'both') return true
+    if (pinnedId) {
+      if (flow === 'exports') return srcId(e) === pinnedId
+      if (flow === 'imports') return tgtId(e) === pinnedId
+    }
+    if (regionFilter) {
+      if (flow === 'exports') return regionOf(srcId(e)) === regionFilter
+      if (flow === 'imports') return regionOf(tgtId(e)) === regionFilter
+    }
+    return true
+  }
+
   function tick() {
     if (!_scales) return
     const cw = canvas.width / currentDpr
     const ch = canvas.height / currentDpr
     ctx.clearRect(0, 0, cw, ch)
 
-    const { pinnedId, regionFilter } = getState()
-    const connected = pinnedId ? collectConnected(pinnedId) : null
+    const { pinnedId, regionFilter, flow } = getState()
+    const connected = pinnedId ? collectConnected(pinnedId, flow) : null
 
     // Helpers: pin wins over region filter when both are set.
     const nodeAlpha = id => {
@@ -60,10 +73,12 @@ export function createCanvasRenderer(container, meta, { w, h, dpr }) {
     }
     const linkAlpha = e => {
       if (pinnedId) {
+        if (!edgePassesFlow(e, flow, pinnedId, regionFilter)) return DIM_OPACITY * 0.4
         return (srcId(e) === pinnedId || tgtId(e) === pinnedId)
           ? FOCUS_LINK_OPACITY : DIM_OPACITY * 0.4
       }
       if (regionFilter) {
+        if (!edgePassesFlow(e, flow, pinnedId, regionFilter)) return REGION_LINK_OUTSIDE
         return (regionOf(srcId(e)) === regionFilter || regionOf(tgtId(e)) === regionFilter)
           ? REGION_LINK_INSIDE : REGION_LINK_OUTSIDE
       }
@@ -122,11 +137,16 @@ export function createCanvasRenderer(container, meta, { w, h, dpr }) {
     ctx.globalAlpha = 1
   }
 
-  function collectConnected(pinnedId) {
+  function collectConnected(pinnedId, flow) {
     const ids = new Set([pinnedId])
     for (const e of _edges) {
-      if (srcId(e) === pinnedId) ids.add(tgtId(e))
-      else if (tgtId(e) === pinnedId) ids.add(srcId(e))
+      const s = srcId(e), t = tgtId(e)
+      if (flow === 'exports') { if (s === pinnedId) ids.add(t) }
+      else if (flow === 'imports') { if (t === pinnedId) ids.add(s) }
+      else {
+        if (s === pinnedId) ids.add(t)
+        else if (t === pinnedId) ids.add(s)
+      }
     }
     return ids
   }
@@ -155,7 +175,11 @@ export function createCanvasRenderer(container, meta, { w, h, dpr }) {
   // perpetually so the next tick already handles it, but force one in case
   // alpha has settled below the tick threshold.
   const unsubscribe = subscribe((next, prev) => {
-    if (next.pinnedId !== prev.pinnedId || next.regionFilter !== prev.regionFilter) tick()
+    if (
+      next.pinnedId !== prev.pinnedId
+      || next.regionFilter !== prev.regionFilter
+      || next.flow !== prev.flow
+    ) tick()
   })
 
   function destroy() {

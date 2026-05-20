@@ -10,6 +10,7 @@ let state = Object.freeze({
   hoveredId: null,    // ISO3 of hovered node or null
   pinnedId: null,     // ISO3 of pinned node
   regionFilter: null, // 'South America' | 'Africa' | 'Asia' | 'Europe' | 'North America' | null
+  flow: 'both',       // 'both' | 'exports' | 'imports' — narrows edges to outgoing/incoming relative to scope
   lang: 'en',         // 'en' | 'es'
 })
 

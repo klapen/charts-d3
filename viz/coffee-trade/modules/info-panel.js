@@ -82,20 +82,26 @@ export function createInfoPanel(meta) {
   }
 
   function renderSummary() {
-    const { lang, regionFilter } = getState()
+    const { lang, regionFilter, flow } = getState()
     if (!currentNodes.length) {
       root.innerHTML = `<p class="text-neutral-500">${STRINGS.clickHint[lang]}</p>`
       return
     }
 
-    // When a region is active, every count, sum, and table row is scoped to
-    // that region so the panel reads "what's happening here?" rather than
-    // staying global.
-    const scopedNodes  = currentNodes.filter(n => inRegion(n.id, regionFilter))
-    const scopedEdges  = currentEdges.filter(e => (
-      inRegion(e.source.id || e.source, regionFilter) ||
-      inRegion(e.target.id || e.target, regionFilter)
-    ))
+    // When a region is active, scope every count and table row to that region.
+    // The flow filter further narrows: with regionFilter + 'exports', we only
+    // count edges where the region is the source; with 'imports', target.
+    const scopedNodes = currentNodes.filter(n => inRegion(n.id, regionFilter))
+    const scopedEdges = currentEdges.filter(e => {
+      const sIn = inRegion(e.source.id || e.source, regionFilter)
+      const tIn = inRegion(e.target.id || e.target, regionFilter)
+      if (regionFilter) {
+        if (flow === 'exports') return sIn
+        if (flow === 'imports') return tIn
+        return sIn || tIn
+      }
+      return true
+    })
 
     const totalFlow = scopedEdges.reduce((s, e) => s + (e.value_usd || 0), 0)
     const countries = scopedNodes.length
@@ -119,6 +125,11 @@ export function createInfoPanel(meta) {
       ? `<span class="text-xs text-neutral-500 shrink-0">${STRINGS.regionSummary[lang]}</span>`
       : ''
 
+    // The flow filter hides the table that doesn't apply: 'exports' hides the
+    // importers list and vice-versa. 'both' keeps both visible.
+    const showExporters = flow !== 'imports'
+    const showImporters = flow !== 'exports'
+
     root.innerHTML = `
       <header class="flex items-baseline justify-between gap-3 mb-3">
         <h2 class="text-base font-semibold text-neutral-100">${escapeHtml(titleText)}</h2>
@@ -131,24 +142,28 @@ export function createInfoPanel(meta) {
         <dd class="text-neutral-200 tabular-nums text-right">${countries}</dd>
       </dl>
 
-      <div class="text-xs uppercase tracking-wide text-neutral-500 mb-1 flex justify-between">
-        <span>${STRINGS.exportersHeader[lang]}</span>
-        <span class="text-neutral-600 normal-case tracking-normal">${exporters.length}</span>
-      </div>
-      <ul class="mb-3 ${LIST_MAX_H_CLASS}">${expRows}</ul>
+      ${showExporters ? `
+        <div class="text-xs uppercase tracking-wide text-neutral-500 mb-1 flex justify-between">
+          <span>${STRINGS.exportersHeader[lang]}</span>
+          <span class="text-neutral-600 normal-case tracking-normal">${exporters.length}</span>
+        </div>
+        <ul class="mb-3 ${LIST_MAX_H_CLASS}">${expRows}</ul>
+      ` : ''}
 
-      <div class="text-xs uppercase tracking-wide text-neutral-500 mb-1 flex justify-between">
-        <span>${STRINGS.importersHeader[lang]}</span>
-        <span class="text-neutral-600 normal-case tracking-normal">${importers.length}</span>
-      </div>
-      <ul class="mb-3 ${LIST_MAX_H_CLASS}">${impRows}</ul>
+      ${showImporters ? `
+        <div class="text-xs uppercase tracking-wide text-neutral-500 mb-1 flex justify-between">
+          <span>${STRINGS.importersHeader[lang]}</span>
+          <span class="text-neutral-600 normal-case tracking-normal">${importers.length}</span>
+        </div>
+        <ul class="mb-3 ${LIST_MAX_H_CLASS}">${impRows}</ul>
+      ` : ''}
 
       <p class="text-xs text-neutral-500 mt-3">${STRINGS.clickHint[lang]}</p>
     `
   }
 
   function renderCountry(pinnedId) {
-    const { lang, regionFilter } = getState()
+    const { lang, regionFilter, flow } = getState()
     const node = currentNodes.find(n => n.id === pinnedId)
     const country = meta.countries[pinnedId]
     if (!node || !country) {
@@ -166,9 +181,13 @@ export function createInfoPanel(meta) {
     // Scope partners to the active region so the panel mirrors what's visible
     // in the chart. The pinned country itself stays even if it's outside the
     // region — that's the country the user explicitly asked to focus on.
-    const scopedPartners = regionFilter
+    let scopedPartners = regionFilter
       ? partners.filter(p => inRegion(p.other, regionFilter))
       : partners
+    // Apply flow: 'exports' keeps only outgoing partners ('out'); 'imports'
+    // keeps only incoming ('in'); 'both' is a no-op.
+    if (flow === 'exports') scopedPartners = scopedPartners.filter(p => p.dir === 'out')
+    else if (flow === 'imports') scopedPartners = scopedPartners.filter(p => p.dir === 'in')
     scopedPartners.sort((a, b) => b.value - a.value)
 
     const opts = { pinnedId }
@@ -210,6 +229,7 @@ export function createInfoPanel(meta) {
       next.pinnedId !== prev.pinnedId
       || next.lang !== prev.lang
       || next.regionFilter !== prev.regionFilter
+      || next.flow !== prev.flow
     ) render()
   })
 

@@ -90,13 +90,32 @@ export function createSvgRenderer(container, meta, { w, h }) {
 
   function regionOf(id) { return meta.countries[id]?.region }
 
+  // An edge "passes" the flow filter relative to the active scope (pinned
+  // country, or region). With no scope, flow has no chart effect (per UX:
+  // exports/imports doesn't narrow the global view, only the info panel).
+  function edgePassesFlow(e, flow, pinnedId, regionFilter) {
+    if (flow === 'both') return true
+    if (pinnedId) {
+      if (flow === 'exports') return srcId(e) === pinnedId
+      if (flow === 'imports') return tgtId(e) === pinnedId
+    }
+    if (regionFilter) {
+      if (flow === 'exports') return regionOf(srcId(e)) === regionFilter
+      if (flow === 'imports') return regionOf(tgtId(e)) === regionFilter
+    }
+    return true
+  }
+
   function applyHighlight() {
-    const { pinnedId, regionFilter } = getState()
+    const { pinnedId, regionFilter, flow } = getState()
 
     // Pin wins over region: a pinned country shows only its incident network.
     if (pinnedId) {
+      // Connected set respects flow direction so e.g. "exports only" lights
+      // up just the partners we ship coffee to.
       const connected = new Set([pinnedId])
       for (const e of currentEdges) {
+        if (!edgePassesFlow(e, flow, pinnedId, regionFilter)) continue
         if (srcId(e) === pinnedId) connected.add(tgtId(e))
         else if (tgtId(e) === pinnedId) connected.add(srcId(e))
       }
@@ -105,7 +124,10 @@ export function createSvgRenderer(container, meta, { w, h }) {
         .attr('stroke-opacity', d => (connected.has(d.id) ? 1 : DIM_OPACITY))
       labelSel.attr('opacity', d => (connected.has(d.id) ? 1 : DIM_OPACITY))
       linkSel.attr('stroke-opacity', d => (
-        (srcId(d) === pinnedId || tgtId(d) === pinnedId) ? FOCUS_LINK_OPACITY : DIM_OPACITY * 0.4
+        edgePassesFlow(d, flow, pinnedId, regionFilter)
+        && (srcId(d) === pinnedId || tgtId(d) === pinnedId)
+          ? FOCUS_LINK_OPACITY
+          : DIM_OPACITY * 0.4
       ))
       return
     }
@@ -116,13 +138,14 @@ export function createSvgRenderer(container, meta, { w, h }) {
         .attr('fill-opacity', d => (inRegion(d.id) ? 1 : REGION_DIM_NODE))
         .attr('stroke-opacity', d => (inRegion(d.id) ? 1 : REGION_DIM_NODE))
       labelSel.attr('opacity', d => (inRegion(d.id) ? 1 : REGION_DIM_NODE))
-      linkSel.attr('stroke-opacity', d => (
-        (inRegion(srcId(d)) || inRegion(tgtId(d))) ? REGION_LINK_INSIDE : REGION_LINK_OUTSIDE
-      ))
+      linkSel.attr('stroke-opacity', d => {
+        if (!edgePassesFlow(d, flow, pinnedId, regionFilter)) return REGION_LINK_OUTSIDE
+        return (inRegion(srcId(d)) || inRegion(tgtId(d))) ? REGION_LINK_INSIDE : REGION_LINK_OUTSIDE
+      })
       return
     }
 
-    // No filter: defaults.
+    // No filter: defaults. Flow has no chart effect without a scope.
     nodeSel.attr('fill-opacity', 1).attr('stroke-opacity', 1)
     labelSel.attr('opacity', 1)
     linkSel.attr('stroke-opacity', 0.18)
@@ -130,7 +153,11 @@ export function createSvgRenderer(container, meta, { w, h }) {
 
   // Subscribe so click → state → re-style happens automatically.
   const unsubscribe = subscribe((next, prev) => {
-    if (next.pinnedId !== prev.pinnedId || next.regionFilter !== prev.regionFilter) {
+    if (
+      next.pinnedId !== prev.pinnedId
+      || next.regionFilter !== prev.regionFilter
+      || next.flow !== prev.flow
+    ) {
       applyHighlight()
     }
   })

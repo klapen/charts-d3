@@ -135,7 +135,7 @@ async function boot() {
   project = createProjection({ w: current.w, h: current.h })
   infoPanel = createInfoPanel(meta)
   renderLegend()
-  particles = createParticleLayer(chartEl, {
+  particles = createParticleLayer(chartEl, meta, {
     w: current.w, h: current.h, dpr: window.devicePixelRatio || 1,
   })
   particles.start()
