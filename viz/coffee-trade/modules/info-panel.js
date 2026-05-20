@@ -256,7 +256,15 @@ export function createInfoPanel(meta) {
     ) render()
   })
 
-  return { setData, render }
+  // Reset sort back to max→min for every list. Used by the Clear-all button.
+  function reset() {
+    sort.exporters = 'desc'
+    sort.importers = 'desc'
+    sort.partners = 'desc'
+    render()
+  }
+
+  return { setData, render, reset }
 }
 
 function escapeHtml(s) {

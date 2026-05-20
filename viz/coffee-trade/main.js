@@ -158,6 +158,17 @@ async function boot() {
     async tier => { await applyYearType(getState().year, getState().type, tier) },
   )
 
+  // Clear-all button: wipe every filter back to defaults including the
+  // info panel's per-list sort. Year/type/tier are intentional view choices
+  // and stay put.
+  const clearBtn = document.getElementById('clear-filters-btn')
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      setState({ pinnedId: null, regionFilter: null, flow: 'both' })
+      infoPanel.reset()
+    })
+  }
+
   // Snap canonical size + reflow when the chart container crosses a threshold.
   observeBreakpoint(chartEl, (next, prev) => {
     // On xs, lock to top tier and hide the "All countries" button.
