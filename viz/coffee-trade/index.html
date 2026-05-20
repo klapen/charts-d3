@@ -39,6 +39,17 @@
           <div id="chart" role="img" aria-label="Global coffee trade flows"
                class="relative w-full rounded-xl border border-neutral-800 bg-neutral-950 overflow-hidden">
             <!-- SVG + Canvas inserted here by main.js -->
+            <div class="absolute top-2 right-2 z-10 flex flex-col gap-1" role="group" aria-label="Zoom controls">
+              <button id="zoom-in" type="button"
+                      class="w-7 h-7 grid place-items-center rounded border border-neutral-700 bg-neutral-900/80 text-neutral-200 hover:border-brand hover:text-neutral-50 text-base leading-none"
+                      aria-label="Zoom in">+</button>
+              <button id="zoom-out" type="button"
+                      class="w-7 h-7 grid place-items-center rounded border border-neutral-700 bg-neutral-900/80 text-neutral-200 hover:border-brand hover:text-neutral-50 text-base leading-none"
+                      aria-label="Zoom out">−</button>
+              <button id="zoom-reset" type="button"
+                      class="w-7 h-7 grid place-items-center rounded border border-neutral-700 bg-neutral-900/80 text-neutral-200 hover:border-brand hover:text-neutral-50 text-xs leading-none"
+                      aria-label="Reset zoom">⟲</button>
+            </div>
           </div>
 
           <div id="controls" class="mt-4 flex flex-wrap items-center gap-4">

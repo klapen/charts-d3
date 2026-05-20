@@ -204,6 +204,8 @@ async function boot() {
     })
   }
 
+  wireZoomControls()
+
   // Snap canonical size + reflow when the chart container crosses a threshold.
   observeBreakpoint(chartEl, (next, prev) => {
     // On xs, lock to top tier and hide the "All countries" button.
@@ -215,6 +217,61 @@ async function boot() {
     if (!prev) return  // first fire — boot already used the picked size
     reflow(next)
   })
+}
+
+// Map a mouse event over the chart to a viewBox-space point, which is what
+// viewport.zoomBy expects. The container is treated as if the canvas stretches
+// to fill it (true for the canvas renderer; close enough for SVG which has
+// only mild letterboxing at our breakpoints).
+function eventToViewBox(evt) {
+  const rect = chartEl.getBoundingClientRect()
+  const relX = (evt.clientX - rect.left) / rect.width
+  const relY = (evt.clientY - rect.top)  / rect.height
+  const canonX = relX * current.w
+  const canonY = relY * current.h
+  const t = viewport.value()
+  return {
+    x: (canonX - t.tx) / t.scale,
+    y: (canonY - t.ty) / t.scale,
+  }
+}
+
+function wireZoomControls() {
+  const STEP = 1.25  // each button click / wheel tick
+
+  // Wheel: zoom around the cursor so the country under the pointer stays put.
+  // preventDefault keeps the page from scrolling when the user zooms the chart.
+  chartEl.addEventListener('wheel', evt => {
+    evt.preventDefault()
+    const factor = evt.deltaY < 0 ? STEP : 1 / STEP
+    const p = eventToViewBox(evt)
+    viewport.zoomBy(factor, p.x, p.y)
+  }, { passive: false })
+
+  // Buttons: zoom around the center of the visible chart. stopPropagation
+  // prevents the SVG/canvas background-click clear-pin handler from firing.
+  function centerZoom(factor) {
+    const t = viewport.value()
+    const vbX = (current.w / 2 - t.tx) / t.scale
+    const vbY = (current.h / 2 - t.ty) / t.scale
+    viewport.zoomBy(factor, vbX, vbY)
+  }
+  for (const [id, factor] of [['zoom-in', STEP], ['zoom-out', 1 / STEP]]) {
+    const btn = document.getElementById(id)
+    if (!btn) continue
+    btn.addEventListener('click', e => { e.stopPropagation(); centerZoom(factor) })
+  }
+  const resetBtn = document.getElementById('zoom-reset')
+  if (resetBtn) {
+    resetBtn.addEventListener('click', e => {
+      e.stopPropagation()
+      // Reset also clears the pin so the user's "fresh canvas" expectation
+      // holds: otherwise the next subscribe tick would snap zoom back to the
+      // pinned country.
+      if (getState().pinnedId) setState({ pinnedId: null })
+      else viewport.reset()
+    })
+  }
 }
 
 function reflow(next) {
