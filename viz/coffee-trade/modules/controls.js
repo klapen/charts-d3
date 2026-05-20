@@ -70,33 +70,19 @@ export function wireControls(meta, onYearChange, onTypeChange, onTierChange) {
     b.addEventListener('click', () => setState({ tier: b.dataset.tier }))
   }
 
-  // Flow toggles: each chip represents "this direction is included". Both on
-  // is the 'both' default. Clicking a chip excludes that direction; clicking
-  // the only-on chip is a no-op so we never end up with both off.
+  // Flow segmented control: single-select among 'both' | 'exports' | 'imports'.
   const flowButtons = document.querySelectorAll('.flow-btn')
   function reflectFlow() {
     const flow = getState().flow
     for (const b of flowButtons) {
-      const dir = b.dataset.flow  // 'exports' | 'imports'
-      const on = flow === 'both' || flow === dir
-      b.setAttribute('aria-pressed', String(on))
-      b.classList.toggle('border-brand', on)
-      b.classList.toggle('text-neutral-500', !on)
+      const active = b.dataset.flow === flow
+      b.setAttribute('aria-pressed', String(active))
+      b.classList.toggle('border-brand', active)
+      b.classList.toggle('text-neutral-500', !active)
     }
   }
   for (const b of flowButtons) {
-    b.addEventListener('click', () => {
-      const flow = getState().flow
-      const dir = b.dataset.flow  // 'exports' or 'imports'
-      const other = dir === 'exports' ? 'imports' : 'exports'
-      // If both are on, clicking this chip excludes the other direction
-      // (i.e., flow becomes the clicked direction).
-      if (flow === 'both') setState({ flow: dir })
-      // If only this chip is on, restore both. (Don't turn the only-on chip off.)
-      else if (flow === dir) setState({ flow: 'both' })
-      // If only the OTHER chip is on, clicking this one brings it back to both.
-      else if (flow === other) setState({ flow: 'both' })
-    })
+    b.addEventListener('click', () => setState({ flow: b.dataset.flow }))
   }
 
   // React to state changes

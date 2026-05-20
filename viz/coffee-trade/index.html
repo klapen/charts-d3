@@ -66,13 +66,16 @@
                     data-en="All countries" data-es="Todos los países">All countries</button>
           </div>
 
-          <div class="mt-2 flex flex-wrap items-center gap-3 text-xs">
+          <div class="mt-2 flex flex-wrap items-center gap-3 text-xs" role="group" aria-label="Flow direction">
             <span class="text-neutral-500" data-en="Flow:" data-es="Flujo:">Flow:</span>
-            <button data-flow="exports" class="flow-btn px-2 py-1 rounded border border-neutral-700 bg-neutral-900 hover:border-brand"
+            <button data-flow="both" class="flow-btn px-2 py-1 rounded border border-neutral-700 bg-neutral-900 hover:border-brand"
                     aria-pressed="true"
+                    data-en="All" data-es="Todo">All</button>
+            <button data-flow="exports" class="flow-btn px-2 py-1 rounded border border-neutral-700 bg-neutral-900 hover:border-brand"
+                    aria-pressed="false"
                     data-en="Exports" data-es="Exportaciones">Exports</button>
             <button data-flow="imports" class="flow-btn px-2 py-1 rounded border border-neutral-700 bg-neutral-900 hover:border-brand"
-                    aria-pressed="true"
+                    aria-pressed="false"
                     data-en="Imports" data-es="Importaciones">Imports</button>
           </div>
 
