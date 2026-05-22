@@ -16,6 +16,8 @@ import { createInfoPanel } from './modules/info-panel.js'
 import { observeBreakpoint, pickBreakpoint } from './modules/responsive.js'
 import { renderLegend } from './modules/legend.js'
 import { createViewport } from './modules/viewport.js'
+import { wireTabs } from './modules/tabs.js'
+import { wireColombiaChart } from './modules/colombia-chart.js'
 
 // Canonical drawing size; rebuilt at each breakpoint snap.
 let current = { w: 1080, h: 660 }
@@ -206,6 +208,8 @@ async function boot() {
 
   wireZoomControls()
   wirePanControls()
+  wireTabs()
+  wireColombiaChart()
 
   // Snap canonical size + reflow when the chart container crosses a threshold.
   observeBreakpoint(chartEl, (next, prev) => {
