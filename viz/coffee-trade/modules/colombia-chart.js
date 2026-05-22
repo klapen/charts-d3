@@ -27,8 +27,58 @@ export function wireColombiaChart() {
   ro.observe(root)
 
   function render() {
-    // populated in Task 8
-    console.log('[colombia-chart] render', dims, data?.months?.length)
+    const { width, height } = dims
+    if (!data || width === 0) return
+
+    const innerW = Math.max(0, width  - MARGIN.left - MARGIN.right)
+    const innerH = Math.max(0, height - MARGIN.top  - MARGIN.bottom)
+
+    const dates = data.months.map(m => new Date(m + '-01'))
+    const xScale = d3.scaleTime().domain(d3.extent(dates)).range([0, innerW])
+    const yMax   = d3.max(data.production)
+    const yScale = d3.scaleLinear().domain([0, yMax]).nice().range([innerH, 0])
+
+    // Build the SVG only once; on later renders, reuse selections.
+    if (!svg) {
+      svg = d3.select(root)
+        .append('svg')
+        .attr('width', '100%')
+        .attr('height', '100%')
+        .style('display', 'block')
+
+      const g = svg.append('g').attr('class', 'plot')
+        .attr('transform', `translate(${MARGIN.left},${MARGIN.top})`)
+      g.append('g').attr('class', 'x-axis').attr('transform', `translate(0,${innerH})`)
+      g.append('g').attr('class', 'y-axis')
+      g.append('rect').attr('class', 'year-band').attr('fill', '#ffffff').attr('fill-opacity', 0.08).attr('pointer-events', 'none')
+      g.append('path').attr('class', 'exports-line').attr('fill', 'none')
+        .attr('stroke', 'rgb(163 163 163)').attr('stroke-dasharray', '4 4').attr('stroke-width', 1.5)
+      g.append('path').attr('class', 'production-line').attr('fill', 'none')
+        .attr('stroke', 'var(--color-brand)').attr('stroke-width', 1.75)
+    }
+
+    const g = svg.select('g.plot')
+    svg.attr('viewBox', `0 0 ${width} ${height}`)
+    g.attr('transform', `translate(${MARGIN.left},${MARGIN.top})`)
+
+    g.select('.x-axis')
+      .attr('transform', `translate(0,${innerH})`)
+      .call(d3.axisBottom(xScale).ticks(d3.timeYear.every(1)).tickFormat(d3.timeFormat('%Y')))
+      .call(sel => sel.selectAll('text').attr('fill', 'rgb(163 163 163)'))
+      .call(sel => sel.selectAll('line, path').attr('stroke', 'rgb(82 82 82)'))
+
+    g.select('.y-axis')
+      .call(d3.axisLeft(yScale).ticks(4).tickFormat(v => `${(v / 1_000_000).toFixed(1)}M`))
+      .call(sel => sel.selectAll('text').attr('fill', 'rgb(163 163 163)'))
+      .call(sel => sel.selectAll('line, path').attr('stroke', 'rgb(82 82 82)'))
+
+    const line = d3.line()
+      .x((_, i) => xScale(dates[i]))
+      .y(v => yScale(v))
+      .curve(d3.curveMonotoneX)
+
+    g.select('.production-line').attr('d', line(data.production))
+    g.select('.exports-line').attr('d', line(data.exports))
   }
 
   subscribe((next, prev) => {
