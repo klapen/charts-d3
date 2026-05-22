@@ -109,6 +109,36 @@ def compute_tiers(nodes: list[dict], edges: list[dict]) -> dict:
     }
 
 
+def build_colombia_monthly() -> None:
+    """Emit viz/coffee-trade/data/colombia-monthly.json from the FNC parquet."""
+    parquet = PROCESSED / "colombia_monthly.parquet"
+    if not parquet.exists():
+        log.warning("Skipping colombia-monthly: %s not found (run transform_fnc.py first)", parquet)
+        return
+
+    df = duckdb.connect(":memory:").execute(
+        f"SELECT year_month, production_bags, exports_bags "
+        f"FROM read_parquet('{_sql_path(parquet)}') ORDER BY year_month"
+    ).df()
+
+    annual = {}
+    for ym, prod, exp in zip(df["year_month"], df["production_bags"], df["exports_bags"]):
+        y = ym[:4]
+        slot = annual.setdefault(y, {"production": 0, "exports": 0})
+        slot["production"] += int(prod)
+        slot["exports"]    += int(exp)
+
+    payload = {
+        "unit": "60kg bags",
+        "months":     df["year_month"].tolist(),
+        "production": [int(v) for v in df["production_bags"]],
+        "exports":    [int(v) for v in df["exports_bags"]],
+        "annualTotals": annual,
+    }
+    (VIZ_DATA / "colombia-monthly.json").write_text(json.dumps(payload, separators=(",", ":")))
+    log.info("Wrote colombia-monthly.json with %d months", len(payload["months"]))
+
+
 def main() -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     VIZ_DATA.mkdir(parents=True, exist_ok=True)
@@ -170,6 +200,8 @@ def main() -> int:
                 json.dumps(payload, separators=(",", ":"))
             )
         log.info("Wrote 3 files for year %d", year)
+
+    build_colombia_monthly()
 
     log.info("Done. meta.json + %d year files", len(years) * 3)
     return 0
