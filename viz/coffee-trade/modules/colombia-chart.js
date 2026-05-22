@@ -22,16 +22,21 @@ export function wireColombiaChart() {
   let xScale = null
   let innerH = 0
 
+  let resizeRaf = 0
   const ro = new ResizeObserver(entries => {
     const { width, height } = entries[0].contentRect
     if (width === 0) return
     dims = { width, height }
-    if (!hasBooted) {
-      hasBooted = true
-      loadColombiaMonthly().then(d => { data = d; render() })
-    } else if (data) {
-      render()
-    }
+    if (resizeRaf) cancelAnimationFrame(resizeRaf)
+    resizeRaf = requestAnimationFrame(() => {
+      resizeRaf = 0
+      if (!hasBooted) {
+        hasBooted = true
+        loadColombiaMonthly().then(d => { data = d; render() })
+      } else if (data) {
+        render()
+      }
+    })
   })
   ro.observe(root)
 
