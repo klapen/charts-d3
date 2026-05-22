@@ -12,6 +12,8 @@ export function wireColombiaChart() {
   let svg = null
   let dims = { width: 0, height: 0 }
   let hasBooted = false
+  let xScale = null
+  let innerH = 0
 
   const ro = new ResizeObserver(entries => {
     const { width, height } = entries[0].contentRect
@@ -31,10 +33,10 @@ export function wireColombiaChart() {
     if (!data || width === 0) return
 
     const innerW = Math.max(0, width  - MARGIN.left - MARGIN.right)
-    const innerH = Math.max(0, height - MARGIN.top  - MARGIN.bottom)
+    innerH = Math.max(0, height - MARGIN.top  - MARGIN.bottom)
 
     const dates = data.months.map(m => new Date(m + '-01'))
-    const xScale = d3.scaleTime().domain(d3.extent(dates)).range([0, innerW])
+    xScale = d3.scaleTime().domain(d3.extent(dates)).range([0, innerW])
     const yMax   = d3.max(data.production)
     const yScale = d3.scaleLinear().domain([0, yMax]).nice().range([innerH, 0])
 
@@ -79,9 +81,23 @@ export function wireColombiaChart() {
 
     g.select('.production-line').attr('d', line(data.production))
     g.select('.exports-line').attr('d', line(data.exports))
+
+    updateBand()
+  }
+
+  function updateBand() {
+    const { year } = getState()
+    if (!year || !svg || !xScale) return
+    const x0 = xScale(new Date(`${year}-01-01`))
+    const x1 = xScale(new Date(`${year}-12-31`))
+    svg.select('rect.year-band')
+      .attr('x', x0)
+      .attr('y', 0)
+      .attr('width', Math.max(0, x1 - x0))
+      .attr('height', innerH)
   }
 
   subscribe((next, prev) => {
-    // populated in Tasks 9 and 11
+    if (next.year !== prev.year) updateBand()
   })
 }
