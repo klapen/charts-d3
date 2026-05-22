@@ -34,6 +34,35 @@
     </header>
 
     <main class="max-w-6xl mx-auto px-6 py-6">
+      <nav id="story-tabs" role="tablist" aria-label="Story"
+           class="mb-4 flex flex-wrap gap-1 border-b border-neutral-800">
+        <button role="tab" data-tab="insights" aria-selected="true"
+                class="story-tab px-3 py-2 text-sm border-b-2 border-transparent text-neutral-300 hover:text-neutral-50"
+                data-en="Insights" data-es="Hallazgos">Insights</button>
+        <button role="tab" data-tab="recent" aria-selected="false"
+                class="story-tab px-3 py-2 text-sm border-b-2 border-transparent text-neutral-400 hover:text-neutral-50"
+                data-en="Last 2 years" data-es="&Uacute;ltimos 2 a&ntilde;os">Last 2 years</button>
+        <button role="tab" data-tab="colombia" aria-selected="false"
+                class="story-tab px-3 py-2 text-sm border-b-2 border-transparent text-neutral-400 hover:text-neutral-50"
+                data-en="Colombia opportunities" data-es="Oportunidades de Colombia">Colombia opportunities</button>
+        <button role="tab" data-tab="corridors" aria-selected="false"
+                class="story-tab px-3 py-2 text-sm border-b-2 border-transparent text-neutral-400 hover:text-neutral-50"
+                data-en="Corridors" data-es="Corredores">Corridors</button>
+      </nav>
+
+      <section id="colombia-chart"
+               class="mx-auto w-full max-w-screen-2xl px-4 mb-4"
+               hidden
+               aria-labelledby="colombia-chart-title">
+        <h2 id="colombia-chart-title"
+            class="text-sm font-medium text-neutral-200 mb-2"
+            data-en="Production vs. Exports — Colombia (2015–2023)"
+            data-es="Producción vs. Exportaciones — Colombia (2015–2023)">
+          Production vs. Exports — Colombia (2015–2023)
+        </h2>
+        <div id="colombia-chart-canvas" class="relative w-full h-[200px] md:h-[200px]"></div>
+      </section>
+
       <div class="grid gap-4 lg:grid-cols-3">
         <div class="lg:col-span-2 min-w-0">
           <div id="chart" role="img" aria-label="Global coffee trade flows"
@@ -116,6 +145,488 @@
           </div>
         </aside>
       </div>
+
+      <section id="narrative" class="mt-6 text-sm text-neutral-300 leading-relaxed">
+
+        <article data-panel="insights" data-lang="en" class="narrative-panel">
+          <h2 class="text-lg font-semibold text-neutral-100 mb-2">Global picture, 2015&ndash;2023</h2>
+          <p class="text-neutral-400 mb-4">UN Comtrade HS&nbsp;0901: 118,099 reported bilateral flows across 9 years.</p>
+
+          <div class="grid gap-3 sm:grid-cols-3 mb-4">
+            <div class="rounded-lg border border-neutral-800 bg-neutral-900/40 p-3">
+              <div class="text-xs uppercase tracking-wide text-neutral-500">Trade value</div>
+              <div class="text-xl font-semibold text-neutral-50">$30B &rarr; $42B</div>
+              <div class="text-xs text-neutral-400">+42% in 9 years</div>
+            </div>
+            <div class="rounded-lg border border-neutral-800 bg-neutral-900/40 p-3">
+              <div class="text-xs uppercase tracking-wide text-neutral-500">Green volume</div>
+              <div class="text-xl font-semibold text-neutral-50">~6.5 Bn kg</div>
+              <div class="text-xs text-neutral-400">essentially flat</div>
+            </div>
+            <div class="rounded-lg border border-neutral-800 bg-neutral-900/40 p-3">
+              <div class="text-xs uppercase tracking-wide text-neutral-500">Green price/kg</div>
+              <div class="text-xl font-semibold text-neutral-50">$2.51 &rarr; $4.22</div>
+              <div class="text-xs text-neutral-400">price shock, not growth</div>
+            </div>
+          </div>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">Roasted is the real growth story</h3>
+          <p class="mb-3">Roasted coffee value climbed steadily from $9.3B to $15.2B with no spike &mdash; while green's share of total value fell from 68% to 64%. The 2022 surge in the chart above is green coffee re-pricing, not new demand.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">Re-export Europe dominates</h3>
+          <p class="mb-2">Europe imports <strong>$22.4B</strong> and exports <strong>$14.6B</strong> &mdash; nearly half the world's coffee passes through it twice.</p>
+          <ul class="list-disc pl-5 space-y-1 mb-3 text-neutral-400">
+            <li><strong class="text-neutral-200">Switzerland</strong> exports $3.85B/year while growing none &mdash; that's Nespresso. Switzerland &rarr; France ($1.1B) and Switzerland &rarr; USA ($1.08B) are the two largest roasted flows in the dataset.</li>
+            <li><strong class="text-neutral-200">Germany</strong> ($2.68B exp / $3.50B imp) and <strong class="text-neutral-200">Italy</strong> ($2.61B / $2.49B) operate as near-perfect re-export hubs.</li>
+            <li><strong class="text-neutral-200">South America</strong> ships $12.2B out and brings $0.7B in &mdash; a pure origin region.</li>
+          </ul>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">Winners and losers since 2015</h3>
+          <p class="mb-1">Biggest export gains (% terms): Netherlands +176%, Uganda +157%, Italy +92%, Switzerland +88%, Ethiopia +68%.</p>
+          <p class="mb-3">Only major origin to lose ground: <strong class="text-neutral-200">Indonesia (-18%)</strong>. Every other top-15 exporter grew.</p>
+
+          <p class="text-xs text-neutral-500 italic">Tip: switch tabs above to drill into the Colombia angle and the Asian corridor stories.</p>
+        </article>
+
+        <article data-panel="recent" data-lang="en" class="narrative-panel" hidden>
+          <h2 class="text-lg font-semibold text-neutral-100 mb-2">Last 2 years: the spike and the partial reversion</h2>
+          <p class="text-neutral-400 mb-4">2022 was an outlier driven by Brazilian frost &amp; supply shock. 2023 walked it back &mdash; but not completely. What persisted, and what didn't, is the real story.</p>
+
+          <div class="grid gap-3 sm:grid-cols-3 mb-4">
+            <div class="rounded-lg border border-neutral-800 bg-neutral-900/40 p-3">
+              <div class="text-xs uppercase tracking-wide text-neutral-500">Total value</div>
+              <div class="text-lg font-semibold text-neutral-50">$34.8B &rarr; $45.3B &rarr; $42.0B</div>
+              <div class="text-xs text-neutral-400">2021 &middot; 2022 &middot; 2023</div>
+            </div>
+            <div class="rounded-lg border border-neutral-800 bg-neutral-900/40 p-3">
+              <div class="text-xs uppercase tracking-wide text-neutral-500">Green price/kg</div>
+              <div class="text-lg font-semibold text-neutral-50">$2.97 &rarr; $4.22 &rarr; $3.98</div>
+              <div class="text-xs text-neutral-400">spiked +42%, gave back 6%</div>
+            </div>
+            <div class="rounded-lg border border-neutral-800 bg-neutral-900/40 p-3">
+              <div class="text-xs uppercase tracking-wide text-neutral-500">Volume (Bn kg)</div>
+              <div class="text-lg font-semibold text-neutral-50">8.55 &rarr; 8.66 &rarr; <span class="text-rose-400">8.01</span></div>
+              <div class="text-xs text-neutral-400">2023 volume <em>dropped</em> 7.5%</div>
+            </div>
+          </div>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">Roasted didn't blink</h3>
+          <p class="mb-3">While green coffee bounced from $21B to $31B back to $27B, <strong>roasted climbed steadily</strong>: $13.4B &rarr; $14.5B &rarr; $15.2B. That's the proof that real consumer demand is still growing &mdash; the green spike was a producer-side shock, not a demand surge.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">Biggest flow shifts 2022 &rarr; 2023</h3>
+          <div class="overflow-x-auto mb-3">
+            <table class="w-full text-xs">
+              <thead class="text-neutral-500">
+                <tr><th class="text-left py-1 pr-2">Flow</th>
+                    <th class="text-right py-1 px-2">2022</th>
+                    <th class="text-right py-1 px-2">2023</th>
+                    <th class="text-right py-1 pl-2">&Delta;</th></tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr><td>Switzerland &rarr; USA <span class="text-neutral-500">(capsules)</span></td><td class="text-right tabular-nums">$873M</td><td class="text-right tabular-nums">$1.14B</td><td class="text-right tabular-nums text-emerald-400">+$265M</td></tr>
+                <tr><td>Brazil &rarr; China</td><td class="text-right tabular-nums">$78M</td><td class="text-right tabular-nums">$221M</td><td class="text-right tabular-nums text-emerald-400">+$143M</td></tr>
+                <tr><td>Vietnam &rarr; Spain</td><td class="text-right tabular-nums">$267M</td><td class="text-right tabular-nums">$343M</td><td class="text-right tabular-nums text-emerald-400">+$76M</td></tr>
+                <tr><td>Brazil &rarr; USA</td><td class="text-right tabular-nums">$2.15B</td><td class="text-right tabular-nums">$1.41B</td><td class="text-right tabular-nums text-rose-400">&minus;$744M</td></tr>
+                <tr><td>Brazil &rarr; Germany</td><td class="text-right tabular-nums">$1.68B</td><td class="text-right tabular-nums">$1.07B</td><td class="text-right tabular-nums text-rose-400">&minus;$607M</td></tr>
+                <tr><td>Colombia &rarr; USA</td><td class="text-right tabular-nums">$1.98B</td><td class="text-right tabular-nums">$1.41B</td><td class="text-right tabular-nums text-rose-400">&minus;$575M</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-3 text-neutral-400">Note: Switzerland &rarr; USA <em>grew</em> while every Latin American green-coffee corridor shrank. The capsule layer captured the spike margin; raw-bean exporters gave it back.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">The Russia exception</h3>
+          <p class="mb-3">One major market broke. Russian coffee imports collapsed from <strong>$796M / 246kt</strong> (2021) to <strong>$422M / 94kt</strong> (2023) &mdash; a 62% volume drop. Sanctions, payment friction, and ruble devaluation closed a market that had been growing steadily for a decade.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">What it means for Colombia</h3>
+          <ul class="list-disc pl-5 space-y-1 text-neutral-300">
+            <li>2022 was a <strong>one-time windfall</strong> ($4.37B). Cash flow was great; don't budget the new normal off it.</li>
+            <li>Colombian volume fell from <strong>700kt to 602kt</strong> in just 2 years (&minus;14%). That's a production-side problem, not a market-share problem.</li>
+            <li>The USA corridor is back to long-run trend &mdash; recovery is unlikely to come from the same customers.</li>
+            <li>Tip: scrub the year slider above between 2022 and 2023 to see the spike and reversion play out in the chart.</li>
+          </ul>
+        </article>
+
+        <article data-panel="colombia" data-lang="en" class="narrative-panel" hidden>
+          <h2 class="text-lg font-semibold text-neutral-100 mb-2">Where Colombia should focus</h2>
+          <p class="text-neutral-400 mb-4">The 42% global value spike masks Colombia losing volume in legacy markets. Real growth lives in three corridors.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-2 mb-1">Real growth (volume <em>and</em> value)</h3>
+          <div class="overflow-x-auto mb-4">
+            <table class="w-full text-xs">
+              <thead class="text-neutral-500">
+                <tr><th class="text-left py-1 pr-2">Destination</th>
+                    <th class="text-right py-1 px-2">2015 kt</th>
+                    <th class="text-right py-1 px-2">2023 kt</th>
+                    <th class="text-right py-1 px-2">Vol &Delta;</th>
+                    <th class="text-right py-1 pl-2">Value 2023</th></tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr><td>China</td><td class="text-right tabular-nums">2.5</td><td class="text-right tabular-nums">21.5</td><td class="text-right tabular-nums text-emerald-400">+777%</td><td class="text-right tabular-nums">$111M</td></tr>
+                <tr><td>South Korea</td><td class="text-right tabular-nums">21.7</td><td class="text-right tabular-nums">27.9</td><td class="text-right tabular-nums text-emerald-400">+28%</td><td class="text-right tabular-nums">$153M</td></tr>
+                <tr><td>Australia</td><td class="text-right tabular-nums">8.1</td><td class="text-right tabular-nums">11.1</td><td class="text-right tabular-nums text-emerald-400">+37%</td><td class="text-right tabular-nums">$65M</td></tr>
+                <tr><td>Switzerland</td><td class="text-right tabular-nums">25.4</td><td class="text-right tabular-nums">31.7</td><td class="text-right tabular-nums text-emerald-400">+25%</td><td class="text-right tabular-nums">$211M</td></tr>
+                <tr><td>Saudi Arabia + UAE + Turkey</td><td class="text-right tabular-nums">&lt;1</td><td class="text-right tabular-nums">~13</td><td class="text-right tabular-nums text-emerald-400">+800-2000%</td><td class="text-right tabular-nums">$52M combined</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">Volume bleeding (price spike is masking the decline)</h3>
+          <div class="overflow-x-auto mb-4">
+            <table class="w-full text-xs">
+              <thead class="text-neutral-500">
+                <tr><th class="text-left py-1 pr-2">Destination</th>
+                    <th class="text-right py-1 px-2">2015 kt</th>
+                    <th class="text-right py-1 px-2">2023 kt</th>
+                    <th class="text-right py-1 pl-2">Vol &Delta;</th></tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr><td>Japan</td><td class="text-right tabular-nums">79.3</td><td class="text-right tabular-nums">34.1</td><td class="text-right tabular-nums text-rose-400">&minus;57%</td></tr>
+                <tr><td>United States</td><td class="text-right tabular-nums">318.5</td><td class="text-right tabular-nums">255.6</td><td class="text-right tabular-nums text-rose-400">&minus;20%</td></tr>
+                <tr><td>Finland</td><td class="text-right tabular-nums">17.7</td><td class="text-right tabular-nums">6.5</td><td class="text-right tabular-nums text-rose-400">&minus;63%</td></tr>
+                <tr><td>Germany / Italy / UK / Spain</td><td class="text-right tabular-nums">&mdash;</td><td class="text-right tabular-nums">&mdash;</td><td class="text-right tabular-nums text-rose-400">&minus;30 to &minus;38%</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">The roasted insight</h3>
+          <p class="mb-2">Roasted share of Colombia's exports by destination in 2023:</p>
+          <ul class="list-disc pl-5 space-y-1 mb-3 text-neutral-400">
+            <li>USA, Canada: <strong class="text-neutral-200">~5%</strong> roasted</li>
+            <li>Switzerland, Germany, Netherlands, Italy: <strong class="text-neutral-200">0%</strong> roasted</li>
+            <li>Argentina: <strong class="text-emerald-400">29%</strong> roasted</li>
+            <li>Chile: <strong class="text-emerald-400">76%</strong> roasted</li>
+          </ul>
+          <p class="mb-3 text-neutral-400">Latin neighbours buy your roasted coffee; the rest of the world refuses to. This isn't a quality issue &mdash; it's market structure. Markets without a dominant local roasting incumbent let value-added Colombian product in.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">3-stage roadmap</h3>
+          <ol class="list-decimal pl-5 space-y-1 text-neutral-300">
+            <li><strong>Year 1:</strong> Direct-trade specialty green &rarr; US specialty + Korea + Australia.</li>
+            <li><strong>Year 2:</strong> Roasted product launch &rarr; Chile/Argentina (proven), then UAE/Saudi.</li>
+            <li><strong>Year 3:</strong> Roasted-at-origin scale &rarr; China, where the market is big enough and there's no incumbent to displace.</li>
+          </ol>
+        </article>
+
+        <article data-panel="corridors" data-lang="en" class="narrative-panel" hidden>
+          <h2 class="text-lg font-semibold text-neutral-100 mb-2">Three corridors, three stories</h2>
+          <p class="text-neutral-400 mb-4">China, South Korea and Japan are at very different points in their coffee market lifecycle. Colombia needs a different play in each.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-2 mb-1">🇨🇳 China &mdash; explosive growth, losing the share race</h3>
+          <p class="mb-2">Market: $230M &rarr; $808M (+251%). Green coffee 5&times; in 9 years. Real new demand, not re-pricing.</p>
+          <div class="overflow-x-auto mb-3">
+            <table class="w-full text-xs">
+              <thead class="text-neutral-500">
+                <tr><th class="text-left py-1 pr-2">Supplier</th>
+                    <th class="text-right py-1 px-2">2015&rarr;2023 gain</th>
+                    <th class="text-right py-1 pl-2">2023 unit price</th></tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr><td>Brazil</td><td class="text-right tabular-nums">+$209M</td><td class="text-right tabular-nums">$3.71/kg</td></tr>
+                <tr><td>Ethiopia</td><td class="text-right tabular-nums">+$138M</td><td class="text-right tabular-nums">$6.47/kg</td></tr>
+                <tr><td><strong>Colombia</strong></td><td class="text-right tabular-nums">+$102M</td><td class="text-right tabular-nums">$5.14/kg</td></tr>
+                <tr><td>Vietnam</td><td class="text-right tabular-nums text-rose-400">&minus;$42M</td><td class="text-right tabular-nums">$2.57/kg</td></tr>
+                <tr><td>Panama (Geisha)</td><td class="text-right tabular-nums">+$14M</td><td class="text-right tabular-nums">$50.19/kg</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-3 text-neutral-400">Colombia is in no-man's land: too pricey to beat Brazil on bulk, not premium enough to beat Ethiopia on story or Panama on ceiling. Push premium varietals (Geisha, Pink Bourbon, Sidra) into the Ethiopian price tier &mdash; not the Brazilian one.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">🇰🇷 South Korea &mdash; the cleanest opportunity</h3>
+          <p class="mb-2">Market: $547M &rarr; $1,112M (+103%). Roasted imports tripled: $107M &rarr; $366M. Korea already pays for European value-add.</p>
+          <div class="overflow-x-auto mb-3">
+            <table class="w-full text-xs">
+              <thead class="text-neutral-500">
+                <tr><th class="text-left py-1 pr-2">Supplier 2023</th>
+                    <th class="text-right py-1 px-2">Value</th>
+                    <th class="text-right py-1 pl-2">Unit price</th></tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr><td>Brazil</td><td class="text-right tabular-nums">$205M</td><td class="text-right tabular-nums">$4.07/kg <span class="text-neutral-500">green</span></td></tr>
+                <tr><td><strong>Colombia</strong></td><td class="text-right tabular-nums">$153M</td><td class="text-right tabular-nums">$5.49/kg <span class="text-neutral-500">green</span></td></tr>
+                <tr><td>USA</td><td class="text-right tabular-nums">$132M</td><td class="text-right tabular-nums">$14.97/kg <span class="text-neutral-500">roasted</span></td></tr>
+                <tr><td>Switzerland</td><td class="text-right tabular-nums">$118M</td><td class="text-right tabular-nums">$35.29/kg <span class="text-neutral-500">capsules</span></td></tr>
+                <tr><td>Italy</td><td class="text-right tabular-nums">$54M</td><td class="text-right tabular-nums">$21.56/kg <span class="text-neutral-500">roasted</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-3 text-neutral-400">Koreans pay <strong class="text-neutral-200">$35/kg</strong> for Swiss-roasted Colombian beans and <strong class="text-neutral-200">$5.49/kg</strong> for the same beans green. The middleman captures <strong class="text-emerald-400">~$30/kg of pure margin</strong> you could fight for. No dominant local roaster monopoly, KOR&ndash;COL FTA tariffs favor you. This is the market for roasted-at-origin.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">🇯🇵 Japan &mdash; structural decline, defend the specialty pocket</h3>
+          <p class="mb-2">Market: $1,592M &rarr; $1,565M (value flat, volume <strong class="text-rose-400">&minus;18%</strong>). Roasted barely moves. Demographically shrinking.</p>
+          <div class="overflow-x-auto mb-3">
+            <table class="w-full text-xs">
+              <thead class="text-neutral-500">
+                <tr><th class="text-left py-1 pr-2">Supplier</th>
+                    <th class="text-right py-1 px-2">2015</th>
+                    <th class="text-right py-1 px-2">2023</th>
+                    <th class="text-right py-1 pl-2">&Delta;</th></tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr><td>Vietnam</td><td class="text-right tabular-nums">$157M</td><td class="text-right tabular-nums">$260M</td><td class="text-right tabular-nums text-emerald-400">+$103M</td></tr>
+                <tr><td><strong>Colombia</strong></td><td class="text-right tabular-nums">$307M</td><td class="text-right tabular-nums">$187M</td><td class="text-right tabular-nums text-rose-400">&minus;$120M</td></tr>
+                <tr><td>Indonesia</td><td class="text-right tabular-nums">$113M</td><td class="text-right tabular-nums">$69M</td><td class="text-right tabular-nums text-rose-400">&minus;$44M</td></tr>
+                <tr><td>Brazil</td><td class="text-right tabular-nums">$506M</td><td class="text-right tabular-nums">$482M</td><td class="text-right tabular-nums text-rose-400">&minus;$25M</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-3 text-neutral-400">Colombia's $120M decline in Japan is the single largest supplier loss in the entire 9-year dataset &mdash; Vietnam ate exactly that share via cheap robusta for canned/convenience coffee. Don't fight to recover that volume. Defend specialty (Maruyama, Onibus, Glitch&hellip;) and treat Japan as a brand-prestige market.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">Strategic summary</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs">
+              <thead class="text-neutral-500">
+                <tr><th class="text-left py-1 pr-2">Market</th>
+                    <th class="text-left py-1 px-2">Play</th>
+                    <th class="text-left py-1 pl-2">Priority</th></tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr><td><strong>South Korea</strong></td><td>Roasted-at-origin attack on Swiss/Italian re-exports</td><td class="text-emerald-400">#1</td></tr>
+                <tr><td><strong>China</strong></td><td>Premium varietal positioning &mdash; fight Ethiopia, not Brazil</td><td class="text-emerald-400">#2</td></tr>
+                <tr><td><strong>Japan</strong></td><td>Specialty defense only &mdash; hold the high end</td><td class="text-amber-400">maintenance</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article data-panel="insights" data-lang="es" class="narrative-panel" hidden>
+          <h2 class="text-lg font-semibold text-neutral-100 mb-2">Panorama global, 2015&ndash;2023</h2>
+          <p class="text-neutral-400 mb-4">UN Comtrade HS&nbsp;0901: 118.099 flujos bilaterales reportados en 9 a&ntilde;os.</p>
+
+          <div class="grid gap-3 sm:grid-cols-3 mb-4">
+            <div class="rounded-lg border border-neutral-800 bg-neutral-900/40 p-3">
+              <div class="text-xs uppercase tracking-wide text-neutral-500">Valor del comercio</div>
+              <div class="text-xl font-semibold text-neutral-50">$30B &rarr; $42B</div>
+              <div class="text-xs text-neutral-400">+42% en 9 a&ntilde;os</div>
+            </div>
+            <div class="rounded-lg border border-neutral-800 bg-neutral-900/40 p-3">
+              <div class="text-xs uppercase tracking-wide text-neutral-500">Volumen (verde)</div>
+              <div class="text-xl font-semibold text-neutral-50">~6,5 Bn kg</div>
+              <div class="text-xs text-neutral-400">pr&aacute;cticamente plano</div>
+            </div>
+            <div class="rounded-lg border border-neutral-800 bg-neutral-900/40 p-3">
+              <div class="text-xs uppercase tracking-wide text-neutral-500">Precio verde/kg</div>
+              <div class="text-xl font-semibold text-neutral-50">$2,51 &rarr; $4,22</div>
+              <div class="text-xs text-neutral-400">choque de precio, no crecimiento</div>
+            </div>
+          </div>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">El tostado es la verdadera historia de crecimiento</h3>
+          <p class="mb-3">El valor del caf&eacute; tostado subi&oacute; de forma constante de $9,3B a $15,2B sin picos &mdash; mientras la participaci&oacute;n del verde en el valor total cay&oacute; del 68% al 64%. El alza de 2022 en el gr&aacute;fico es re-fijaci&oacute;n de precio del verde, no demanda nueva.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">La Europa re-exportadora domina</h3>
+          <p class="mb-2">Europa importa <strong>$22,4B</strong> y exporta <strong>$14,6B</strong> &mdash; casi la mitad del caf&eacute; mundial pasa por all&iacute; dos veces.</p>
+          <ul class="list-disc pl-5 space-y-1 mb-3 text-neutral-400">
+            <li><strong class="text-neutral-200">Suiza</strong> exporta $3,85B/a&ntilde;o sin cultivar nada &mdash; es Nespresso. Suiza &rarr; Francia ($1,1B) y Suiza &rarr; EE.UU. ($1,08B) son los dos flujos de tostado m&aacute;s grandes en los datos.</li>
+            <li><strong class="text-neutral-200">Alemania</strong> ($2,68B exp / $3,50B imp) e <strong class="text-neutral-200">Italia</strong> ($2,61B / $2,49B) operan como centros de re-exportaci&oacute;n casi perfectos.</li>
+            <li><strong class="text-neutral-200">Sudam&eacute;rica</strong> exporta $12,2B y solo importa $0,7B &mdash; una regi&oacute;n de puro origen.</li>
+          </ul>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">Ganadores y perdedores desde 2015</h3>
+          <p class="mb-1">Mayores ganancias en exportaciones (%): Pa&iacute;ses Bajos +176%, Uganda +157%, Italia +92%, Suiza +88%, Etiop&iacute;a +68%.</p>
+          <p class="mb-3">&Uacute;nico origen relevante que perdi&oacute; terreno: <strong class="text-neutral-200">Indonesia (-18%)</strong>. Los dem&aacute;s 14 grandes exportadores crecieron.</p>
+
+          <p class="text-xs text-neutral-500 italic">Tip: cambia las pesta&ntilde;as de arriba para profundizar en la perspectiva de Colombia y los corredores asi&aacute;ticos.</p>
+        </article>
+
+        <article data-panel="recent" data-lang="es" class="narrative-panel" hidden>
+          <h2 class="text-lg font-semibold text-neutral-100 mb-2">&Uacute;ltimos 2 a&ntilde;os: el pico y la reversi&oacute;n parcial</h2>
+          <p class="text-neutral-400 mb-4">2022 fue un a&ntilde;o at&iacute;pico, empujado por la helada en Brasil y choques de oferta. 2023 retrocedi&oacute; &mdash; pero no del todo. Lo que persisti&oacute;, y lo que no, es la historia real.</p>
+
+          <div class="grid gap-3 sm:grid-cols-3 mb-4">
+            <div class="rounded-lg border border-neutral-800 bg-neutral-900/40 p-3">
+              <div class="text-xs uppercase tracking-wide text-neutral-500">Valor total</div>
+              <div class="text-lg font-semibold text-neutral-50">$34,8B &rarr; $45,3B &rarr; $42,0B</div>
+              <div class="text-xs text-neutral-400">2021 &middot; 2022 &middot; 2023</div>
+            </div>
+            <div class="rounded-lg border border-neutral-800 bg-neutral-900/40 p-3">
+              <div class="text-xs uppercase tracking-wide text-neutral-500">Precio verde/kg</div>
+              <div class="text-lg font-semibold text-neutral-50">$2,97 &rarr; $4,22 &rarr; $3,98</div>
+              <div class="text-xs text-neutral-400">subi&oacute; +42%, devolvi&oacute; 6%</div>
+            </div>
+            <div class="rounded-lg border border-neutral-800 bg-neutral-900/40 p-3">
+              <div class="text-xs uppercase tracking-wide text-neutral-500">Volumen (Bn kg)</div>
+              <div class="text-lg font-semibold text-neutral-50">8,55 &rarr; 8,66 &rarr; <span class="text-rose-400">8,01</span></div>
+              <div class="text-xs text-neutral-400">en 2023 el volumen <em>cay&oacute;</em> 7,5%</div>
+            </div>
+          </div>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">El tostado no se inmut&oacute;</h3>
+          <p class="mb-3">Mientras el caf&eacute; verde rebot&oacute; de $21B a $31B y volvi&oacute; a $27B, el <strong>tostado subi&oacute; de forma constante</strong>: $13,4B &rarr; $14,5B &rarr; $15,2B. Esa es la prueba de que la demanda real del consumidor sigue creciendo &mdash; el pico del verde fue un choque del lado productor, no un alza de demanda.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">Mayores movimientos de flujo 2022 &rarr; 2023</h3>
+          <div class="overflow-x-auto mb-3">
+            <table class="w-full text-xs">
+              <thead class="text-neutral-500">
+                <tr><th class="text-left py-1 pr-2">Flujo</th>
+                    <th class="text-right py-1 px-2">2022</th>
+                    <th class="text-right py-1 px-2">2023</th>
+                    <th class="text-right py-1 pl-2">&Delta;</th></tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr><td>Suiza &rarr; EE.UU. <span class="text-neutral-500">(c&aacute;psulas)</span></td><td class="text-right tabular-nums">$873M</td><td class="text-right tabular-nums">$1,14B</td><td class="text-right tabular-nums text-emerald-400">+$265M</td></tr>
+                <tr><td>Brasil &rarr; China</td><td class="text-right tabular-nums">$78M</td><td class="text-right tabular-nums">$221M</td><td class="text-right tabular-nums text-emerald-400">+$143M</td></tr>
+                <tr><td>Vietnam &rarr; Espa&ntilde;a</td><td class="text-right tabular-nums">$267M</td><td class="text-right tabular-nums">$343M</td><td class="text-right tabular-nums text-emerald-400">+$76M</td></tr>
+                <tr><td>Brasil &rarr; EE.UU.</td><td class="text-right tabular-nums">$2,15B</td><td class="text-right tabular-nums">$1,41B</td><td class="text-right tabular-nums text-rose-400">&minus;$744M</td></tr>
+                <tr><td>Brasil &rarr; Alemania</td><td class="text-right tabular-nums">$1,68B</td><td class="text-right tabular-nums">$1,07B</td><td class="text-right tabular-nums text-rose-400">&minus;$607M</td></tr>
+                <tr><td>Colombia &rarr; EE.UU.</td><td class="text-right tabular-nums">$1,98B</td><td class="text-right tabular-nums">$1,41B</td><td class="text-right tabular-nums text-rose-400">&minus;$575M</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-3 text-neutral-400">Observaci&oacute;n: Suiza &rarr; EE.UU. <em>creci&oacute;</em> mientras todos los corredores latinoamericanos de verde se contrajeron. La capa de c&aacute;psulas captur&oacute; el margen del pico; los exportadores de grano lo devolvieron.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">La excepci&oacute;n rusa</h3>
+          <p class="mb-3">Un mercado importante se rompi&oacute;. Las importaciones rusas de caf&eacute; cayeron de <strong>$796M / 246kt</strong> (2021) a <strong>$422M / 94kt</strong> (2023) &mdash; una ca&iacute;da de 62% en volumen. Sanciones, fricci&oacute;n en pagos y devaluaci&oacute;n del rublo cerraron un mercado que ven&iacute;a creciendo de forma estable durante una d&eacute;cada.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">Qu&eacute; significa para Colombia</h3>
+          <ul class="list-disc pl-5 space-y-1 text-neutral-300">
+            <li>2022 fue un <strong>golpe de suerte irrepetible</strong> ($4,37B). Excelente para caja; no presupuestes la nueva normalidad sobre esa cifra.</li>
+            <li>El volumen colombiano cay&oacute; de <strong>700kt a 602kt</strong> en solo 2 a&ntilde;os (&minus;14%). Es un problema de producci&oacute;n, no de participaci&oacute;n de mercado.</li>
+            <li>El corredor a EE.UU. volvi&oacute; a su tendencia de largo plazo &mdash; la recuperaci&oacute;n probablemente no vendr&aacute; de los mismos clientes.</li>
+            <li>Tip: arrastra el slider de a&ntilde;o entre 2022 y 2023 para ver el pico y la reversi&oacute;n en el gr&aacute;fico de arriba.</li>
+          </ul>
+        </article>
+
+        <article data-panel="colombia" data-lang="es" class="narrative-panel" hidden>
+          <h2 class="text-lg font-semibold text-neutral-100 mb-2">D&oacute;nde debe enfocarse Colombia</h2>
+          <p class="text-neutral-400 mb-4">El alza del 42% en valor global oculta que Colombia est&aacute; perdiendo volumen en mercados tradicionales. El crecimiento real vive en tres corredores.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-2 mb-1">Crecimiento real (volumen <em>y</em> valor)</h3>
+          <div class="overflow-x-auto mb-4">
+            <table class="w-full text-xs">
+              <thead class="text-neutral-500">
+                <tr><th class="text-left py-1 pr-2">Destino</th>
+                    <th class="text-right py-1 px-2">2015 kt</th>
+                    <th class="text-right py-1 px-2">2023 kt</th>
+                    <th class="text-right py-1 px-2">&Delta; Vol</th>
+                    <th class="text-right py-1 pl-2">Valor 2023</th></tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr><td>China</td><td class="text-right tabular-nums">2,5</td><td class="text-right tabular-nums">21,5</td><td class="text-right tabular-nums text-emerald-400">+777%</td><td class="text-right tabular-nums">$111M</td></tr>
+                <tr><td>Corea del Sur</td><td class="text-right tabular-nums">21,7</td><td class="text-right tabular-nums">27,9</td><td class="text-right tabular-nums text-emerald-400">+28%</td><td class="text-right tabular-nums">$153M</td></tr>
+                <tr><td>Australia</td><td class="text-right tabular-nums">8,1</td><td class="text-right tabular-nums">11,1</td><td class="text-right tabular-nums text-emerald-400">+37%</td><td class="text-right tabular-nums">$65M</td></tr>
+                <tr><td>Suiza</td><td class="text-right tabular-nums">25,4</td><td class="text-right tabular-nums">31,7</td><td class="text-right tabular-nums text-emerald-400">+25%</td><td class="text-right tabular-nums">$211M</td></tr>
+                <tr><td>Arabia Saudita + EAU + Turqu&iacute;a</td><td class="text-right tabular-nums">&lt;1</td><td class="text-right tabular-nums">~13</td><td class="text-right tabular-nums text-emerald-400">+800-2000%</td><td class="text-right tabular-nums">$52M combinado</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">Volumen en ca&iacute;da (el alza de precio oculta la baja)</h3>
+          <div class="overflow-x-auto mb-4">
+            <table class="w-full text-xs">
+              <thead class="text-neutral-500">
+                <tr><th class="text-left py-1 pr-2">Destino</th>
+                    <th class="text-right py-1 px-2">2015 kt</th>
+                    <th class="text-right py-1 px-2">2023 kt</th>
+                    <th class="text-right py-1 pl-2">&Delta; Vol</th></tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr><td>Jap&oacute;n</td><td class="text-right tabular-nums">79,3</td><td class="text-right tabular-nums">34,1</td><td class="text-right tabular-nums text-rose-400">&minus;57%</td></tr>
+                <tr><td>Estados Unidos</td><td class="text-right tabular-nums">318,5</td><td class="text-right tabular-nums">255,6</td><td class="text-right tabular-nums text-rose-400">&minus;20%</td></tr>
+                <tr><td>Finlandia</td><td class="text-right tabular-nums">17,7</td><td class="text-right tabular-nums">6,5</td><td class="text-right tabular-nums text-rose-400">&minus;63%</td></tr>
+                <tr><td>Alemania / Italia / RU / Espa&ntilde;a</td><td class="text-right tabular-nums">&mdash;</td><td class="text-right tabular-nums">&mdash;</td><td class="text-right tabular-nums text-rose-400">&minus;30 a &minus;38%</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">La pista del tostado</h3>
+          <p class="mb-2">Participaci&oacute;n del tostado en las exportaciones colombianas por destino, 2023:</p>
+          <ul class="list-disc pl-5 space-y-1 mb-3 text-neutral-400">
+            <li>EE.UU., Canad&aacute;: <strong class="text-neutral-200">~5%</strong> tostado</li>
+            <li>Suiza, Alemania, Pa&iacute;ses Bajos, Italia: <strong class="text-neutral-200">0%</strong> tostado</li>
+            <li>Argentina: <strong class="text-emerald-400">29%</strong> tostado</li>
+            <li>Chile: <strong class="text-emerald-400">76%</strong> tostado</li>
+          </ul>
+          <p class="mb-3 text-neutral-400">Los vecinos latinos compran tu caf&eacute; tostado; el resto del mundo se rehusa. No es un tema de calidad &mdash; es estructura de mercado. Los mercados sin un tostador local dominante dejan entrar el producto colombiano de valor agregado.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">Hoja de ruta en 3 etapas</h3>
+          <ol class="list-decimal pl-5 space-y-1 text-neutral-300">
+            <li><strong>A&ntilde;o 1:</strong> Caf&eacute; verde de especialidad por comercio directo &rarr; especialidad en EE.UU. + Corea + Australia.</li>
+            <li><strong>A&ntilde;o 2:</strong> Lanzamiento de producto tostado &rarr; Chile/Argentina (probado), luego EAU/Arabia Saudita.</li>
+            <li><strong>A&ntilde;o 3:</strong> Escalar tostado en origen &rarr; China, donde el mercado es lo bastante grande y no hay competidor establecido que desplazar.</li>
+          </ol>
+        </article>
+
+        <article data-panel="corridors" data-lang="es" class="narrative-panel" hidden>
+          <h2 class="text-lg font-semibold text-neutral-100 mb-2">Tres corredores, tres historias</h2>
+          <p class="text-neutral-400 mb-4">China, Corea del Sur y Jap&oacute;n est&aacute;n en puntos muy distintos del ciclo de vida del mercado del caf&eacute;. Colombia necesita una jugada diferente en cada uno.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-2 mb-1">🇨🇳 China &mdash; crecimiento explosivo, perdiendo la carrera por participaci&oacute;n</h3>
+          <p class="mb-2">Mercado: $230M &rarr; $808M (+251%). El caf&eacute; verde se multiplic&oacute; por 5 en 9 a&ntilde;os. Demanda nueva real, no re-fijaci&oacute;n de precio.</p>
+          <div class="overflow-x-auto mb-3">
+            <table class="w-full text-xs">
+              <thead class="text-neutral-500">
+                <tr><th class="text-left py-1 pr-2">Proveedor</th>
+                    <th class="text-right py-1 px-2">Ganancia 2015&rarr;2023</th>
+                    <th class="text-right py-1 pl-2">Precio unitario 2023</th></tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr><td>Brasil</td><td class="text-right tabular-nums">+$209M</td><td class="text-right tabular-nums">$3,71/kg</td></tr>
+                <tr><td>Etiop&iacute;a</td><td class="text-right tabular-nums">+$138M</td><td class="text-right tabular-nums">$6,47/kg</td></tr>
+                <tr><td><strong>Colombia</strong></td><td class="text-right tabular-nums">+$102M</td><td class="text-right tabular-nums">$5,14/kg</td></tr>
+                <tr><td>Vietnam</td><td class="text-right tabular-nums text-rose-400">&minus;$42M</td><td class="text-right tabular-nums">$2,57/kg</td></tr>
+                <tr><td>Panam&aacute; (Geisha)</td><td class="text-right tabular-nums">+$14M</td><td class="text-right tabular-nums">$50,19/kg</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-3 text-neutral-400">Colombia est&aacute; en tierra de nadie: muy cara para ganarle a Brasil en volumen, no lo suficientemente premium para ganarle a Etiop&iacute;a en historia o a Panam&aacute; en el techo de precio. Empuja varietales premium (Geisha, Pink Bourbon, Sidra) al rango de precio etiope &mdash; no al brasile&ntilde;o.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">🇰🇷 Corea del Sur &mdash; la oportunidad m&aacute;s limpia</h3>
+          <p class="mb-2">Mercado: $547M &rarr; $1.112M (+103%). Las importaciones de tostado se triplicaron: $107M &rarr; $366M. Corea ya paga por el valor agregado europeo.</p>
+          <div class="overflow-x-auto mb-3">
+            <table class="w-full text-xs">
+              <thead class="text-neutral-500">
+                <tr><th class="text-left py-1 pr-2">Proveedor 2023</th>
+                    <th class="text-right py-1 px-2">Valor</th>
+                    <th class="text-right py-1 pl-2">Precio unitario</th></tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr><td>Brasil</td><td class="text-right tabular-nums">$205M</td><td class="text-right tabular-nums">$4,07/kg <span class="text-neutral-500">verde</span></td></tr>
+                <tr><td><strong>Colombia</strong></td><td class="text-right tabular-nums">$153M</td><td class="text-right tabular-nums">$5,49/kg <span class="text-neutral-500">verde</span></td></tr>
+                <tr><td>EE.UU.</td><td class="text-right tabular-nums">$132M</td><td class="text-right tabular-nums">$14,97/kg <span class="text-neutral-500">tostado</span></td></tr>
+                <tr><td>Suiza</td><td class="text-right tabular-nums">$118M</td><td class="text-right tabular-nums">$35,29/kg <span class="text-neutral-500">c&aacute;psulas</span></td></tr>
+                <tr><td>Italia</td><td class="text-right tabular-nums">$54M</td><td class="text-right tabular-nums">$21,56/kg <span class="text-neutral-500">tostado</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-3 text-neutral-400">Los coreanos pagan <strong class="text-neutral-200">$35/kg</strong> por granos colombianos tostados en Suiza y <strong class="text-neutral-200">$5,49/kg</strong> por los mismos granos en verde. El intermediario captura <strong class="text-emerald-400">~$30/kg de margen puro</strong> por el que podr&iacute;as pelear. Sin tostador local dominante, los aranceles del TLC Corea&ndash;Colombia te favorecen. Este es el mercado para tostar en origen.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">🇯🇵 Jap&oacute;n &mdash; declive estructural, defiende el nicho de especialidad</h3>
+          <p class="mb-2">Mercado: $1.592M &rarr; $1.565M (valor plano, volumen <strong class="text-rose-400">&minus;18%</strong>). El tostado apenas se mueve. Mercado en contracci&oacute;n demogr&aacute;fica.</p>
+          <div class="overflow-x-auto mb-3">
+            <table class="w-full text-xs">
+              <thead class="text-neutral-500">
+                <tr><th class="text-left py-1 pr-2">Proveedor</th>
+                    <th class="text-right py-1 px-2">2015</th>
+                    <th class="text-right py-1 px-2">2023</th>
+                    <th class="text-right py-1 pl-2">&Delta;</th></tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr><td>Vietnam</td><td class="text-right tabular-nums">$157M</td><td class="text-right tabular-nums">$260M</td><td class="text-right tabular-nums text-emerald-400">+$103M</td></tr>
+                <tr><td><strong>Colombia</strong></td><td class="text-right tabular-nums">$307M</td><td class="text-right tabular-nums">$187M</td><td class="text-right tabular-nums text-rose-400">&minus;$120M</td></tr>
+                <tr><td>Indonesia</td><td class="text-right tabular-nums">$113M</td><td class="text-right tabular-nums">$69M</td><td class="text-right tabular-nums text-rose-400">&minus;$44M</td></tr>
+                <tr><td>Brasil</td><td class="text-right tabular-nums">$506M</td><td class="text-right tabular-nums">$482M</td><td class="text-right tabular-nums text-rose-400">&minus;$25M</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mb-3 text-neutral-400">La ca&iacute;da de $120M de Colombia en Jap&oacute;n es la mayor p&eacute;rdida de proveedor en los 9 a&ntilde;os del dataset &mdash; Vietnam se comi&oacute; esa misma participaci&oacute;n con robusta barato para caf&eacute; enlatado y de conveniencia. No pelees por recuperar ese volumen. Defiende el segmento de especialidad (Maruyama, Onibus, Glitch&hellip;) y trata a Jap&oacute;n como un mercado de prestigio de marca.</p>
+
+          <h3 class="font-semibold text-neutral-100 mt-4 mb-1">Resumen estrat&eacute;gico</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs">
+              <thead class="text-neutral-500">
+                <tr><th class="text-left py-1 pr-2">Mercado</th>
+                    <th class="text-left py-1 px-2">Jugada</th>
+                    <th class="text-left py-1 pl-2">Prioridad</th></tr>
+              </thead>
+              <tbody class="text-neutral-300">
+                <tr><td><strong>Corea del Sur</strong></td><td>Ataque de tostado en origen contra las re-exportaciones suizas/italianas</td><td class="text-emerald-400">#1</td></tr>
+                <tr><td><strong>China</strong></td><td>Posicionamiento de varietales premium &mdash; pelea contra Etiop&iacute;a, no contra Brasil</td><td class="text-emerald-400">#2</td></tr>
+                <tr><td><strong>Jap&oacute;n</strong></td><td>Solo defensa en especialidad &mdash; mant&eacute;n la gama alta</td><td class="text-amber-400">mantenimiento</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+      </section>
     </main>
 
     <script type="module" src="./main.js"></script>
