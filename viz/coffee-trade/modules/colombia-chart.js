@@ -8,6 +8,13 @@ export function wireColombiaChart() {
   const root = document.getElementById('colombia-chart-canvas')
   if (!root) return
 
+  const tooltip = document.createElement('div')
+  tooltip.className = 'absolute pointer-events-none rounded bg-neutral-900/95 ' +
+    'border border-neutral-700 text-neutral-100 text-xs px-2 py-1 ' +
+    'shadow-lg tabular-nums'
+  tooltip.style.display = 'none'
+  root.appendChild(tooltip)
+
   let data = null
   let svg = null
   let dims = { width: 0, height: 0 }
@@ -57,6 +64,12 @@ export function wireColombiaChart() {
         .attr('stroke', 'rgb(163 163 163)').attr('stroke-dasharray', '4 4').attr('stroke-width', 1.5)
       g.append('path').attr('class', 'production-line').attr('fill', 'none')
         .attr('stroke', 'var(--color-brand)').attr('stroke-width', 1.75)
+      g.append('line').attr('class', 'hover-guide')
+        .attr('stroke', 'rgb(212 212 212)').attr('stroke-width', 1).attr('stroke-dasharray', '2 3')
+        .style('display', 'none')
+      g.append('rect').attr('class', 'hover-capture')
+        .attr('fill', 'transparent')
+        .style('cursor', 'crosshair')
     }
 
     const g = svg.select('g.plot')
@@ -83,6 +96,43 @@ export function wireColombiaChart() {
     g.select('.exports-line').attr('d', line(data.exports))
 
     updateBand()
+
+    const capture = g.select('rect.hover-capture')
+      .attr('width', innerW).attr('height', innerH)
+
+    capture.on('pointermove', (event) => {
+      const [mx] = d3.pointer(event)
+      const dateAtCursor = xScale.invert(mx)
+      // Nearest-month snap
+      const idx = d3.leastIndex(dates, d => Math.abs(d - dateAtCursor))
+      if (idx == null) return
+      const x = xScale(dates[idx])
+      g.select('.hover-guide')
+        .attr('x1', x).attr('x2', x).attr('y1', 0).attr('y2', innerH)
+        .style('display', null)
+      const prod = data.production[idx]
+      const exp  = data.exports[idx]
+      const pct  = prod > 0 ? Math.round((exp / prod) * 100) : 0
+      const lang = getState().lang
+      const labels = lang === 'es'
+        ? { prod: 'Producción', exp: 'Exportaciones', pctOf: 'Exportado' }
+        : { prod: 'Production', exp: 'Exports',       pctOf: 'Exported'  }
+      tooltip.innerHTML = `<div>${data.months[idx]}</div>
+        <div>${labels.prod}: ${prod.toLocaleString()}</div>
+        <div>${labels.exp}: ${exp.toLocaleString()}</div>
+        <div>${labels.pctOf}: ${pct}%</div>`
+      tooltip.style.display = 'block'
+      // Position: 12px to the right of the cursor, inside root
+      const rect = root.getBoundingClientRect()
+      const px = Math.min(rect.width  - tooltip.offsetWidth  - 8, x + MARGIN.left + 12)
+      tooltip.style.left = `${px}px`
+      tooltip.style.top  = `8px`
+    })
+
+    capture.on('pointerleave', () => {
+      g.select('.hover-guide').style('display', 'none')
+      tooltip.style.display = 'none'
+    })
   }
 
   function updateBand() {
