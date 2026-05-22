@@ -31,3 +31,25 @@ export function loadYear(year, type) {
   }
   return cache.get(key)
 }
+
+let colombiaMonthlyPromise = null
+
+export function loadColombiaMonthly() {
+  if (!colombiaMonthlyPromise) {
+    colombiaMonthlyPromise = fetch('./data/colombia-monthly.json').then(async r => {
+      if (!r.ok) throw new Error(`colombia-monthly: ${r.status}`)
+      const data = await r.json()
+      console.assert(
+        Array.isArray(data.months)
+          && Array.isArray(data.production)
+          && Array.isArray(data.exports)
+          && data.months.length === data.production.length
+          && data.months.length === data.exports.length,
+        'coffee-trade: bad colombia-monthly shape',
+      )
+      return data
+    })
+    colombiaMonthlyPromise.catch(() => { colombiaMonthlyPromise = null })
+  }
+  return colombiaMonthlyPromise
+}
