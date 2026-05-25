@@ -2,8 +2,8 @@
 
 Run: uv run python build_viz_data.py
 Output:
-  ../../viz/coffee-trade/data/meta.json
-  ../../viz/coffee-trade/data/{year}-{type}.json   for type in {all, green, roasted}
+  ../../src/public/viz/coffee-trade/data/meta.json
+  ../../src/public/viz/coffee-trade/data/{year}-{type}.json   for type in {all, green, roasted}
 """
 from __future__ import annotations
 import json
@@ -16,7 +16,7 @@ import duckdb
 ROOT = Path(__file__).parent
 PROCESSED = ROOT / "data" / "processed"
 REFERENCE = ROOT / "data" / "reference"
-VIZ_DATA = ROOT.parent.parent / "viz" / "coffee-trade" / "data"
+VIZ_DATA = ROOT.parent.parent / "src" / "public" / "viz" / "coffee-trade" / "data"
 
 GREEN_HS = ("090111", "090112")
 ROASTED_HS = ("090121", "090122")
