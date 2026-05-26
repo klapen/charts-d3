@@ -53,3 +53,26 @@ export function loadColombiaMonthly() {
   }
   return colombiaMonthlyPromise
 }
+
+let brazilMonthlyPromise = null
+
+export function loadBrazilMonthly() {
+  if (!brazilMonthlyPromise) {
+    brazilMonthlyPromise = fetch('./data/brazil-monthly.json').then(async r => {
+      if (!r.ok) throw new Error(`brazil-monthly: ${r.status}`)
+      const data = await r.json()
+      const series = ['arabica_natural', 'arabica_diff', 'robusta_medium', 'robusta_diff', 'processed']
+      console.assert(
+        Array.isArray(data.months)
+          && data.months.length > 0
+          && typeof data.start_month === 'string'
+          && typeof data.end_month === 'string'
+          && series.every(k => Array.isArray(data[k]) && data[k].length === data.months.length),
+        'coffee-trade: bad brazil-monthly shape',
+      )
+      return data
+    })
+    brazilMonthlyPromise.catch(() => { brazilMonthlyPromise = null })
+  }
+  return brazilMonthlyPromise
+}
