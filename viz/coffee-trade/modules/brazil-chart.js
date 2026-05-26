@@ -102,6 +102,9 @@ export function wireBrazilChart() {
   subscribe((next, prev) => {
     if (!hasBooted) return
     if (next.year !== prev.year) updateBand()
+    if (next.lang !== prev.lang) renderLegend()
+    // Tooltip language updates on next pointermove (it reads getState().lang
+    // inside onMove), so no action needed here.
   })
 }
 
