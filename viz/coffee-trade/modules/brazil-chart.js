@@ -101,7 +101,7 @@ export function wireBrazilChart() {
 
   subscribe((next, prev) => {
     if (!hasBooted) return
-    // Will be implemented in Tasks 12 and 14.
+    if (next.year !== prev.year) updateBand()
   })
 }
 
@@ -182,6 +182,8 @@ function render() {
     .call(yAxis)
     .call(g => g.selectAll('text').attr('fill', '#a3a3a3').attr('font-size', 10))
     .call(g => g.selectAll('line, path').attr('stroke', '#404040'))
+
+  updateBand()
 }
 
 function renderLegend() {
@@ -198,4 +200,33 @@ function renderLegend() {
       <span class="inline-block w-2.5 h-2.5" style="background:${COLORS[c]}"></span>
       ${LABELS[lang][c]}
     </span>`).join('')
+}
+
+function updateBand() {
+  if (!svg || !data) return
+  const plot = svg.select('g.plot')
+  let band = plot.select('rect.year-band')
+  if (band.empty()) {
+    band = plot.insert('rect', ':first-child').attr('class', 'year-band')
+  }
+
+  const year = getState().year
+  const startYear = Number(data.start_month.slice(0, 4))
+  const endYear = Number(data.end_month.slice(0, 4))
+  if (!year || year < startYear || year > endYear) {
+    band.attr('display', 'none')
+    return
+  }
+  const x0 = xScale(new Date(year, 0, 1))
+  const x1 = xScale(new Date(year, 11, 31))
+  band.attr('display', null)
+    .attr('x', x0)
+    .attr('y', 0)
+    .attr('width', Math.max(0, x1 - x0))
+    .attr('height', innerH)
+    .attr('fill', 'var(--color-brand)')
+    .attr('fill-opacity', 0.08)
+    .attr('stroke', 'var(--color-brand)')
+    .attr('stroke-dasharray', '2 3')
+    .attr('stroke-opacity', 0.5)
 }
