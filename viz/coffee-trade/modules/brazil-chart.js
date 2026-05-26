@@ -184,6 +184,7 @@ function render() {
     .call(g => g.selectAll('line, path').attr('stroke', '#404040'))
 
   updateBand()
+  attachHover()
 }
 
 function renderLegend() {
@@ -229,4 +230,97 @@ function updateBand() {
     .attr('stroke', 'var(--color-brand)')
     .attr('stroke-dasharray', '2 3')
     .attr('stroke-opacity', 0.5)
+}
+
+function ensureTooltip() {
+  let t = root.querySelector('.brazil-tooltip')
+  if (!t) {
+    t = document.createElement('div')
+    t.className = 'brazil-tooltip absolute pointer-events-none hidden bg-neutral-900/95 border border-neutral-700 rounded p-2 text-[11px] text-neutral-200 shadow-lg'
+    t.style.zIndex = '10'
+    root.appendChild(t)
+  }
+  return t
+}
+
+function ensureGuide() {
+  if (!svg) return null
+  let g = svg.select('line.guide')
+  if (g.empty()) {
+    g = svg.append('line')
+      .attr('class', 'guide pointer-events-none')
+      .attr('stroke', '#e5e5e5')
+      .attr('stroke-opacity', 0.4)
+      .attr('stroke-dasharray', '2 3')
+      .attr('display', 'none')
+  }
+  return g
+}
+
+function attachHover() {
+  if (!svg) return
+  const overlay = svg.selectAll('rect.hover-overlay').data([null])
+  overlay.enter().append('rect')
+    .attr('class', 'hover-overlay')
+    .attr('fill', 'transparent')
+    .merge(overlay)
+    .attr('x', MARGIN.left)
+    .attr('y', MARGIN.top)
+    .attr('width', dims().innerW)
+    .attr('height', innerH)
+    .on('pointermove', onMove)
+    .on('pointerleave', onLeave)
+}
+
+function onMove(event) {
+  const [mx] = d3.pointer(event, svg.node())
+  const xIn = mx - MARGIN.left
+  if (xIn < 0 || xIn > dims().innerW) return onLeave()
+  const t = xScale.invert(xIn)
+  const idx = d3.leastIndex(parsedMonths, d => Math.abs(d - t))
+  if (idx == null) return onLeave()
+
+  const xAt = xScale(parsedMonths[idx]) + MARGIN.left
+  ensureGuide()
+    .attr('display', null)
+    .attr('x1', xAt).attr('x2', xAt)
+    .attr('y1', MARGIN.top).attr('y2', MARGIN.top + innerH)
+
+  const tooltip = ensureTooltip()
+  const lang = getState().lang || 'en'
+  const L = LABELS[lang]
+  const monthLabel = parsedMonths[idx].toLocaleDateString(
+    lang === 'es' ? 'es-CO' : 'en-US',
+    { month: 'short', year: 'numeric' })
+  const total = CATEGORIES.reduce((s, c) => s + data[c][idx], 0)
+  const fmt = (v) => viewMode === 'share'
+    ? `${((v / total) * 100).toFixed(1)}%`
+    : `${(v / 1000).toFixed(0)}k ${L.bags}`
+  const rows = CATEGORIES.slice().reverse().map(c => `
+    <div class="flex items-center gap-2">
+      <span class="inline-block w-2 h-2" style="background:${COLORS[c]}"></span>
+      <span class="flex-1">${L[c]}</span>
+      <span class="tabular-nums">${fmt(data[c][idx])}</span>
+    </div>`).join('')
+  tooltip.innerHTML = `
+    <div class="font-medium mb-1">${monthLabel}</div>
+    ${rows}
+    <div class="border-t border-neutral-700 mt-1 pt-1 flex items-center gap-2">
+      <span class="flex-1">${L.total}</span>
+      <span class="tabular-nums">${viewMode === 'share' ? '100%' : `${(total / 1000).toFixed(0)}k ${L.bags}`}</span>
+    </div>`
+  tooltip.classList.remove('hidden')
+
+  // Position tooltip near pointer but constrained inside root.
+  const rootRect = root.getBoundingClientRect()
+  const tooltipW = tooltip.offsetWidth || 180
+  const left = Math.min(Math.max(0, xAt - tooltipW / 2), rootRect.width - tooltipW)
+  tooltip.style.left = `${left}px`
+  tooltip.style.top = `${MARGIN.top}px`
+}
+
+function onLeave() {
+  ensureGuide()?.attr('display', 'none')
+  const t = root.querySelector('.brazil-tooltip')
+  if (t) t.classList.add('hidden')
 }
