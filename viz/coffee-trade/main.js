@@ -18,6 +18,7 @@ import { renderLegend } from './modules/legend.js'
 import { createViewport } from './modules/viewport.js'
 import { wireTabs } from './modules/tabs.js'
 import { wireColombiaChart } from './modules/colombia-chart.js'
+import { wireBrazilChart } from './modules/brazil-chart.js'
 
 // Canonical drawing size; rebuilt at each breakpoint snap.
 let current = { w: 1080, h: 660 }
@@ -210,6 +211,7 @@ async function boot() {
   wirePanControls()
   wireTabs()
   wireColombiaChart()
+  wireBrazilChart()
 
   // Snap canonical size + reflow when the chart container crosses a threshold.
   observeBreakpoint(chartEl, (next, prev) => {
