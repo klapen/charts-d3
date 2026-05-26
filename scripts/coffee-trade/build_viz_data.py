@@ -139,6 +139,31 @@ def build_colombia_monthly() -> None:
     log.info("Wrote colombia-monthly.json with %d months", len(payload["months"]))
 
 
+def build_brazil_monthly() -> None:
+    """Emit brazil-monthly.json from cecafe-monthly.parquet."""
+    src = PROCESSED / "cecafe-monthly.parquet"
+    if not src.exists():
+        raise FileNotFoundError(f"{src} not found — run transform_cecafe.py first")
+    import pandas as pd
+    df = pd.read_parquet(src).sort_values(["year", "month"]).reset_index(drop=True)
+
+    months = [f"{int(r['year']):04d}-{int(r['month']):02d}" for _, r in df.iterrows()]
+    cats = ["arabica_natural", "arabica_diff", "robusta_medium", "robusta_diff", "processed"]
+    payload = {
+        "unit": "60kg bags",
+        "source": "Cecafé monthly export reports, section 1.10",
+        "start_month": months[0],
+        "end_month": months[-1],
+        "months": months,
+    }
+    for c in cats:
+        payload[c] = [int(v) for v in df[c].tolist()]
+
+    out = VIZ_DATA / "brazil-monthly.json"
+    out.write_text(json.dumps(payload, separators=(",", ":")))
+    log.info("wrote %s (%d months)", out, len(months))
+
+
 def main() -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     VIZ_DATA.mkdir(parents=True, exist_ok=True)
@@ -202,6 +227,7 @@ def main() -> int:
         log.info("Wrote 3 files for year %d", year)
 
     build_colombia_monthly()
+    build_brazil_monthly()
 
     log.info("Done. meta.json + %d year files", len(years) * 3)
     return 0
