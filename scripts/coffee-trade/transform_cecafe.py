@@ -43,6 +43,12 @@ SECTION_HEADER = re.compile(
     re.IGNORECASE,
 )
 
+# Every June PDF carries TWO copies of the differentiated-coffees table: one
+# titled "... - ANO-SAFRA" (crop-year-to-date, Jul→Jun) and one with calendar
+# YTD (Jan→Jun). We MUST use the calendar one — otherwise July monthly deltas
+# become huge negatives when the calendar reset clashes with the safra figures.
+SAFRA_MARKER = re.compile(r"ANO[-\s]*SAFRA", re.IGNORECASE)
+
 log = logging.getLogger("transform_cecafe")
 
 
@@ -70,13 +76,37 @@ def parse_pdf(path: Path) -> dict[str, int]:
     label; take the first numeric cell as the YTD bag count.
     """
     with pdfplumber.open(path) as pdf:
-        # Pick the LAST page whose text matches SECTION_HEADER. The TOC on page 1
-        # also matches (it lists the section title), but the actual data page
-        # always comes later in the document.
+        # Pick the LAST body page whose text matches SECTION_HEADER but ALSO
+        # excludes ANO-SAFRA. The TOC on page 1 also matches, but body pages
+        # always come later. June PDFs contain both a safra and a calendar-YTD
+        # section — we explicitly skip the safra one so July monthly deltas
+        # don't go negative.
         target_page = None
         for page in pdf.pages:
             text = page.extract_text() or ""
-            if SECTION_HEADER.search(text):
+            if not SECTION_HEADER.search(text):
+                continue
+            # June PDFs publish two copies of this section: a calendar-YTD one
+            # ("Período: janeiro a junho") and a crop-year one ("Período
+            # (ano-safra): ..."). We MUST pick the calendar copy. Two layout
+            # variants:
+            #   - 2017-2023: "1.N. ... DIFERENCIADOS - ANO-SAFRA" in title line.
+            #   - 2024+: title is identical; safra marker is on the next line.
+            # Strategy: for each "1.N. ... DIFERENCIADOS" header line in the
+            # page, inspect that line PLUS the next 3 lines (Período sits there).
+            # A page qualifies if at least one such block lacks the SAFRA marker.
+            calendar_header_present = False
+            lines = text.split("\n")
+            for idx, line in enumerate(lines):
+                m = re.match(r"\s*1\.\d+\.\s*EXPORTA[ÇC][ÕO]ES\s+BRASILEIRAS\s+DE\s+CAF[ÉE]S\s+DIFERENCIADOS",
+                             line, re.IGNORECASE)
+                if not m:
+                    continue
+                block = "\n".join(lines[idx:idx + 4])
+                if not SAFRA_MARKER.search(block):
+                    calendar_header_present = True
+                    break
+            if calendar_header_present:
                 target_page = page
         if target_page is None:
             raise ValueError(f"{path.name}: section 1.X differentiated-coffee page not found")
@@ -127,6 +157,10 @@ def main() -> int:
         return 1
 
     ytd_rows: list[dict] = []
+    # Months whose YTD we couldn't read (Cecafé occasionally omits the
+    # differentiated-coffees section in a given month, e.g. 2021-10). For each,
+    # we'll later interpolate by splitting the gap to the next-known YTD evenly.
+    skipped: list[tuple[int, int]] = []
     for path in pdfs:
         m = re.match(r"(\d{4})-(\d{2})\.pdf", path.name)
         if not m:
@@ -135,12 +169,41 @@ def main() -> int:
         year, month = int(m[1]), int(m[2])
         try:
             cats = parse_pdf(path)
+        except ValueError as e:
+            msg = str(e)
+            if "section 1.X differentiated-coffee page not found" in msg:
+                log.warning("SKIP %s: section omitted in this issue — will interpolate", path.name)
+                skipped.append((year, month))
+                continue
+            log.error("FAIL %s: %s", path.name, e)
+            return 2
         except Exception as e:
             log.error("FAIL %s: %s", path.name, e)
             return 2
         for cat, bags in cats.items():
             ytd_rows.append({"year": year, "month": month, "category": cat, "ytd_bags": bags})
         log.info("ok %s: %s", path.name, {k: cats[k] for k in sorted(cats)})
+
+    # Interpolate YTD for skipped months. For a missing (year, M) with known
+    # YTD at (year, M-1) and (year, M+1), set ytd[M] = (ytd[M-1] + ytd[M+1]) / 2,
+    # which splits the two-month delta evenly. Only handles single-month gaps
+    # bounded by known months on both sides within the same year.
+    if skipped:
+        existing = {(r["year"], r["month"], r["category"]): r["ytd_bags"] for r in ytd_rows}
+        for (year, month) in skipped:
+            interpolated: dict[str, int] = {}
+            for cat in EXPECTED:
+                prev_ytd = existing.get((year, month - 1, cat), 0 if month == 1 else None)
+                next_ytd = existing.get((year, month + 1, cat))
+                if prev_ytd is None or next_ytd is None:
+                    log.error("cannot interpolate %d-%02d %s: missing neighbor YTD",
+                              year, month, cat)
+                    return 2
+                interpolated[cat] = (int(prev_ytd) + int(next_ytd)) // 2
+            log.warning("interpolated %d-%02d: %s", year, month,
+                        {k: interpolated[k] for k in sorted(interpolated)})
+            for cat, bags in interpolated.items():
+                ytd_rows.append({"year": year, "month": month, "category": cat, "ytd_bags": bags})
 
     ytd = pd.DataFrame(ytd_rows)
     ytd.to_parquet(PROCESSED / "cecafe-ytd.parquet", index=False)
@@ -165,23 +228,37 @@ def main() -> int:
     monthly = pd.DataFrame(monthly_rows)
 
     # Validation gates.
+    # Cecafé occasionally REVISES a prior-month YTD downward (typically by a few
+    # hundred to ~20K bags out of millions — a small administrative correction).
+    # We tolerate revisions ≤ 50_000 bags by clipping to 0 with a warning, and
+    # fail loudly on anything larger (which would indicate a parser bug).
+    REVISION_TOLERANCE = 50_000
     for c in cats:
         bad = monthly[monthly[c] < 0]
-        if not bad.empty:
-            log.error("negative monthly deltas in %s:\n%s", c, bad)
+        if bad.empty:
+            continue
+        large = bad[bad[c] < -REVISION_TOLERANCE]
+        if not large.empty:
+            log.error("negative monthly deltas in %s exceed tolerance:\n%s", c, large)
             return 3
+        # Clip small negatives to zero.
+        for _, row in bad.iterrows():
+            log.warning("YTD revision %d-%02d %s: %d bags clipped to 0",
+                        int(row["year"]), int(row["month"]), c, int(row[c]))
+        monthly.loc[monthly[c] < 0, c] = 0
 
-    # December YTD must equal the year's monthly sum (within rounding — but
-    # values are integers, so equality should hold).
+    # December YTD must equal the year's monthly sum (within REVISION_TOLERANCE
+    # to absorb the small revision-clipping done above).
     for year, group in wide.groupby("year"):
         if 12 not in set(group["month"]):
             continue
         dec_ytd = group[group["month"] == 12].iloc[0]
         msum = monthly[monthly["year"] == year][cats].sum()
         for c in cats:
-            if int(dec_ytd[c]) != int(msum[c]):
-                log.error("year %d %s: dec YTD=%d but monthly sum=%d",
-                          year, c, int(dec_ytd[c]), int(msum[c]))
+            diff = int(msum[c]) - int(dec_ytd[c])
+            if abs(diff) > REVISION_TOLERANCE:
+                log.error("year %d %s: dec YTD=%d but monthly sum=%d (diff=%d)",
+                          year, c, int(dec_ytd[c]), int(msum[c]), diff)
                 return 4
 
     monthly.to_parquet(PROCESSED / "cecafe-monthly.parquet", index=False)
