@@ -31,6 +31,31 @@ const LABELS = {
   },
 }
 
+const MARGIN = { top: 8, right: 8, bottom: 18, left: 48 }
+
+function dims() {
+  const w = root.clientWidth
+  const h = root.clientHeight
+  return {
+    w,
+    h,
+    innerW: Math.max(0, w - MARGIN.left - MARGIN.right),
+    innerH: Math.max(0, h - MARGIN.top - MARGIN.bottom),
+  }
+}
+
+function stackedData() {
+  const stack = d3.stack()
+    .keys(CATEGORIES)
+    .order(d3.stackOrderNone)
+    .offset(viewMode === 'share' ? d3.stackOffsetExpand : d3.stackOffsetNone)
+  return stack(data.months.map((_, i) => {
+    const row = { i }
+    for (const c of CATEGORIES) row[c] = data[c][i]
+    return row
+  }))
+}
+
 let root        // <div id="brazil-chart-canvas">
 let data        // loaded JSON payload
 let svg         // d3 selection of root <svg>
@@ -90,5 +115,87 @@ async function boot() {
 }
 
 function render() {
-  // Implemented in Task 10.
+  if (!data) return
+  const { w, h, innerW, innerH: ih } = dims()
+  if (innerW === 0 || ih === 0) return
+  innerH = ih
+
+  if (!svg) {
+    svg = d3.select(root)
+      .append('svg')
+      .attr('class', 'block w-full h-full')
+    svg.append('g').attr('class', 'plot')
+       .attr('transform', `translate(${MARGIN.left},${MARGIN.top})`)
+    svg.append('g').attr('class', 'x-axis')
+       .attr('transform', `translate(${MARGIN.left},${MARGIN.top + ih})`)
+    svg.append('g').attr('class', 'y-axis')
+       .attr('transform', `translate(${MARGIN.left},${MARGIN.top})`)
+  }
+  svg.attr('viewBox', `0 0 ${w} ${h}`)
+
+  xScale = d3.scaleTime()
+    .domain(d3.extent(parsedMonths))
+    .range([0, innerW])
+
+  const stacked = stackedData()
+  const yMax = d3.max(stacked, layer => d3.max(layer, d => d[1]))
+  const yScale = d3.scaleLinear()
+    .domain([0, yMax])
+    .nice()
+    .range([ih, 0])
+
+  const area = d3.area()
+    .x((_, i) => xScale(parsedMonths[i]))
+    .y0(d => yScale(d[0]))
+    .y1(d => yScale(d[1]))
+    .curve(d3.curveMonotoneX)
+
+  const plot = svg.select('g.plot')
+  const layers = plot.selectAll('path.layer').data(stacked, d => d.key)
+  layers.enter()
+    .append('path')
+    .attr('class', 'layer')
+    .merge(layers)
+    .attr('fill', d => COLORS[d.key])
+    .attr('d', area)
+  layers.exit().remove()
+
+  renderLegend()
+
+  const xAxis = d3.axisBottom(xScale)
+    .ticks(d3.timeYear.every(1))
+    .tickFormat(d3.timeFormat('%Y'))
+    .tickSize(4)
+  svg.select('g.x-axis')
+    .attr('transform', `translate(${MARGIN.left},${MARGIN.top + ih})`)
+    .call(xAxis)
+    .call(g => g.selectAll('text').attr('fill', '#a3a3a3').attr('font-size', 10))
+    .call(g => g.selectAll('line, path').attr('stroke', '#404040'))
+
+  const yAxis = d3.axisLeft(yScale)
+    .ticks(5)
+    .tickFormat(viewMode === 'share'
+      ? d3.format('.0%')
+      : v => `${(v / 1e6).toFixed(1)}M`)
+    .tickSize(4)
+  svg.select('g.y-axis')
+    .call(yAxis)
+    .call(g => g.selectAll('text').attr('fill', '#a3a3a3').attr('font-size', 10))
+    .call(g => g.selectAll('line, path').attr('stroke', '#404040'))
+}
+
+function renderLegend() {
+  if (!root) return
+  let legend = root.parentElement.querySelector('.brazil-legend')
+  if (!legend) {
+    legend = document.createElement('div')
+    legend.className = 'brazil-legend flex flex-wrap gap-x-4 gap-y-1 mt-2 text-[11px] text-neutral-400'
+    root.after(legend)
+  }
+  const lang = getState().lang || 'en'
+  legend.innerHTML = CATEGORIES.slice().reverse().map(c => `
+    <span class="inline-flex items-center gap-1.5">
+      <span class="inline-block w-2.5 h-2.5" style="background:${COLORS[c]}"></span>
+      ${LABELS[lang][c]}
+    </span>`).join('')
 }
