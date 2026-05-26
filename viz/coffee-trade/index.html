@@ -45,6 +45,11 @@
         <button role="tab" data-tab="colombia" aria-selected="false"
                 class="story-tab px-3 py-2 text-sm border-b-2 border-transparent text-neutral-400 hover:text-neutral-50"
                 data-en="Colombia opportunities" data-es="Oportunidades de Colombia">Colombia opportunities</button>
+        <button role="tab" data-tab="brazil" aria-selected="false"
+                class="story-tab px-3 py-2 text-sm border-b-2 border-transparent text-neutral-400 hover:text-neutral-50"
+                data-en="Brazil" data-es="Brasil">
+          Brazil
+        </button>
         <button role="tab" data-tab="corridors" aria-selected="false"
                 class="story-tab px-3 py-2 text-sm border-b-2 border-transparent text-neutral-400 hover:text-neutral-50"
                 data-en="Corridors" data-es="Corredores">Corridors</button>
@@ -61,6 +66,29 @@
           Production vs. Exports — Colombia (2015–2023)
         </h2>
         <div id="colombia-chart-canvas" class="relative w-full h-[200px] md:h-[200px]"></div>
+      </section>
+
+      <section id="brazil-chart"
+               class="mx-auto w-full max-w-screen-2xl px-4 mb-4"
+               hidden aria-labelledby="brazil-chart-title">
+        <div id="brazil-chart-header" class="flex items-center justify-between mb-2">
+          <h2 id="brazil-chart-title"
+              class="text-sm font-medium text-neutral-200"
+              data-en="Composition of Brazilian coffee exports (2017–present)"
+              data-es="Composición de las exportaciones de café de Brasil (2017–presente)">
+            Composition of Brazilian coffee exports (2017–present)
+          </h2>
+          <div id="brazil-chart-toggle" class="flex gap-1 text-xs" role="group" aria-label="View mode">
+            <button data-mode="bags"
+                    class="px-2 py-1 rounded border border-neutral-700 bg-neutral-900 hover:border-brand text-neutral-200"
+                    aria-pressed="true"
+                    data-en="Bags" data-es="Sacas">Bags</button>
+            <button data-mode="share"
+                    class="px-2 py-1 rounded border border-neutral-700 bg-neutral-900 hover:border-brand text-neutral-400"
+                    aria-pressed="false">%</button>
+          </div>
+        </div>
+        <div id="brazil-chart-canvas" class="relative w-full h-[260px]"></div>
       </section>
 
       <div class="grid gap-4 lg:grid-cols-3">

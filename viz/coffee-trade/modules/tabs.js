@@ -35,6 +35,8 @@ export function wireTabs() {
     }
     const colombiaChart = document.getElementById('colombia-chart')
     if (colombiaChart) colombiaChart.hidden = name !== 'colombia'
+    const brazilChart = document.getElementById('brazil-chart')
+    if (brazilChart) brazilChart.hidden = name !== 'brazil'
     showPanels(name, getState().lang)
     const preset = PRESETS[name]
     if (preset) {
