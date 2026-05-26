@@ -19,6 +19,7 @@ const LABELS = {
     processed:       'Processed (soluble + R&G)',
     total:           'Total',
     bags:            'bags',
+    kg:              'kg',
   },
   es: {
     arabica_natural: 'Arábica natural',
@@ -27,7 +28,8 @@ const LABELS = {
     robusta_diff:    'Robusta diferenciada',
     processed:       'Procesado (soluble + T&M)',
     total:           'Total',
-    bags:            'sacas',
+    bags:            'sacos',
+    kg:              'kg',
   },
 }
 
@@ -49,9 +51,10 @@ function stackedData() {
     .keys(CATEGORIES)
     .order(d3.stackOrderNone)
     .offset(viewMode === 'share' ? d3.stackOffsetExpand : d3.stackOffsetNone)
+  const factor = viewMode === 'kg' ? 60 : 1
   return stack(data.months.map((_, i) => {
     const row = { i }
-    for (const c of CATEGORIES) row[c] = data[c][i]
+    for (const c of CATEGORIES) row[c] = data[c][i] * factor
     return row
   }))
 }
@@ -60,7 +63,7 @@ let root        // <div id="brazil-chart-canvas">
 let data        // loaded JSON payload
 let svg         // d3 selection of root <svg>
 let hasBooted = false
-let viewMode = 'bags'    // 'bags' | 'share'
+let viewMode = 'bags'    // 'bags' | 'kg' | 'share'
 let xScale, innerH, parsedMonths
 
 export function wireBrazilChart() {
@@ -177,9 +180,10 @@ function render() {
 
   const yAxis = d3.axisLeft(yScale)
     .ticks(5)
-    .tickFormat(viewMode === 'share'
-      ? d3.format('.0%')
-      : v => `${(v / 1e6).toFixed(1)}M`)
+    .tickFormat(
+      viewMode === 'share' ? d3.format('.0%') :
+      viewMode === 'kg'    ? v => `${(v / 1e6).toFixed(0)}M`
+                           : v => `${(v / 1e6).toFixed(1)}M`)
     .tickSize(4)
   svg.select('g.y-axis')
     .call(yAxis)
@@ -296,9 +300,11 @@ function onMove(event) {
     lang === 'es' ? 'es-CO' : 'en-US',
     { month: 'short', year: 'numeric' })
   const total = CATEGORIES.reduce((s, c) => s + data[c][idx], 0)
-  const fmt = (v) => viewMode === 'share'
-    ? `${((v / total) * 100).toFixed(1)}%`
-    : `${(v / 1000).toFixed(0)}k ${L.bags}`
+  const fmt = (v) => {
+    if (viewMode === 'share') return `${((v / total) * 100).toFixed(1)}%`
+    if (viewMode === 'kg')    return `${((v * 60) / 1e6).toFixed(2)}M ${L.kg}`
+    return `${(v / 1000).toFixed(0)}k ${L.bags}`
+  }
   const rows = CATEGORIES.slice().reverse().map(c => `
     <div class="flex items-center gap-2">
       <span class="inline-block w-2 h-2" style="background:${COLORS[c]}"></span>
@@ -310,7 +316,11 @@ function onMove(event) {
     ${rows}
     <div class="border-t border-neutral-700 mt-1 pt-1 flex items-center gap-2">
       <span class="flex-1">${L.total}</span>
-      <span class="tabular-nums">${viewMode === 'share' ? '100%' : `${(total / 1000).toFixed(0)}k ${L.bags}`}</span>
+      <span class="tabular-nums">${
+        viewMode === 'share' ? '100%' :
+        viewMode === 'kg'    ? `${((total * 60) / 1e6).toFixed(2)}M ${L.kg}`
+                             : `${(total / 1000).toFixed(0)}k ${L.bags}`
+      }</span>
     </div>`
   tooltip.classList.remove('hidden')
 
