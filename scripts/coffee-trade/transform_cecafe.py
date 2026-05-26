@@ -21,6 +21,18 @@ ROOT = Path(__file__).parent
 RAW = ROOT / "data" / "raw" / "cecafe"
 PROCESSED = ROOT / "data" / "processed"
 
+
+class SectionMissingError(ValueError):
+    """Section 1.N differentiated-coffee page not present in this PDF."""
+
+
+# Months where Cecafé legitimately omitted the differentiated-coffee section
+# and we explicitly want to interpolate from neighbors. Cecafé's October 2021
+# report omitted the differentiated-coffee section entirely; this is the only
+# known instance. Add new entries here ONLY after manually verifying the PDF
+# is genuinely missing the section (vs. a parser regression).
+KNOWN_MISSING = frozenset({(2021, 10)})
+
 # Map Cecafé row label → output category. Labels are matched case-insensitive
 # after stripping accents (handled by _norm()). Order is irrelevant.
 ROW_LABELS = {
@@ -109,7 +121,7 @@ def parse_pdf(path: Path) -> dict[str, int]:
             if calendar_header_present:
                 target_page = page
         if target_page is None:
-            raise ValueError(f"{path.name}: section 1.X differentiated-coffee page not found")
+            raise SectionMissingError(f"{path.name}: section 1.X differentiated-coffee page not found")
 
         found: dict[str, int] = {}
         for table in target_page.extract_tables() or []:
@@ -169,12 +181,21 @@ def main() -> int:
         year, month = int(m[1]), int(m[2])
         try:
             cats = parse_pdf(path)
-        except ValueError as e:
-            msg = str(e)
-            if "section 1.X differentiated-coffee page not found" in msg:
+        except SectionMissingError as e:
+            if (year, month) in KNOWN_MISSING:
                 log.warning("SKIP %s: section omitted in this issue — will interpolate", path.name)
                 skipped.append((year, month))
                 continue
+            log.error(
+                "FAIL %s: section missing but %d-%02d is not in KNOWN_MISSING. "
+                "If you have confirmed the PDF genuinely omits the differentiated-coffee "
+                "section (vs. a parser regression from Cecafé restructuring section numbering), "
+                "add (%d, %d) to KNOWN_MISSING in transform_cecafe.py. Otherwise, fix the parser. "
+                "Underlying error: %s",
+                path.name, year, month, year, month, e,
+            )
+            return 2
+        except ValueError as e:
             log.error("FAIL %s: %s", path.name, e)
             return 2
         except Exception as e:
