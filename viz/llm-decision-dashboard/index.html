@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>LLM Decision Dashboard · Klapen</title>
+    <meta name="description" content="Pick an open-weight LLM by filtering across 11 dimensions." />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body class="bg-neutral-950 text-neutral-100 min-h-screen antialiased">
+
+    <div id="sync-strip" class="text-xs text-neutral-500 px-4 py-2 border-b border-neutral-800 flex items-center gap-3 flex-wrap">
+      <span id="sync-stamp">Loading…</span>
+      <span id="sync-sources" class="text-neutral-600"></span>
+      <a id="sync-jsonlink" class="ml-auto underline text-neutral-400 hover:text-neutral-200" href="/ai-llm-dataset.json">/ai-llm-dataset.json</a>
+    </div>
+
+    <header class="px-4 py-3 border-b border-neutral-800 flex items-center gap-2 flex-wrap">
+      <h1 class="text-lg font-semibold mr-3">LLM Decision Dashboard</h1>
+      <div id="presets" class="flex gap-1 flex-wrap" role="group" aria-label="Use-case presets"></div>
+      <label class="ml-auto text-xs flex items-center gap-2 cursor-pointer">
+        <input type="checkbox" id="osi-toggle" />
+        OSI-approved only
+      </label>
+    </header>
+
+    <p id="stat-line" class="text-xs text-neutral-500 px-4 py-2" aria-live="polite">Loading data…</p>
+
+    <main class="px-4 pb-6 flex flex-col gap-4">
+      <section id="view-ranked"    class="bg-neutral-900 border border-neutral-800 rounded p-3" aria-label="Ranked list"></section>
+      <section id="view-parcoords" class="bg-neutral-900 border border-neutral-800 rounded p-3" aria-label="Parallel coordinates"></section>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <section id="view-scatter" class="bg-neutral-900 border border-neutral-800 rounded p-3" aria-label="Scatter plot"></section>
+        <section id="view-radar"   class="bg-neutral-900 border border-neutral-800 rounded p-3" aria-label="Radar comparison"></section>
+      </div>
+      <section id="detail-cards" class="flex gap-3 flex-wrap" aria-label="Selected model details"></section>
+    </main>
+
+    <noscript class="block px-4 py-3 text-red-400">This dashboard requires JavaScript. The dataset is also available at <a class="underline" href="/ai-llm-dataset.json">/ai-llm-dataset.json</a>.</noscript>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
