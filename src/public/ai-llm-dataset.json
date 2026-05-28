@@ -1,21 +1,21 @@
 {
   "schema_version": "1.0.0",
-  "synced_at": "2026-05-28T20:04:10.327Z",
+  "synced_at": "2026-05-28T20:07:36.205Z",
   "sources": {
     "hf_leaderboard": {
       "url": "https://huggingface.co/datasets/open-llm-leaderboard/contents",
-      "synced_at": "2026-05-28T20:04:09.918Z",
-      "record_count": 100
+      "synced_at": "2026-05-28T20:07:35.528Z",
+      "record_count": 1000
     },
     "artificial_analysis": {
       "url": "https://openrouter.ai/api/v1/models",
-      "synced_at": "2026-05-28T20:04:10.286Z",
+      "synced_at": "2026-05-28T20:07:35.950Z",
       "record_count": 357
     },
     "lmarena": {
-      "url": "https://raw.githubusercontent.com/oolong-tea-2026/arena-ai-leaderboards/main/data/latest.json",
-      "synced_at": "2026-05-28T20:04:10.321Z",
-      "record_count": 20
+      "url": "https://raw.githubusercontent.com/fboulnois/llm-leaderboard-csv/main/csv/lmarena_text.csv",
+      "synced_at": "2026-05-28T20:07:36.192Z",
+      "record_count": 266
     }
   },
   "dimensions": {
@@ -231,7 +231,7 @@
         "fp16": 76.8
       },
       "quality": {
-        "arena_elo": null,
+        "arena_elo": 1341,
         "composite_score": null,
         "reasoning": {
           "gpqa": null,
@@ -255,10 +255,10 @@
       },
       "model_card_url": "https://huggingface.co/Qwen/Qwen3-32B",
       "sources_used": [
-        "artificial_analysis"
+        "artificial_analysis",
+        "lmarena"
       ],
       "missing_fields": [
-        "quality.arena_elo",
         "quality.reasoning.gpqa",
         "quality.reasoning.mmlu_pro",
         "quality.coding.humaneval",
@@ -371,7 +371,7 @@
         "fp16": 1610.4
       },
       "quality": {
-        "arena_elo": null,
+        "arena_elo": 1376,
         "composite_score": null,
         "reasoning": {
           "gpqa": null,
@@ -395,10 +395,10 @@
       },
       "model_card_url": "https://huggingface.co/deepseek-ai/DeepSeek-V3",
       "sources_used": [
-        "artificial_analysis"
+        "artificial_analysis",
+        "lmarena"
       ],
       "missing_fields": [
-        "quality.arena_elo",
         "quality.reasoning.gpqa",
         "quality.reasoning.mmlu_pro",
         "quality.coding.humaneval",
@@ -441,7 +441,7 @@
         "fp16": 168
       },
       "quality": {
-        "arena_elo": null,
+        "arena_elo": 1275,
         "composite_score": null,
         "reasoning": {
           "gpqa": null,
@@ -465,10 +465,10 @@
       },
       "model_card_url": "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct",
       "sources_used": [
-        "artificial_analysis"
+        "artificial_analysis",
+        "lmarena"
       ],
       "missing_fields": [
-        "quality.arena_elo",
         "quality.reasoning.gpqa",
         "quality.reasoning.mmlu_pro",
         "quality.coding.humaneval",
@@ -511,7 +511,7 @@
         "fp16": 295.2
       },
       "quality": {
-        "arena_elo": null,
+        "arena_elo": 1269,
         "composite_score": null,
         "reasoning": {
           "gpqa": null,
@@ -535,10 +535,10 @@
       },
       "model_card_url": "https://huggingface.co/mistralai/Mistral-Large-Instruct-2407",
       "sources_used": [
-        "artificial_analysis"
+        "artificial_analysis",
+        "lmarena"
       ],
       "missing_fields": [
-        "quality.arena_elo",
         "quality.reasoning.gpqa",
         "quality.reasoning.mmlu_pro",
         "quality.coding.humaneval",
@@ -581,7 +581,7 @@
         "fp16": 338.4
       },
       "quality": {
-        "arena_elo": null,
+        "arena_elo": 1167,
         "composite_score": null,
         "reasoning": {
           "gpqa": null,
@@ -605,10 +605,10 @@
       },
       "model_card_url": "https://huggingface.co/mistralai/Mixtral-8x22B-Instruct-v0.1",
       "sources_used": [
-        "artificial_analysis"
+        "artificial_analysis",
+        "lmarena"
       ],
       "missing_fields": [
-        "quality.arena_elo",
         "quality.reasoning.gpqa",
         "quality.reasoning.mmlu_pro",
         "quality.coding.humaneval",
@@ -652,7 +652,7 @@
         "fp16": 64.8
       },
       "quality": {
-        "arena_elo": null,
+        "arena_elo": 1357,
         "composite_score": null,
         "reasoning": {
           "gpqa": null,
@@ -676,10 +676,10 @@
       },
       "model_card_url": "https://huggingface.co/google/gemma-3-27b-it",
       "sources_used": [
-        "artificial_analysis"
+        "artificial_analysis",
+        "lmarena"
       ],
       "missing_fields": [
-        "quality.arena_elo",
         "quality.reasoning.gpqa",
         "quality.reasoning.mmlu_pro",
         "quality.coding.humaneval",
@@ -723,7 +723,7 @@
         "fp16": 28.8
       },
       "quality": {
-        "arena_elo": null,
+        "arena_elo": 1335,
         "composite_score": null,
         "reasoning": {
           "gpqa": null,
@@ -747,10 +747,10 @@
       },
       "model_card_url": "https://huggingface.co/google/gemma-3-12b-it",
       "sources_used": [
-        "artificial_analysis"
+        "artificial_analysis",
+        "lmarena"
       ],
       "missing_fields": [
-        "quality.arena_elo",
         "quality.reasoning.gpqa",
         "quality.reasoning.mmlu_pro",
         "quality.coding.humaneval",
@@ -793,8 +793,8 @@
         "fp16": 33.6
       },
       "quality": {
-        "arena_elo": null,
-        "composite_score": 0.33399999999999996,
+        "arena_elo": 1222,
+        "composite_score": 0.408,
         "reasoning": {
           "gpqa": 0.19686800894854584,
           "mmlu_pro": 0.4710401891252955,
@@ -820,10 +820,10 @@
       "model_card_url": "https://huggingface.co/microsoft/phi-4",
       "sources_used": [
         "hf_leaderboard",
-        "artificial_analysis"
+        "artificial_analysis",
+        "lmarena"
       ],
       "missing_fields": [
-        "quality.arena_elo",
         "quality.coding.humaneval",
         "quality.coding.livecodebench",
         "quality.coding.swe_bench",
@@ -865,10 +865,12 @@
       },
       "quality": {
         "arena_elo": null,
-        "composite_score": null,
+        "composite_score": 0.006,
         "reasoning": {
-          "gpqa": null,
-          "mmlu_pro": null
+          "gpqa": 0,
+          "mmlu_pro": 0.011432476359338058,
+          "ifeval": 0.13259152382345507,
+          "bbh": 0.01667358455856632
         },
         "coding": {
           "humaneval": null,
@@ -887,11 +889,11 @@
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/microsoft/Phi-3.5-mini-instruct",
-      "sources_used": [],
+      "sources_used": [
+        "hf_leaderboard"
+      ],
       "missing_fields": [
         "quality.arena_elo",
-        "quality.reasoning.gpqa",
-        "quality.reasoning.mmlu_pro",
         "quality.coding.humaneval",
         "quality.coding.livecodebench",
         "quality.coding.swe_bench",
@@ -934,11 +936,13 @@
         "fp16": 7.2
       },
       "quality": {
-        "arena_elo": null,
-        "composite_score": null,
+        "arena_elo": 1117,
+        "composite_score": 0.19699999999999998,
         "reasoning": {
-          "gpqa": null,
-          "mmlu_pro": null
+          "gpqa": 0.06152125279642054,
+          "mmlu_pro": 0.23684988179669028,
+          "ifeval": 0.6848861022088059,
+          "bbh": 0.24219900449658302
         },
         "coding": {
           "humaneval": null,
@@ -958,12 +962,11 @@
       },
       "model_card_url": "https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct",
       "sources_used": [
-        "artificial_analysis"
+        "hf_leaderboard",
+        "artificial_analysis",
+        "lmarena"
       ],
       "missing_fields": [
-        "quality.arena_elo",
-        "quality.reasoning.gpqa",
-        "quality.reasoning.mmlu_pro",
         "quality.coding.humaneval",
         "quality.coding.livecodebench",
         "quality.coding.swe_bench",
@@ -1004,7 +1007,7 @@
         "fp16": 76.8
       },
       "quality": {
-        "arena_elo": null,
+        "arena_elo": 1234,
         "composite_score": null,
         "reasoning": {
           "gpqa": null,
@@ -1028,10 +1031,10 @@
       },
       "model_card_url": "https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct",
       "sources_used": [
-        "artificial_analysis"
+        "artificial_analysis",
+        "lmarena"
       ],
       "missing_fields": [
-        "quality.arena_elo",
         "quality.reasoning.gpqa",
         "quality.reasoning.mmlu_pro",
         "quality.coding.humaneval",
@@ -1074,11 +1077,13 @@
         "fp16": 1610.4
       },
       "quality": {
-        "arena_elo": null,
-        "composite_score": null,
+        "arena_elo": 1427,
+        "composite_score": 0.528,
         "reasoning": {
-          "gpqa": null,
-          "mmlu_pro": null
+          "gpqa": 0.18120805369127516,
+          "mmlu_pro": 0.40261155437352236,
+          "ifeval": 0.3415947463840388,
+          "bbh": 0.3854849081746308
         },
         "coding": {
           "humaneval": null,
@@ -1098,12 +1103,11 @@
       },
       "model_card_url": "https://huggingface.co/deepseek-ai/DeepSeek-R1",
       "sources_used": [
-        "artificial_analysis"
+        "hf_leaderboard",
+        "artificial_analysis",
+        "lmarena"
       ],
       "missing_fields": [
-        "quality.arena_elo",
-        "quality.reasoning.gpqa",
-        "quality.reasoning.mmlu_pro",
         "quality.coding.humaneval",
         "quality.coding.livecodebench",
         "quality.coding.swe_bench",
@@ -1144,11 +1148,13 @@
         "fp16": 249.6
       },
       "quality": {
-        "arena_elo": null,
-        "composite_score": null,
+        "arena_elo": 1233,
+        "composite_score": 0.33,
         "reasoning": {
-          "gpqa": null,
-          "mmlu_pro": null
+          "gpqa": 0.0738255033557047,
+          "mmlu_pro": 0.33242833924349874,
+          "ifeval": 0.7664186580495308,
+          "bbh": 0.39919954231431765
         },
         "coding": {
           "humaneval": null,
@@ -1168,12 +1174,11 @@
       },
       "model_card_url": "https://huggingface.co/CohereForAI/c4ai-command-r-plus",
       "sources_used": [
-        "artificial_analysis"
+        "hf_leaderboard",
+        "artificial_analysis",
+        "lmarena"
       ],
       "missing_fields": [
-        "quality.arena_elo",
-        "quality.reasoning.gpqa",
-        "quality.reasoning.mmlu_pro",
         "quality.coding.humaneval",
         "quality.coding.livecodebench",
         "quality.coding.swe_bench",

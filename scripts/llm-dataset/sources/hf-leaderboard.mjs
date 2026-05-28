@@ -1,19 +1,26 @@
 // HuggingFace Open LLM Leaderboard adapter.
 // Pulls academic-benchmark scores keyed by HF model id.
+// HF datasets-server caps length at 100 per request, so we paginate 10 pages.
 
 export const id = 'hf_leaderboard';
 export const url = 'https://huggingface.co/datasets/open-llm-leaderboard/contents';
 
-// HF datasets-server returns paginated JSON. We pull a single page large enough
-// for our seed set; expand if record_count drops below expected.
-const ENDPOINT = 'https://datasets-server.huggingface.co/rows?dataset=open-llm-leaderboard%2Fcontents&config=default&split=train&offset=0&length=100';
-
 export async function fetch_() {
-  const res = await fetch(ENDPOINT);
-  if (!res.ok) throw new Error(`hf_leaderboard: HTTP ${res.status}`);
-  const payload = await res.json();
-
-  return (payload.rows || []).map(r => {
+  const out = [];
+  for (let offset = 0; offset < 1000; offset += 100) {
+    const url = `https://datasets-server.huggingface.co/rows?dataset=open-llm-leaderboard%2Fcontents&config=default&split=train&offset=${offset}&length=100`;
+    const res = await fetch(url);
+    if (!res.ok) {
+      if (offset === 0) throw new Error(`hf_leaderboard: HTTP ${res.status}`);
+      break;  // stop paginating on error after we have at least one page
+    }
+    const payload = await res.json();
+    const page = payload.rows || [];
+    if (page.length === 0) break;
+    out.push(...page);
+    if (page.length < 100) break;  // no more pages
+  }
+  return out.map(r => {
     const row = r.row || {};
     const id = row.fullname || row.eval_name || row.Model || '';
     return {
