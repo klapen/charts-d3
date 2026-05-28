@@ -3,6 +3,7 @@ import { loadDataset }  from './modules/data.js';
 import { applyFilters } from './modules/filters.js';
 import { PRESETS, getPreset } from './modules/presets.js';
 import { mountRankedList } from './modules/ranked-list.js';
+import { mountParcoords } from './modules/parcoords.js';
 
 const store = createStore({
   data: null,
@@ -35,6 +36,11 @@ async function bootstrap() {
       document.getElementById('view-ranked'),
       store,
       { filtered, toggleSelection, isSelected, sortByForPreset }
+    );
+    mountParcoords(
+      document.getElementById('view-parcoords'),
+      store,
+      { filtered, isSelected }
     );
   } catch (err) {
     console.error(err);
