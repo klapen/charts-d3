@@ -4,6 +4,7 @@ import { applyFilters } from './modules/filters.js';
 import { PRESETS, getPreset } from './modules/presets.js';
 import { mountRankedList } from './modules/ranked-list.js';
 import { mountParcoords } from './modules/parcoords.js';
+import { mountScatter } from './modules/scatter.js';
 
 const store = createStore({
   data: null,
@@ -41,6 +42,11 @@ async function bootstrap() {
       document.getElementById('view-parcoords'),
       store,
       { filtered, isSelected }
+    );
+    mountScatter(
+      document.getElementById('view-scatter'),
+      store,
+      { filtered, isSelected, toggleSelection }
     );
   } catch (err) {
     console.error(err);
