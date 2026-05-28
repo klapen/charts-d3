@@ -1,67 +1,39 @@
-// Artificial Analysis adapter (via fboulnois/llm-leaderboard-csv mirror).
-// Pulls latency/throughput/price keyed by model name.
+// OpenRouter-backed pricing adapter (formerly Artificial Analysis via fboulnois CSV).
+// fboulnois mirror dropped its AA CSV in 2025; switched to OpenRouter for pricing
+// while keeping the source id `artificial_analysis` so downstream schemas/precedence
+// stay stable. Latency/throughput aren't available from OpenRouter — left as null.
 
 export const id = 'artificial_analysis';
-export const url = 'https://raw.githubusercontent.com/fboulnois/llm-leaderboard-csv/main/csv/lmarena.csv';
+export const url = 'https://openrouter.ai/api/v1/models';
 
-// The fboulnois mirror updates daily. We pull both csv files and merge:
-// - lmarena.csv: Arena Elo (we re-use the data; lmarena.mjs also fetches this)
-// - artificial-analysis.csv: latency, throughput, $/Mtok
-const ENDPOINT = 'https://raw.githubusercontent.com/fboulnois/llm-leaderboard-csv/main/csv/artificial-analysis.csv';
+const ENDPOINT = url;
 
 export async function fetch_() {
-  const res = await fetch(ENDPOINT);
-  if (!res.ok) throw new Error(`artificial_analysis: HTTP ${res.status}`);
-  const csv = await res.text();
-  const rows = parseCsv(csv);
+  const res = await fetch(ENDPOINT, { headers: { 'Accept': 'application/json' } });
+  if (!res.ok) throw new Error(`artificial_analysis (openrouter): HTTP ${res.status}`);
+  const payload = await res.json();
+  const list = Array.isArray(payload) ? payload : (payload.data || payload.models || []);
 
-  return rows.map(row => ({
-    source_model_id: row['Model'] || row['model'] || '',
-    fields: {
-      'performance.latency_ttft_ms':         numOrNull(row['Latency (TTFT, s)'], v => v * 1000),
-      'performance.throughput_tok_s':        numOrNull(row['Throughput (tok/s)']),
-      'pricing_hosted.input_per_mtok_usd':   numOrNull(row['Input Price ($/M)']),
-      'pricing_hosted.output_per_mtok_usd':  numOrNull(row['Output Price ($/M)']),
-    },
-  })).filter(r => r.source_model_id);
+  return list.map(m => {
+    const pricing = m.pricing || {};
+    return {
+      source_model_id: m.hugging_face_id || m.canonical_slug || m.id || '',
+      fields: {
+        'pricing_hosted.input_per_mtok_usd':  perMtok(pricing.prompt),
+        'pricing_hosted.output_per_mtok_usd': perMtok(pricing.completion),
+        'performance.latency_ttft_ms':        null,
+        'performance.throughput_tok_s':       null,
+      },
+    };
+  }).filter(r => r.source_model_id);
 }
 
 export { fetch_ as fetch };
 
-function numOrNull(v, transform) {
-  if (v === null || v === undefined || v === '' || v === 'N/A') return null;
-  const n = Number(String(v).replace(/[$,]/g, ''));
+// Convert "0.0000004" (USD/token) to a Number representing USD per 1M tokens.
+function perMtok(v) {
+  if (v === null || v === undefined || v === '') return null;
+  const n = Number(v);
   if (!Number.isFinite(n)) return null;
-  return transform ? transform(n) : n;
-}
-
-// Minimal CSV parser — handles quoted fields with commas. NOT full RFC 4180.
-function parseCsv(text) {
-  const lines = text.split(/\r?\n/).filter(l => l.length);
-  if (lines.length < 2) return [];
-  const headers = splitCsvLine(lines[0]);
-  return lines.slice(1).map(line => {
-    const cells = splitCsvLine(line);
-    const obj = {};
-    headers.forEach((h, i) => { obj[h] = cells[i] ?? ''; });
-    return obj;
-  });
-}
-
-function splitCsvLine(line) {
-  const out = []; let cur = ''; let inQ = false;
-  for (let i = 0; i < line.length; i++) {
-    const c = line[i];
-    if (inQ) {
-      if (c === '"' && line[i+1] === '"') { cur += '"'; i++; }
-      else if (c === '"') inQ = false;
-      else cur += c;
-    } else {
-      if (c === '"') inQ = true;
-      else if (c === ',') { out.push(cur); cur = ''; }
-      else cur += c;
-    }
-  }
-  out.push(cur);
-  return out.map(s => s.trim());
+  return Math.round(n * 1_000_000 * 10000) / 10000;  // round to 4 decimals
 }
