@@ -2,6 +2,7 @@ import { createStore }  from './modules/store.js';
 import { loadDataset }  from './modules/data.js';
 import { applyFilters } from './modules/filters.js';
 import { PRESETS, getPreset } from './modules/presets.js';
+import { mountRankedList } from './modules/ranked-list.js';
 
 const store = createStore({
   data: null,
@@ -30,6 +31,11 @@ async function bootstrap() {
     renderSyncStrip(data);
     renderPresets();
     bindOsiToggle();
+    mountRankedList(
+      document.getElementById('view-ranked'),
+      store,
+      { filtered, toggleSelection, isSelected, sortByForPreset }
+    );
   } catch (err) {
     console.error(err);
     $('sync-stamp').textContent = `Error: ${err.message}`;
@@ -44,7 +50,10 @@ async function bootstrap() {
   renderAll();
 }
 
-function renderAll() { renderStatLine(); /* views wired in Phase 4 */ }
+function renderAll() {
+  renderStatLine();
+  // Views are mounted once in bootstrap; they self-subscribe.
+}
 
 function renderSyncStrip(data) {
   const when = new Date(data.syncedAt);
@@ -86,6 +95,26 @@ function bindOsiToggle() {
   $('osi-toggle').addEventListener('change', e => {
     store.set({ osiOnly: e.target.checked });
   });
+}
+
+function toggleSelection(id) {
+  const s = store.get();
+  const cur = s.selectedIds;
+  let next;
+  if (cur.includes(id)) {
+    next = cur.filter(x => x !== id);
+  } else if (cur.length >= 3) {
+    next = cur.slice(1).concat(id);  // FIFO eviction
+  } else {
+    next = cur.concat(id);
+  }
+  store.set({ selectedIds: next });
+}
+
+function isSelected(id) { return store.get().selectedIds.includes(id); }
+
+function sortByForPreset(presetId) {
+  return presetId ? (getPreset(presetId)?.sortBy ?? null) : null;
 }
 
 function renderStatLine() {
