@@ -6,6 +6,7 @@ import { mountRankedList } from './modules/ranked-list.js';
 import { mountParcoords } from './modules/parcoords.js';
 import { mountScatter } from './modules/scatter.js';
 import { mountRadar } from './modules/radar.js';
+import { mountDetailCards } from './modules/detail-card.js';
 
 const store = createStore({
   data: null,
@@ -53,6 +54,11 @@ async function bootstrap() {
       document.getElementById('view-radar'),
       store,
       { filtered }
+    );
+    mountDetailCards(
+      document.getElementById('detail-cards'),
+      store,
+      { toggleSelection }
     );
   } catch (err) {
     console.error(err);
