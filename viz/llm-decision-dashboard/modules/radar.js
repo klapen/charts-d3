@@ -28,8 +28,8 @@ export function mountRadar(container, store, { filtered }) {
     container.innerHTML = `<div class="text-xs text-neutral-500 mb-2">View 4 — Radar · ${selected.length === 0 ? 'click a model anywhere to overlay it here' : `${selected.length} of 3`}</div>`;
 
     const W = container.clientWidth || 280;
-    const H = 300;
-    const cx = W / 2; const cy = H / 2 + 10; const R = Math.min(W, H) / 2 - 40;
+    const H = 460;
+    const cx = W / 2; const cy = H / 2 + 10; const R = Math.min(W, H) / 2 - 60;
     const svg = d3.select(container).append('svg').attr('width', W).attr('height', H);
 
     // Domain per axis from the FULL dataset (so polygons can be compared run-to-run).

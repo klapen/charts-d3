@@ -28,13 +28,21 @@
     <p id="stat-line" class="text-xs text-neutral-500 px-4 py-2" aria-live="polite">Loading data…</p>
 
     <main class="px-4 pb-6 flex flex-col gap-4">
-      <section id="view-ranked"    class="bg-neutral-900 border border-neutral-800 rounded p-3" aria-label="Ranked list"></section>
-      <section id="view-parcoords" class="bg-neutral-900 border border-neutral-800 rounded p-3" aria-label="Parallel coordinates"></section>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <section id="view-scatter" class="bg-neutral-900 border border-neutral-800 rounded p-3" aria-label="Scatter plot"></section>
-        <section id="view-radar"   class="bg-neutral-900 border border-neutral-800 rounded p-3" aria-label="Radar comparison"></section>
+        <section id="view-ranked" class="bg-neutral-900 border border-neutral-800 rounded p-3" aria-label="Ranked list"></section>
+        <section id="view-radar"  class="bg-neutral-900 border border-neutral-800 rounded p-3" aria-label="Radar comparison"></section>
       </div>
-      <section id="detail-cards" class="flex gap-3 flex-wrap" aria-label="Selected model details"></section>
+      <section id="view-parcoords" class="bg-neutral-900 border border-neutral-800 rounded p-3" aria-label="Parallel coordinates"></section>
+      <aside id="scatter-help" class="bg-neutral-900 border border-neutral-800 rounded px-3 py-2 text-xs text-neutral-300 leading-relaxed" aria-label="Scatter plot guide">
+        <b class="text-neutral-200">View 3 — Scatter:</b>
+        Pick any metric for <b>X</b> / <b>Y</b> / <b>Size</b> (bigger dot = higher value) / <b>Color</b> (groups by license, family, or vendor).
+        <b>Click</b> a dot to add the model to your comparison (max 3).
+        <span class="text-neutral-500">Try X = <i>$/M in</i>, Y = <i>arena elo</i> — top-left shows cheap + strong models.</span>
+      </aside>
+      <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4">
+        <section id="view-scatter" class="bg-neutral-900 border border-neutral-800 rounded p-3" aria-label="Scatter plot"></section>
+        <section id="detail-cards" class="flex gap-3 flex-wrap content-start" aria-label="Selected model details"></section>
+      </div>
     </main>
 
     <noscript class="block px-4 py-3 text-red-400">This dashboard requires JavaScript. The dataset is also available at <a class="underline" href="/ai-llm-dataset.json">/ai-llm-dataset.json</a>.</noscript>

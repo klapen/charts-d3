@@ -12,6 +12,8 @@ const DEFAULT_AXES = [
   'params.total_b',
 ];
 
+const COLORS = ['#4ade80', '#60a5fa', '#fbbf24'];
+
 export function mountParcoords(container, store, { filtered, isSelected }) {
   render();
   store.subscribe(s => ({ filters: s.filters, osi: s.osiOnly, sel: s.selectedIds, ready: !!s.data }), render);
@@ -20,10 +22,22 @@ export function mountParcoords(container, store, { filtered, isSelected }) {
     const s = store.get();
     if (!s.data) return;
     const dims = s.data.dimensions;
-    const axes = DEFAULT_AXES.filter(p => dims[p]);  // skip if dimension missing
+    const allModels = s.data.flatModels;
+    // Skip axes where no model in the dataset has a value (e.g. humaneval at 0/15).
+    const axes = DEFAULT_AXES.filter(p => dims[p] && allModels.some(d => d[p] != null));
     const data = filtered(s);
 
-    container.innerHTML = `<div class="text-xs text-neutral-500 mb-2">View 2 — Parallel coordinates · brush axis to filter</div>`;
+    const selectionIdx = {};
+    s.selectedIds.forEach((id, i) => { selectionIdx[id] = i; });
+    const selectedModels = s.selectedIds.map(id => data.find(d => d.model_id === id)).filter(Boolean);
+    const legend = selectedModels.length
+      ? selectedModels.map(m => `<span class="parcoord-legend" style="--c:${COLORS[selectionIdx[m.model_id]]}">${escapeHtml(m.name)}</span>`).join('')
+      : '<span class="text-neutral-600">click a model to highlight its line here</span>';
+
+    container.innerHTML = `
+      <div class="text-xs text-neutral-500 mb-1">View 2 — Parallel coordinates · brush axis to filter</div>
+      <div class="text-xs flex gap-2 flex-wrap items-center mb-2">${legend}</div>
+    `;
 
     const W = container.clientWidth || 800;
     const H = 220;
@@ -48,12 +62,22 @@ export function mountParcoords(container, store, { filtered, isSelected }) {
         .nice();
     }
 
-    // Lines
-    g.append('g').selectAll('path').data(data).enter().append('path')
+    // Lines — unselected first so selected (color-coded) draw on top.
+    const unsel = data.filter(d => selectionIdx[d.model_id] == null);
+    const sel   = data.filter(d => selectionIdx[d.model_id] != null);
+
+    g.append('g').selectAll('path').data(unsel).enter().append('path')
       .attr('fill', 'none')
-      .attr('stroke', d => isSelected(d.model_id) ? '#4ade80' : '#60a5fa')
-      .attr('stroke-width', d => isSelected(d.model_id) ? 2 : 1)
-      .attr('opacity', d => isSelected(d.model_id) ? 1 : 0.45)
+      .attr('stroke', '#6b7280')
+      .attr('stroke-width', 1)
+      .attr('opacity', 0.3)
+      .attr('d', d => linePath(d, axes, x, y));
+
+    g.append('g').selectAll('path').data(sel).enter().append('path')
+      .attr('fill', 'none')
+      .attr('stroke', d => COLORS[selectionIdx[d.model_id]])
+      .attr('stroke-width', 2.5)
+      .attr('opacity', 1)
       .attr('d', d => linePath(d, axes, x, y));
 
     // Axes
@@ -93,6 +117,10 @@ export function mountParcoords(container, store, { filtered, isSelected }) {
       }
       store.set({ filters, activePreset: null });  // user brushing clears preset
     }
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
   }
 
   function linePath(d, axes, x, y) {

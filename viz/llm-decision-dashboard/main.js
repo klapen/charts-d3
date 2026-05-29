@@ -1,3 +1,4 @@
+import '../../src/styles/main.css';
 import { createStore }  from './modules/store.js';
 import { loadDataset }  from './modules/data.js';
 import { applyFilters } from './modules/filters.js';

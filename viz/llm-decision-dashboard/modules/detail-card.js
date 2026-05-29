@@ -1,9 +1,11 @@
-// One detail card per selected model. Lives at #detail-cards.
+// Tabbed detail cards — one tab per selected model, one card visible at a time.
 // Click ✕ → deselect.
 
 const COLORS = ['#4ade80', '#60a5fa', '#fbbf24'];
 
 export function mountDetailCards(container, store, { toggleSelection }) {
+  let activeIdx = 0;
+
   render();
   store.subscribe(s => ({ sel: s.selectedIds, ready: !!s.data }), render);
 
@@ -13,8 +15,18 @@ export function mountDetailCards(container, store, { toggleSelection }) {
     const all = s.data.flatModels;
     const selected = s.selectedIds.map(id => all.find(m => m.model_id === id)).filter(Boolean);
 
-    container.innerHTML = selected.map((m, i) => cardHtml(m, COLORS[i])).join('');
+    if (selected.length === 0) { container.innerHTML = ''; activeIdx = 0; return; }
+    if (activeIdx >= selected.length) activeIdx = selected.length - 1;
 
+    const tabs = selected.map((m, i) => `
+      <button class="detail-tab${i === activeIdx ? ' on' : ''}" data-tab-idx="${i}" style="--c:${COLORS[i]}">${escape(m.__raw.name)}</button>
+    `).join('');
+
+    container.innerHTML = `<div class="detail-tabs">${tabs}</div>${cardHtml(selected[activeIdx], COLORS[activeIdx])}`;
+
+    container.querySelectorAll('[data-tab-idx]').forEach(el => {
+      el.addEventListener('click', () => { activeIdx = Number(el.dataset.tabIdx); render(); });
+    });
     container.querySelectorAll('[data-close-id]').forEach(el => {
       el.addEventListener('click', () => toggleSelection(el.dataset.closeId));
     });
