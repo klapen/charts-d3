@@ -25,7 +25,16 @@ export function mountRadar(container, store, { filtered }) {
     const all = s.data.flatModels;
     const selected = s.selectedIds.map(id => all.find(m => m.model_id === id)).filter(Boolean);
 
-    container.innerHTML = `<div class="text-xs text-neutral-500 mb-2">View 4 — Radar · ${selected.length === 0 ? 'click a model anywhere to overlay it here' : `${selected.length} of 3`}</div>`;
+    container.innerHTML = `
+      <div class="text-sm text-neutral-200 font-medium mb-1">View 4 — Radar</div>
+      <div class="text-xs text-neutral-400 leading-relaxed mb-2">
+        Side-by-side <b>head-to-head comparison</b> of up to 3 selected models on 6 metrics.
+        Each axis is normalized so <b>"better" is always toward the outside</b> (lower-is-better
+        metrics like price and VRAM are flipped automatically). At a glance:
+        <b>bigger polygon = better overall</b>; a lopsided polygon shows a model's strengths and weaknesses.
+        <span class="text-neutral-500">${selected.length === 0 ? 'Click a model in any other view to overlay it here.' : `${selected.length} of 3 selected.`}</span>
+      </div>
+    `;
 
     const W = container.clientWidth || 280;
     const H = 460;

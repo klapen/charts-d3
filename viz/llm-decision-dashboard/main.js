@@ -15,7 +15,7 @@ const store = createStore({
   selectedIds: [],
   activePreset: null,
   osiOnly: false,
-  scatterAxes: { x: 'pricing_hosted.input_per_mtok_usd', y: 'quality.composite_score',
+  scatterAxes: { x: 'pricing_hosted.input_per_mtok_usd', y: 'quality.arena_elo',
                  size: 'params.total_b', color: 'license.id' },
 });
 
