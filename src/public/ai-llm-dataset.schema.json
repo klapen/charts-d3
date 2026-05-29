@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Open-Source LLM Decision Dataset",
+  "type": "object",
+  "required": ["schema_version", "synced_at", "sources", "dimensions", "models"],
+  "properties": {
+    "schema_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "synced_at": { "type": "string", "format": "date-time" },
+    "sources": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z_]+$": {
+          "type": "object",
+          "required": ["url", "synced_at", "record_count"],
+          "properties": {
+            "url": { "type": "string", "format": "uri" },
+            "synced_at": { "type": "string", "format": "date-time" },
+            "record_count": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "dimensions": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z_.]+$": {
+          "type": "object",
+          "required": ["label", "direction", "source"],
+          "properties": {
+            "label": { "type": "string" },
+            "unit": { "type": ["string", "null"] },
+            "direction": { "enum": ["higher_better", "lower_better", "informational"] },
+            "source": { "type": "string" }
+          }
+        }
+      }
+    },
+    "models": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["model_id", "name", "license", "params", "context_window"],
+        "properties": {
+          "model_id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "name": { "type": "string" },
+          "family": { "type": "string" },
+          "vendor": { "type": "string" },
+          "release_date": { "type": "string", "format": "date" },
+          "license": {
+            "type": "object",
+            "required": ["id", "name", "osi_approved"],
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "osi_approved": { "type": "boolean" },
+              "url": { "type": "string", "format": "uri" }
+            }
+          },
+          "params": {
+            "type": "object",
+            "required": ["total_b", "active_b", "is_moe"],
+            "properties": {
+              "total_b": { "type": "number", "minimum": 0 },
+              "active_b": { "type": "number", "minimum": 0 },
+              "is_moe": { "type": "boolean" }
+            }
+          },
+          "context_window": { "type": "integer", "minimum": 0 },
+          "modalities": {
+            "type": "object",
+            "properties": {
+              "input":  { "type": "array", "items": { "type": "string" } },
+              "output": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "vram_estimate_gb": {
+            "type": "object",
+            "properties": {
+              "q4":   { "type": ["number", "null"] },
+              "q8":   { "type": ["number", "null"] },
+              "fp16": { "type": ["number", "null"] }
+            }
+          },
+          "quality": {
+            "type": "object",
+            "properties": {
+              "arena_elo":       { "type": ["number", "null"] },
+              "composite_score": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+              "reasoning": {
+                "type": "object",
+                "properties": {
+                  "gpqa":     { "type": ["number", "null"] },
+                  "mmlu_pro": { "type": ["number", "null"] }
+                }
+              },
+              "coding": {
+                "type": "object",
+                "properties": {
+                  "humaneval":     { "type": ["number", "null"] },
+                  "livecodebench": { "type": ["number", "null"] },
+                  "swe_bench":     { "type": ["number", "null"] }
+                }
+              },
+              "multilingual_score": { "type": ["number", "null"] }
+            }
+          },
+          "performance": {
+            "type": "object",
+            "properties": {
+              "latency_ttft_ms":   { "type": ["number", "null"] },
+              "throughput_tok_s":  { "type": ["number", "null"] }
+            }
+          },
+          "pricing_hosted": {
+            "type": "object",
+            "properties": {
+              "input_per_mtok_usd":  { "type": ["number", "null"] },
+              "output_per_mtok_usd": { "type": ["number", "null"] },
+              "provider_count":      { "type": ["integer", "null"] }
+            }
+          },
+          "model_card_url": { "type": "string", "format": "uri" },
+          "sources_used":   { "type": "array", "items": { "type": "string" } },
+          "missing_fields": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

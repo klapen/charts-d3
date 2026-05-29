@@ -1,0 +1,245 @@
+# Ground-truth identity for open-weight LLMs.
+# The sync script enriches these with benchmark/perf/price data from sources.
+# Add aliases to help match across HF / Artificial Analysis / LMArena naming.
+
+- model_id: qwen3-72b
+  name: Qwen3 72B
+  family: qwen3
+  vendor: alibaba
+  release_date: "2025-04-01"
+  params: { total_b: 72, active_b: 72, is_moe: false }
+  context_window: 131072
+  license: qwen-license
+  modalities: { input: [text], output: [text] }
+  aliases: [Qwen3-72B-Instruct, qwen/qwen3-72b, qwen3:72b]
+  model_card_url: https://huggingface.co/Qwen/Qwen3-72B
+
+- model_id: qwen3-32b
+  name: Qwen3 32B
+  family: qwen3
+  vendor: alibaba
+  release_date: "2025-04-01"
+  params: { total_b: 32, active_b: 32, is_moe: false }
+  context_window: 131072
+  license: qwen-license
+  modalities: { input: [text], output: [text] }
+  aliases: [Qwen3-32B-Instruct, qwen/qwen3-32b, qwen3:32b]
+  model_card_url: https://huggingface.co/Qwen/Qwen3-32B
+
+- model_id: qwen3-7b
+  name: Qwen3 7B
+  family: qwen3
+  vendor: alibaba
+  release_date: "2025-04-01"
+  params: { total_b: 7, active_b: 7, is_moe: false }
+  context_window: 131072
+  license: qwen-license
+  modalities: { input: [text], output: [text] }
+  aliases: [Qwen3-7B-Instruct, qwen/qwen3-7b, qwen3:7b]
+  model_card_url: https://huggingface.co/Qwen/Qwen3-7B
+
+- model_id: deepseek-v3
+  name: DeepSeek V3
+  family: deepseek
+  vendor: deepseek
+  release_date: "2024-12-26"
+  params: { total_b: 671, active_b: 37, is_moe: true }
+  context_window: 128000
+  license: deepseek-license
+  modalities: { input: [text], output: [text] }
+  aliases: [DeepSeek-V3, deepseek-ai/DeepSeek-V3, deepseek/deepseek-v3]
+  model_card_url: https://huggingface.co/deepseek-ai/DeepSeek-V3
+
+- model_id: llama-3-3-70b
+  name: Llama 3.3 70B
+  family: llama-3
+  vendor: meta
+  release_date: "2024-12-06"
+  params: { total_b: 70, active_b: 70, is_moe: false }
+  context_window: 128000
+  license: llama-community
+  modalities: { input: [text], output: [text] }
+  aliases: [Llama-3.3-70B-Instruct, meta-llama/Llama-3.3-70B-Instruct, llama3.3:70b]
+  model_card_url: https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct
+
+- model_id: mistral-large-2
+  name: Mistral Large 2
+  family: mistral
+  vendor: mistral
+  release_date: "2024-07-24"
+  params: { total_b: 123, active_b: 123, is_moe: false }
+  context_window: 131072
+  license: mistral-research
+  modalities: { input: [text], output: [text] }
+  aliases: [Mistral-Large-Instruct-2407, mistralai/Mistral-Large-Instruct-2407]
+  model_card_url: https://huggingface.co/mistralai/Mistral-Large-Instruct-2407
+
+- model_id: mixtral-8x22b
+  name: Mixtral 8x22B
+  family: mixtral
+  vendor: mistral
+  release_date: "2024-04-17"
+  params: { total_b: 141, active_b: 39, is_moe: true }
+  context_window: 65536
+  license: apache-2.0
+  modalities: { input: [text], output: [text] }
+  aliases: [Mixtral-8x22B-Instruct-v0.1, mistralai/Mixtral-8x22B-Instruct-v0.1]
+  model_card_url: https://huggingface.co/mistralai/Mixtral-8x22B-Instruct-v0.1
+
+- model_id: gemma-3-27b
+  name: Gemma 3 27B
+  family: gemma-3
+  vendor: google
+  release_date: "2025-03-12"
+  params: { total_b: 27, active_b: 27, is_moe: false }
+  context_window: 131072
+  license: gemma-terms
+  modalities: { input: [text, image], output: [text] }
+  aliases: [gemma-3-27b-it, google/gemma-3-27b-it]
+  model_card_url: https://huggingface.co/google/gemma-3-27b-it
+
+- model_id: gemma-3-12b
+  name: Gemma 3 12B
+  family: gemma-3
+  vendor: google
+  release_date: "2025-03-12"
+  params: { total_b: 12, active_b: 12, is_moe: false }
+  context_window: 131072
+  license: gemma-terms
+  modalities: { input: [text, image], output: [text] }
+  aliases: [gemma-3-12b-it, google/gemma-3-12b-it]
+  model_card_url: https://huggingface.co/google/gemma-3-12b-it
+
+- model_id: phi-4
+  name: Phi-4
+  family: phi
+  vendor: microsoft
+  release_date: "2024-12-12"
+  params: { total_b: 14, active_b: 14, is_moe: false }
+  context_window: 16384
+  license: mit
+  modalities: { input: [text], output: [text] }
+  aliases: [Phi-4, microsoft/phi-4]
+  model_card_url: https://huggingface.co/microsoft/phi-4
+
+- model_id: phi-3-5-mini
+  name: Phi-3.5 Mini
+  family: phi
+  vendor: microsoft
+  release_date: "2024-08-20"
+  params: { total_b: 3.8, active_b: 3.8, is_moe: false }
+  context_window: 131072
+  license: mit
+  modalities: { input: [text], output: [text] }
+  aliases: [Phi-3.5-mini-instruct, microsoft/Phi-3.5-mini-instruct]
+  model_card_url: https://huggingface.co/microsoft/Phi-3.5-mini-instruct
+
+- model_id: llama-3-2-3b
+  name: Llama 3.2 3B
+  family: llama-3
+  vendor: meta
+  release_date: "2024-09-25"
+  params: { total_b: 3, active_b: 3, is_moe: false }
+  context_window: 131072
+  license: llama-community
+  modalities: { input: [text], output: [text] }
+  aliases: [Llama-3.2-3B-Instruct, meta-llama/Llama-3.2-3B-Instruct, llama3.2:3b]
+  model_card_url: https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct
+
+- model_id: qwen2-5-coder-32b
+  name: Qwen2.5 Coder 32B
+  family: qwen2.5
+  vendor: alibaba
+  release_date: "2024-11-12"
+  params: { total_b: 32, active_b: 32, is_moe: false }
+  context_window: 131072
+  license: apache-2.0
+  modalities: { input: [text], output: [text] }
+  aliases: [Qwen2.5-Coder-32B-Instruct, qwen/qwen2.5-coder-32b]
+  model_card_url: https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct
+
+- model_id: deepseek-r1
+  name: DeepSeek R1
+  family: deepseek
+  vendor: deepseek
+  release_date: "2025-01-20"
+  params: { total_b: 671, active_b: 37, is_moe: true }
+  context_window: 65536
+  license: mit
+  modalities: { input: [text], output: [text] }
+  aliases: [DeepSeek-R1, deepseek-ai/DeepSeek-R1]
+  model_card_url: https://huggingface.co/deepseek-ai/DeepSeek-R1
+
+- model_id: command-r-plus
+  name: Command R+
+  family: command-r
+  vendor: cohere
+  release_date: "2024-04-04"
+  params: { total_b: 104, active_b: 104, is_moe: false }
+  context_window: 131072
+  license: cc-by-nc-4.0
+  modalities: { input: [text], output: [text] }
+  aliases: [c4ai-command-r-plus, CohereForAI/c4ai-command-r-plus]
+  model_card_url: https://huggingface.co/CohereForAI/c4ai-command-r-plus
+
+# --- Coding specialists ----------------------------------------------------
+
+- model_id: deepseek-coder-33b
+  name: DeepSeek Coder 33B
+  family: deepseek-coder
+  vendor: deepseek
+  release_date: "2023-11-05"
+  params: { total_b: 33, active_b: 33, is_moe: false }
+  context_window: 16384
+  license: deepseek-license
+  modalities: { input: [text], output: [text] }
+  aliases: [DeepSeek-Coder-33b-instruct, DeepSeek-Coder-33b-base, deepseek-ai/deepseek-coder-33b-instruct]
+  model_card_url: https://huggingface.co/deepseek-ai/deepseek-coder-33b-instruct
+
+- model_id: codellama-70b
+  name: Code Llama 70B
+  family: code-llama
+  vendor: meta
+  release_date: "2024-01-29"
+  params: { total_b: 70, active_b: 70, is_moe: false }
+  context_window: 16384
+  license: llama-community
+  modalities: { input: [text], output: [text] }
+  aliases: [CodeLlama-70b-Instruct, CodeLlama-70b-Python, CodeLlama-70b, codellama/CodeLlama-70b-Instruct-hf]
+  model_card_url: https://huggingface.co/codellama/CodeLlama-70b-Instruct-hf
+
+- model_id: codeqwen1-5-7b
+  name: CodeQwen 1.5 7B
+  family: codeqwen
+  vendor: alibaba
+  release_date: "2024-04-16"
+  params: { total_b: 7, active_b: 7, is_moe: false }
+  context_window: 65536
+  license: qwen-license
+  modalities: { input: [text], output: [text] }
+  aliases: [CodeQwen1.5-7B-Chat, CodeQwen1.5-7B, Qwen/CodeQwen1.5-7B-Chat]
+  model_card_url: https://huggingface.co/Qwen/CodeQwen1.5-7B-Chat
+
+- model_id: starcoder2-15b
+  name: StarCoder2 15B
+  family: starcoder2
+  vendor: bigcode
+  release_date: "2024-02-28"
+  params: { total_b: 15, active_b: 15, is_moe: false }
+  context_window: 16384
+  license: bigcode-openrail-m
+  modalities: { input: [text], output: [text] }
+  aliases: [StarCoder2-15B, bigcode/starcoder2-15b]
+  model_card_url: https://huggingface.co/bigcode/starcoder2-15b
+
+- __licenses__:
+    apache-2.0:        { name: "Apache 2.0",        osi_approved: true,  url: "https://www.apache.org/licenses/LICENSE-2.0" }
+    mit:               { name: "MIT",               osi_approved: true,  url: "https://opensource.org/license/mit" }
+    bsd-3-clause:      { name: "BSD-3-Clause",      osi_approved: true,  url: "https://opensource.org/license/BSD-3-Clause" }
+    llama-community:   { name: "Llama Community",   osi_approved: false, url: "https://www.llama.com/llama3/license/" }
+    qwen-license:      { name: "Qwen License",      osi_approved: false, url: "https://huggingface.co/Qwen" }
+    gemma-terms:       { name: "Gemma Terms",       osi_approved: false, url: "https://ai.google.dev/gemma/terms" }
+    deepseek-license:  { name: "DeepSeek License",  osi_approved: false, url: "https://github.com/deepseek-ai/DeepSeek-LLM/blob/main/LICENSE-MODEL" }
+    mistral-research:  { name: "Mistral Research",  osi_approved: false, url: "https://mistral.ai/licenses/MRL-0.1.md" }
+    cc-by-nc-4.0:      { name: "CC BY-NC 4.0",      osi_approved: false, url: "https://creativecommons.org/licenses/by-nc/4.0/" }
+    bigcode-openrail-m: { name: "BigCode OpenRAIL-M", osi_approved: false, url: "https://www.bigcode-project.org/docs/pages/bigcode-openrail/" }

@@ -1,0 +1,1480 @@
+{
+  "schema_version": "1.0.0",
+  "synced_at": "2026-05-29T20:55:15.049Z",
+  "sources": {
+    "hf_leaderboard": {
+      "url": "https://huggingface.co/datasets/open-llm-leaderboard/contents",
+      "synced_at": "2026-05-29T20:55:14.009Z",
+      "record_count": 1000
+    },
+    "artificial_analysis": {
+      "url": "https://openrouter.ai/api/v1/models",
+      "synced_at": "2026-05-29T20:55:14.374Z",
+      "record_count": 357
+    },
+    "lmarena": {
+      "url": "https://raw.githubusercontent.com/fboulnois/llm-leaderboard-csv/main/csv/lmarena_text.csv",
+      "synced_at": "2026-05-29T20:55:14.611Z",
+      "record_count": 266
+    },
+    "bigcode_leaderboard": {
+      "url": "https://huggingface.co/spaces/bigcode/bigcode-models-leaderboard/resolve/main/data/code_eval_board.csv",
+      "synced_at": "2026-05-29T20:55:15.034Z",
+      "record_count": 60
+    }
+  },
+  "dimensions": {
+    "quality.arena_elo": {
+      "label": "Arena Elo",
+      "unit": null,
+      "direction": "higher_better",
+      "source": "lmarena"
+    },
+    "quality.composite_score": {
+      "label": "Composite",
+      "unit": null,
+      "direction": "higher_better",
+      "source": "derived"
+    },
+    "quality.reasoning.gpqa": {
+      "label": "GPQA",
+      "unit": null,
+      "direction": "higher_better",
+      "source": "hf_leaderboard"
+    },
+    "quality.reasoning.mmlu_pro": {
+      "label": "MMLU-Pro",
+      "unit": null,
+      "direction": "higher_better",
+      "source": "hf_leaderboard"
+    },
+    "quality.coding.humaneval": {
+      "label": "HumanEval",
+      "unit": null,
+      "direction": "higher_better",
+      "source": "bigcode_leaderboard"
+    },
+    "quality.coding.livecodebench": {
+      "label": "LiveCodeBench",
+      "unit": null,
+      "direction": "higher_better",
+      "source": "hf_leaderboard"
+    },
+    "quality.coding.swe_bench": {
+      "label": "SWE-bench",
+      "unit": null,
+      "direction": "higher_better",
+      "source": "hf_leaderboard"
+    },
+    "quality.multilingual_score": {
+      "label": "Multilingual",
+      "unit": null,
+      "direction": "higher_better",
+      "source": "hf_leaderboard"
+    },
+    "performance.latency_ttft_ms": {
+      "label": "Latency (TTFT)",
+      "unit": "ms",
+      "direction": "lower_better",
+      "source": "artificial_analysis"
+    },
+    "performance.throughput_tok_s": {
+      "label": "Throughput",
+      "unit": "tok/s",
+      "direction": "higher_better",
+      "source": "artificial_analysis"
+    },
+    "pricing_hosted.input_per_mtok_usd": {
+      "label": "$/M in",
+      "unit": "USD",
+      "direction": "lower_better",
+      "source": "artificial_analysis"
+    },
+    "pricing_hosted.output_per_mtok_usd": {
+      "label": "$/M out",
+      "unit": "USD",
+      "direction": "lower_better",
+      "source": "artificial_analysis"
+    },
+    "context_window": {
+      "label": "Context",
+      "unit": "tokens",
+      "direction": "higher_better",
+      "source": "models_yaml"
+    },
+    "vram_estimate_gb.q4": {
+      "label": "VRAM @ q4",
+      "unit": "GB",
+      "direction": "lower_better",
+      "source": "derived"
+    },
+    "vram_estimate_gb.q8": {
+      "label": "VRAM @ q8",
+      "unit": "GB",
+      "direction": "lower_better",
+      "source": "derived"
+    },
+    "vram_estimate_gb.fp16": {
+      "label": "VRAM @ fp16",
+      "unit": "GB",
+      "direction": "lower_better",
+      "source": "derived"
+    },
+    "params.total_b": {
+      "label": "Params (total)",
+      "unit": "B",
+      "direction": "informational",
+      "source": "models_yaml"
+    },
+    "params.active_b": {
+      "label": "Params (active)",
+      "unit": "B",
+      "direction": "informational",
+      "source": "models_yaml"
+    }
+  },
+  "models": [
+    {
+      "model_id": "qwen3-72b",
+      "name": "Qwen3 72B",
+      "family": "qwen3",
+      "vendor": "alibaba",
+      "release_date": "2025-04-01",
+      "license": {
+        "id": "qwen-license",
+        "name": "Qwen License",
+        "osi_approved": false,
+        "url": "https://huggingface.co/Qwen"
+      },
+      "params": {
+        "total_b": 72,
+        "active_b": 72,
+        "is_moe": false
+      },
+      "context_window": 131072,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 43.2,
+        "q8": 86.4,
+        "fp16": 172.8
+      },
+      "quality": {
+        "arena_elo": null,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": null,
+        "output_per_mtok_usd": null,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/Qwen/Qwen3-72B",
+      "sources_used": [],
+      "missing_fields": [
+        "quality.arena_elo",
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s",
+        "pricing_hosted.input_per_mtok_usd",
+        "pricing_hosted.output_per_mtok_usd"
+      ]
+    },
+    {
+      "model_id": "qwen3-32b",
+      "name": "Qwen3 32B",
+      "family": "qwen3",
+      "vendor": "alibaba",
+      "release_date": "2025-04-01",
+      "license": {
+        "id": "qwen-license",
+        "name": "Qwen License",
+        "osi_approved": false,
+        "url": "https://huggingface.co/Qwen"
+      },
+      "params": {
+        "total_b": 32,
+        "active_b": 32,
+        "is_moe": false
+      },
+      "context_window": 131072,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 19.2,
+        "q8": 38.4,
+        "fp16": 76.8
+      },
+      "quality": {
+        "arena_elo": 1341,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 0.08,
+        "output_per_mtok_usd": 0.28,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/Qwen/Qwen3-32B",
+      "sources_used": [
+        "artificial_analysis",
+        "lmarena"
+      ],
+      "missing_fields": [
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "qwen3-7b",
+      "name": "Qwen3 7B",
+      "family": "qwen3",
+      "vendor": "alibaba",
+      "release_date": "2025-04-01",
+      "license": {
+        "id": "qwen-license",
+        "name": "Qwen License",
+        "osi_approved": false,
+        "url": "https://huggingface.co/Qwen"
+      },
+      "params": {
+        "total_b": 7,
+        "active_b": 7,
+        "is_moe": false
+      },
+      "context_window": 131072,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 4.2,
+        "q8": 8.4,
+        "fp16": 16.8
+      },
+      "quality": {
+        "arena_elo": null,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": null,
+        "output_per_mtok_usd": null,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/Qwen/Qwen3-7B",
+      "sources_used": [],
+      "missing_fields": [
+        "quality.arena_elo",
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s",
+        "pricing_hosted.input_per_mtok_usd",
+        "pricing_hosted.output_per_mtok_usd"
+      ]
+    },
+    {
+      "model_id": "deepseek-v3",
+      "name": "DeepSeek V3",
+      "family": "deepseek",
+      "vendor": "deepseek",
+      "release_date": "2024-12-26",
+      "license": {
+        "id": "deepseek-license",
+        "name": "DeepSeek License",
+        "osi_approved": false,
+        "url": "https://github.com/deepseek-ai/DeepSeek-LLM/blob/main/LICENSE-MODEL"
+      },
+      "params": {
+        "total_b": 671,
+        "active_b": 37,
+        "is_moe": true
+      },
+      "context_window": 128000,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 402.6,
+        "q8": 805.2,
+        "fp16": 1610.4
+      },
+      "quality": {
+        "arena_elo": 1376,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 0.252,
+        "output_per_mtok_usd": 0.378,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/deepseek-ai/DeepSeek-V3",
+      "sources_used": [
+        "artificial_analysis",
+        "lmarena"
+      ],
+      "missing_fields": [
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "llama-3-3-70b",
+      "name": "Llama 3.3 70B",
+      "family": "llama-3",
+      "vendor": "meta",
+      "release_date": "2024-12-06",
+      "license": {
+        "id": "llama-community",
+        "name": "Llama Community",
+        "osi_approved": false,
+        "url": "https://www.llama.com/llama3/license/"
+      },
+      "params": {
+        "total_b": 70,
+        "active_b": 70,
+        "is_moe": false
+      },
+      "context_window": 128000,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 42,
+        "q8": 84,
+        "fp16": 168
+      },
+      "quality": {
+        "arena_elo": 1275,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 0,
+        "output_per_mtok_usd": 0,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct",
+      "sources_used": [
+        "artificial_analysis",
+        "lmarena"
+      ],
+      "missing_fields": [
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "mistral-large-2",
+      "name": "Mistral Large 2",
+      "family": "mistral",
+      "vendor": "mistral",
+      "release_date": "2024-07-24",
+      "license": {
+        "id": "mistral-research",
+        "name": "Mistral Research",
+        "osi_approved": false,
+        "url": "https://mistral.ai/licenses/MRL-0.1.md"
+      },
+      "params": {
+        "total_b": 123,
+        "active_b": 123,
+        "is_moe": false
+      },
+      "context_window": 131072,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 73.8,
+        "q8": 147.6,
+        "fp16": 295.2
+      },
+      "quality": {
+        "arena_elo": 1269,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 0.5,
+        "output_per_mtok_usd": 1.5,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/mistralai/Mistral-Large-Instruct-2407",
+      "sources_used": [
+        "artificial_analysis",
+        "lmarena"
+      ],
+      "missing_fields": [
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "mixtral-8x22b",
+      "name": "Mixtral 8x22B",
+      "family": "mixtral",
+      "vendor": "mistral",
+      "release_date": "2024-04-17",
+      "license": {
+        "id": "apache-2.0",
+        "name": "Apache 2.0",
+        "osi_approved": true,
+        "url": "https://www.apache.org/licenses/LICENSE-2.0"
+      },
+      "params": {
+        "total_b": 141,
+        "active_b": 39,
+        "is_moe": true
+      },
+      "context_window": 65536,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 84.6,
+        "q8": 169.2,
+        "fp16": 338.4
+      },
+      "quality": {
+        "arena_elo": 1167,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 2,
+        "output_per_mtok_usd": 6,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/mistralai/Mixtral-8x22B-Instruct-v0.1",
+      "sources_used": [
+        "artificial_analysis",
+        "lmarena"
+      ],
+      "missing_fields": [
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "gemma-3-27b",
+      "name": "Gemma 3 27B",
+      "family": "gemma-3",
+      "vendor": "google",
+      "release_date": "2025-03-12",
+      "license": {
+        "id": "gemma-terms",
+        "name": "Gemma Terms",
+        "osi_approved": false,
+        "url": "https://ai.google.dev/gemma/terms"
+      },
+      "params": {
+        "total_b": 27,
+        "active_b": 27,
+        "is_moe": false
+      },
+      "context_window": 131072,
+      "modalities": {
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 16.2,
+        "q8": 32.4,
+        "fp16": 64.8
+      },
+      "quality": {
+        "arena_elo": 1357,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 0.08,
+        "output_per_mtok_usd": 0.16,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/google/gemma-3-27b-it",
+      "sources_used": [
+        "artificial_analysis",
+        "lmarena"
+      ],
+      "missing_fields": [
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "gemma-3-12b",
+      "name": "Gemma 3 12B",
+      "family": "gemma-3",
+      "vendor": "google",
+      "release_date": "2025-03-12",
+      "license": {
+        "id": "gemma-terms",
+        "name": "Gemma Terms",
+        "osi_approved": false,
+        "url": "https://ai.google.dev/gemma/terms"
+      },
+      "params": {
+        "total_b": 12,
+        "active_b": 12,
+        "is_moe": false
+      },
+      "context_window": 131072,
+      "modalities": {
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 7.2,
+        "q8": 14.4,
+        "fp16": 28.8
+      },
+      "quality": {
+        "arena_elo": 1335,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 0.04,
+        "output_per_mtok_usd": 0.13,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/google/gemma-3-12b-it",
+      "sources_used": [
+        "artificial_analysis",
+        "lmarena"
+      ],
+      "missing_fields": [
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "phi-4",
+      "name": "Phi-4",
+      "family": "phi",
+      "vendor": "microsoft",
+      "release_date": "2024-12-12",
+      "license": {
+        "id": "mit",
+        "name": "MIT",
+        "osi_approved": true,
+        "url": "https://opensource.org/license/mit"
+      },
+      "params": {
+        "total_b": 14,
+        "active_b": 14,
+        "is_moe": false
+      },
+      "context_window": 16384,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 8.4,
+        "q8": 16.8,
+        "fp16": 33.6
+      },
+      "quality": {
+        "arena_elo": 1222,
+        "composite_score": 0.408,
+        "reasoning": {
+          "gpqa": 0.19686800894854584,
+          "mmlu_pro": 0.4710401891252955,
+          "ifeval": 0.816832670647216,
+          "bbh": 0.5246181381023763
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 0.08,
+        "output_per_mtok_usd": 0.35,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/microsoft/phi-4",
+      "sources_used": [
+        "hf_leaderboard",
+        "artificial_analysis",
+        "lmarena"
+      ],
+      "missing_fields": [
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "phi-3-5-mini",
+      "name": "Phi-3.5 Mini",
+      "family": "phi",
+      "vendor": "microsoft",
+      "release_date": "2024-08-20",
+      "license": {
+        "id": "mit",
+        "name": "MIT",
+        "osi_approved": true,
+        "url": "https://opensource.org/license/mit"
+      },
+      "params": {
+        "total_b": 3.8,
+        "active_b": 3.8,
+        "is_moe": false
+      },
+      "context_window": 131072,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 2.3,
+        "q8": 4.6,
+        "fp16": 9.1
+      },
+      "quality": {
+        "arena_elo": null,
+        "composite_score": 0.006,
+        "reasoning": {
+          "gpqa": 0,
+          "mmlu_pro": 0.011432476359338058,
+          "ifeval": 0.13259152382345507,
+          "bbh": 0.01667358455856632
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": null,
+        "output_per_mtok_usd": null,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/microsoft/Phi-3.5-mini-instruct",
+      "sources_used": [
+        "hf_leaderboard"
+      ],
+      "missing_fields": [
+        "quality.arena_elo",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s",
+        "pricing_hosted.input_per_mtok_usd",
+        "pricing_hosted.output_per_mtok_usd"
+      ]
+    },
+    {
+      "model_id": "llama-3-2-3b",
+      "name": "Llama 3.2 3B",
+      "family": "llama-3",
+      "vendor": "meta",
+      "release_date": "2024-09-25",
+      "license": {
+        "id": "llama-community",
+        "name": "Llama Community",
+        "osi_approved": false,
+        "url": "https://www.llama.com/llama3/license/"
+      },
+      "params": {
+        "total_b": 3,
+        "active_b": 3,
+        "is_moe": false
+      },
+      "context_window": 131072,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 1.8,
+        "q8": 3.6,
+        "fp16": 7.2
+      },
+      "quality": {
+        "arena_elo": 1117,
+        "composite_score": 0.19699999999999998,
+        "reasoning": {
+          "gpqa": 0.06152125279642054,
+          "mmlu_pro": 0.23684988179669028,
+          "ifeval": 0.6848861022088059,
+          "bbh": 0.24219900449658302
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 0,
+        "output_per_mtok_usd": 0,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct",
+      "sources_used": [
+        "hf_leaderboard",
+        "artificial_analysis",
+        "lmarena"
+      ],
+      "missing_fields": [
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "qwen2-5-coder-32b",
+      "name": "Qwen2.5 Coder 32B",
+      "family": "qwen2.5",
+      "vendor": "alibaba",
+      "release_date": "2024-11-12",
+      "license": {
+        "id": "apache-2.0",
+        "name": "Apache 2.0",
+        "osi_approved": true,
+        "url": "https://www.apache.org/licenses/LICENSE-2.0"
+      },
+      "params": {
+        "total_b": 32,
+        "active_b": 32,
+        "is_moe": false
+      },
+      "context_window": 131072,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 19.2,
+        "q8": 38.4,
+        "fp16": 76.8
+      },
+      "quality": {
+        "arena_elo": 1234,
+        "composite_score": 0.7090000000000001,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": 0.8320000000000001,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 0.66,
+        "output_per_mtok_usd": 1,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct",
+      "sources_used": [
+        "artificial_analysis",
+        "lmarena",
+        "bigcode_leaderboard"
+      ],
+      "missing_fields": [
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "deepseek-r1",
+      "name": "DeepSeek R1",
+      "family": "deepseek",
+      "vendor": "deepseek",
+      "release_date": "2025-01-20",
+      "license": {
+        "id": "mit",
+        "name": "MIT",
+        "osi_approved": true,
+        "url": "https://opensource.org/license/mit"
+      },
+      "params": {
+        "total_b": 671,
+        "active_b": 37,
+        "is_moe": true
+      },
+      "context_window": 65536,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 402.6,
+        "q8": 805.2,
+        "fp16": 1610.4
+      },
+      "quality": {
+        "arena_elo": 1427,
+        "composite_score": 0.528,
+        "reasoning": {
+          "gpqa": 0.18120805369127516,
+          "mmlu_pro": 0.40261155437352236,
+          "ifeval": 0.3415947463840388,
+          "bbh": 0.3854849081746308
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 0.5,
+        "output_per_mtok_usd": 2.15,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/deepseek-ai/DeepSeek-R1",
+      "sources_used": [
+        "hf_leaderboard",
+        "artificial_analysis",
+        "lmarena"
+      ],
+      "missing_fields": [
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "command-r-plus",
+      "name": "Command R+",
+      "family": "command-r",
+      "vendor": "cohere",
+      "release_date": "2024-04-04",
+      "license": {
+        "id": "cc-by-nc-4.0",
+        "name": "CC BY-NC 4.0",
+        "osi_approved": false,
+        "url": "https://creativecommons.org/licenses/by-nc/4.0/"
+      },
+      "params": {
+        "total_b": 104,
+        "active_b": 104,
+        "is_moe": false
+      },
+      "context_window": 131072,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 62.4,
+        "q8": 124.8,
+        "fp16": 249.6
+      },
+      "quality": {
+        "arena_elo": 1233,
+        "composite_score": 0.33,
+        "reasoning": {
+          "gpqa": 0.0738255033557047,
+          "mmlu_pro": 0.33242833924349874,
+          "ifeval": 0.7664186580495308,
+          "bbh": 0.39919954231431765
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 2.5,
+        "output_per_mtok_usd": 10,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/CohereForAI/c4ai-command-r-plus",
+      "sources_used": [
+        "hf_leaderboard",
+        "artificial_analysis",
+        "lmarena"
+      ],
+      "missing_fields": [
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "deepseek-coder-33b",
+      "name": "DeepSeek Coder 33B",
+      "family": "deepseek-coder",
+      "vendor": "deepseek",
+      "release_date": "2023-11-05",
+      "license": {
+        "id": "deepseek-license",
+        "name": "DeepSeek License",
+        "osi_approved": false,
+        "url": "https://github.com/deepseek-ai/DeepSeek-LLM/blob/main/LICENSE-MODEL"
+      },
+      "params": {
+        "total_b": 33,
+        "active_b": 33,
+        "is_moe": false
+      },
+      "context_window": 16384,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 19.8,
+        "q8": 39.6,
+        "fp16": 79.2
+      },
+      "quality": {
+        "arena_elo": null,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": 0.8001999999999999,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": null,
+        "output_per_mtok_usd": null,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/deepseek-ai/deepseek-coder-33b-instruct",
+      "sources_used": [
+        "bigcode_leaderboard"
+      ],
+      "missing_fields": [
+        "quality.arena_elo",
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s",
+        "pricing_hosted.input_per_mtok_usd",
+        "pricing_hosted.output_per_mtok_usd"
+      ]
+    },
+    {
+      "model_id": "codellama-70b",
+      "name": "Code Llama 70B",
+      "family": "code-llama",
+      "vendor": "meta",
+      "release_date": "2024-01-29",
+      "license": {
+        "id": "llama-community",
+        "name": "Llama Community",
+        "osi_approved": false,
+        "url": "https://www.llama.com/llama3/license/"
+      },
+      "params": {
+        "total_b": 70,
+        "active_b": 70,
+        "is_moe": false
+      },
+      "context_window": 16384,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 42,
+        "q8": 84,
+        "fp16": 168
+      },
+      "quality": {
+        "arena_elo": 1065,
+        "composite_score": 0.45899999999999996,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": 0.7559999999999999,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": null,
+        "output_per_mtok_usd": null,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/codellama/CodeLlama-70b-Instruct-hf",
+      "sources_used": [
+        "lmarena",
+        "bigcode_leaderboard"
+      ],
+      "missing_fields": [
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s",
+        "pricing_hosted.input_per_mtok_usd",
+        "pricing_hosted.output_per_mtok_usd"
+      ]
+    },
+    {
+      "model_id": "codeqwen1-5-7b",
+      "name": "CodeQwen 1.5 7B",
+      "family": "codeqwen",
+      "vendor": "alibaba",
+      "release_date": "2024-04-16",
+      "license": {
+        "id": "qwen-license",
+        "name": "Qwen License",
+        "osi_approved": false,
+        "url": "https://huggingface.co/Qwen"
+      },
+      "params": {
+        "total_b": 7,
+        "active_b": 7,
+        "is_moe": false
+      },
+      "context_window": 65536,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 4.2,
+        "q8": 8.4,
+        "fp16": 16.8
+      },
+      "quality": {
+        "arena_elo": null,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": 0.872,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": null,
+        "output_per_mtok_usd": null,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/Qwen/CodeQwen1.5-7B-Chat",
+      "sources_used": [
+        "bigcode_leaderboard"
+      ],
+      "missing_fields": [
+        "quality.arena_elo",
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s",
+        "pricing_hosted.input_per_mtok_usd",
+        "pricing_hosted.output_per_mtok_usd"
+      ]
+    },
+    {
+      "model_id": "starcoder2-15b",
+      "name": "StarCoder2 15B",
+      "family": "starcoder2",
+      "vendor": "bigcode",
+      "release_date": "2024-02-28",
+      "license": {
+        "id": "bigcode-openrail-m",
+        "name": "BigCode OpenRAIL-M",
+        "osi_approved": false,
+        "url": "https://www.bigcode-project.org/docs/pages/bigcode-openrail/"
+      },
+      "params": {
+        "total_b": 15,
+        "active_b": 15,
+        "is_moe": false
+      },
+      "context_window": 16384,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 9,
+        "q8": 18,
+        "fp16": 36
+      },
+      "quality": {
+        "arena_elo": null,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": 0.4415,
+          "livecodebench": null,
+          "swe_bench": null
+        },
+        "multilingual_score": null
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": null,
+        "output_per_mtok_usd": null,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/bigcode/starcoder2-15b",
+      "sources_used": [
+        "bigcode_leaderboard"
+      ],
+      "missing_fields": [
+        "quality.arena_elo",
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "quality.multilingual_score",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s",
+        "pricing_hosted.input_per_mtok_usd",
+        "pricing_hosted.output_per_mtok_usd"
+      ]
+    }
+  ]
+}
