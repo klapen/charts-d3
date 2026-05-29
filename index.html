@@ -1,245 +1,436 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Klapen · D3.js Visualizations</title>
     <meta name="description" content="A gallery of D3.js data visualizations by Orlando A. Saavedra" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   </head>
-  <body class="bg-neutral-950 text-neutral-100 min-h-screen antialiased">
+  <body>
     <a href="#grid" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-brand focus:text-white focus:px-3 focus:py-1 focus:rounded">Skip to gallery</a>
 
-    <header class="border-b border-neutral-800">
-      <div class="max-w-6xl mx-auto px-6 py-12 flex items-start justify-between gap-4">
-        <div>
-          <h1 class="text-4xl font-bold tracking-tight">Klapen</h1>
-          <p class="text-neutral-400 mt-2"
-             data-en="D3.js visualizations · Orlando A. Saavedra"
-             data-es="Visualizaciones en D3.js · Orlando A. Saavedra">
-            D3.js visualizations · Orlando A. Saavedra
+    <div class="studio">
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <a class="brand" href="#top" aria-label="Klapen">
+            <svg class="logo" viewBox="0 0 396.85 396.85" aria-hidden="true">
+              <rect class="bgsq" width="396.85" height="396.85" rx="64" />
+              <g>
+                <rect x="28.35"  y="141.73" width="56.69" height="170.08" />
+                <rect x="56.69"  y="170.08" width="56.69" height="113.39" transform="translate(311.81 141.73) rotate(90)" />
+                <rect x="141.73" y="28.35"  width="56.69" height="170.08" transform="translate(340.16 226.77) rotate(180)" />
+                <rect x="113.39" y="56.69"  width="56.69" height="113.39" transform="translate(28.35 255.12) rotate(-90)" />
+                <rect x="170.08" y="0"      width="56.69" height="113.39" transform="translate(141.73 255.12) rotate(-90)" />
+                <rect x="255.12" y="141.73" width="56.69" height="170.08" transform="translate(510.24 -56.69) rotate(90)" />
+                <rect x="255.12" y="198.43" width="56.69" height="113.39" />
+                <rect x="311.81" y="141.73" width="56.69" height="113.39" />
+                <rect x="141.73" y="255.12" width="56.69" height="170.08" transform="translate(-170.08 510.24) rotate(-90)" />
+                <rect x="141.73" y="255.12" width="56.69" height="113.39" />
+              </g>
+            </svg>
+            <span class="brand-name">Klapen</span>
+          </a>
+          <p class="sidebar-lede"
+             data-en="Interactive D3.js maps, dashboards & charts. By Orlando A. Saavedra."
+             data-es="Mapas, tableros y gráficos interactivos en D3.js. Por Orlando A. Saavedra.">
+            Interactive D3.js maps, dashboards &amp; charts. By Orlando A. Saavedra.
           </p>
         </div>
-        <div class="flex items-center gap-1 text-sm" role="group" aria-label="Language">
-          <button data-lang="en" class="lang-btn px-2 py-1 rounded cursor-pointer" aria-pressed="false">EN</button>
-          <span class="text-neutral-700" aria-hidden="true">·</span>
-          <button data-lang="es" class="lang-btn px-2 py-1 rounded cursor-pointer" aria-pressed="false">ES</button>
-        </div>
-      </div>
-    </header>
 
-    <main>
-      <section class="max-w-6xl mx-auto px-6 py-8">
-        <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mb-8">
-          <div class="flex flex-wrap gap-2" role="group" aria-label="Filter by tag">
-            <button data-filter="all" class="filter-btn bg-brand text-white px-3 py-1 rounded-full text-sm cursor-pointer" data-en="All" data-es="Todo">All</button>
-            <button data-filter="colombia" class="filter-btn bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700" data-en="Colombia" data-es="Colombia">Colombia</button>
-            <button data-filter="sports" class="filter-btn bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700" data-en="Sports" data-es="Deportes">Sports</button>
-            <button data-filter="economics" class="filter-btn bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700" data-en="Economics" data-es="Economía">Economics</button>
-            <button data-filter="maps" class="filter-btn bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700" data-en="Maps" data-es="Mapas">Maps</button>
-            <button data-filter="charts" class="filter-btn bg-neutral-800 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-700" data-en="Charts" data-es="Gráficos">Charts</button>
+        <nav class="side-filters" aria-label="Filter">
+          <button class="side-filter filter-btn active" data-filter="all" aria-pressed="true">
+            <span data-en="All" data-es="Todo">All</span>
+            <span class="cnt" data-count="all">16</span>
+          </button>
+          <button class="side-filter filter-btn" data-filter="colombia" aria-pressed="false">
+            <span data-en="Colombia" data-es="Colombia">Colombia</span>
+            <span class="cnt" data-count="colombia"></span>
+          </button>
+          <button class="side-filter filter-btn" data-filter="sports" aria-pressed="false">
+            <span data-en="Sports" data-es="Deportes">Sports</span>
+            <span class="cnt" data-count="sports"></span>
+          </button>
+          <button class="side-filter filter-btn" data-filter="economics" aria-pressed="false">
+            <span data-en="Economics" data-es="Economía">Economics</span>
+            <span class="cnt" data-count="economics"></span>
+          </button>
+          <button class="side-filter filter-btn" data-filter="maps" aria-pressed="false">
+            <span data-en="Maps" data-es="Mapas">Maps</span>
+            <span class="cnt" data-count="maps"></span>
+          </button>
+          <button class="side-filter filter-btn" data-filter="charts" aria-pressed="false">
+            <span data-en="Charts" data-es="Gráficos">Charts</span>
+            <span class="cnt" data-count="charts"></span>
+          </button>
+        </nav>
+
+        <div class="side-search">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
+          <input id="search" type="search" placeholder="Search visualizations…"
+                 data-en-placeholder="Search visualizations…" data-es-placeholder="Buscar visualizaciones…" aria-label="Search" />
+        </div>
+
+        <div class="sidebar-foot">
+          <div class="lang" role="group" aria-label="Language">
+            <button class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
+            <button class="lang-btn"        data-lang="es" aria-pressed="false">ES</button>
           </div>
-          <input
-            id="search"
-            type="search"
-            data-en-placeholder="Search…"
-            data-es-placeholder="Buscar…"
-            placeholder="Search…"
-            class="bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-sm w-full sm:w-64 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/40"
-          />
+          <a class="gh" href="https://github.com/klapen/charts-d3" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.8 18.3 5.1 18.3 5.1c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z" /></svg>
+            klapen/charts-d3
+          </a>
+          <span class="sidebar-rights" data-en="© Orlando A. Saavedra" data-es="© Orlando A. Saavedra">© Orlando A. Saavedra</span>
+        </div>
+      </aside>
+
+      <main class="studio-main" id="top">
+        <div class="studio-bar">
+          <span><span class="n" id="visible-count">16</span> / 16 <span data-en="pieces" data-es="piezas">pieces</span></span>
         </div>
 
-        <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div id="grid" class="studio-grid">
 
           <a href="/viz/choco/" data-viz-card data-title="chocó choco" data-tags="colombia,maps"
-             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
-            <img src="/img/choco.webp" alt="Chocó" class="aspect-video w-full object-cover" loading="lazy" />
-            <div class="p-4">
-              <h3 class="font-semibold group-hover:text-brand transition" data-en="Chocó" data-es="Chocó">Chocó</h3>
-              <p class="text-sm text-neutral-400 mt-1"
-                 data-en="Department of Chocó dashboard"
-                 data-es="Información del Departamento de Chocó">Department of Chocó dashboard</p>
+             class="card fade-in">
+            <div class="thumb fit-cover">
+              <span class="index">01</span>
+              <img src="/img/choco.webp" alt="Chocó" loading="lazy" style="object-position: 38% 4%;" />
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3 class="card-title" data-en="Chocó" data-es="Chocó">Chocó</h3>
+                <svg class="card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
+              </div>
+              <p class="card-desc"
+                 data-en="Interactive department dashboard — population, economy, geography and security indicators on a linked map."
+                 data-es="Tablero interactivo del departamento — población, economía, geografía e indicadores de seguridad sobre un mapa enlazado.">
+                Interactive department dashboard — population, economy, geography and security indicators on a linked map.
+              </p>
+              <div class="tags"><span class="tag">#colombia</span><span class="tag">#maps</span></div>
             </div>
           </a>
 
           <a href="/viz/copa-america/" data-viz-card data-title="copa américa america centenario" data-tags="sports"
-             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
-            <img src="/img/Calendar.webp" alt="Copa América" class="aspect-video w-full object-cover" loading="lazy" />
-            <div class="p-4">
-              <h3 class="font-semibold group-hover:text-brand transition" data-en="Copa América" data-es="Copa América">Copa América</h3>
-              <p class="text-sm text-neutral-400 mt-1"
-                 data-en="Match calendar — Copa América Centenario 2016"
-                 data-es="Calendario de partidos · Copa América Centenario 2016">Match calendar — Copa América Centenario 2016</p>
+             class="card fade-in">
+            <div class="thumb fit-cover">
+              <span class="index">02</span>
+              <span class="badge"><span data-en="Archive" data-es="Archivo">Archive</span> ’14–’16</span>
+              <img src="/img/Calendar.webp" alt="Copa América" loading="lazy"
+                   style="object-position: 29% 52%; transform: scale(1.18); transform-origin: 29% 52%;" />
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3 class="card-title" data-en="Copa América" data-es="Copa América">Copa América</h3>
+                <svg class="card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
+              </div>
+              <p class="card-desc"
+                 data-en="Match calendar — Copa América Centenario 2016."
+                 data-es="Calendario de partidos · Copa América Centenario 2016.">
+                Match calendar — Copa América Centenario 2016.
+              </p>
+              <div class="tags"><span class="tag">#sports</span></div>
             </div>
           </a>
 
           <a href="/viz/futbol/" data-viz-card data-title="futbol fútbol football" data-tags="sports"
-             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
-            <img src="/img/Matchs.webp" alt="Fútbol" class="aspect-video w-full object-cover" loading="lazy" />
-            <div class="p-4">
-              <h3 class="font-semibold group-hover:text-brand transition" data-en="Football" data-es="Fútbol">Football</h3>
-              <p class="text-sm text-neutral-400 mt-1"
-                 data-en="Match-day visualizations"
-                 data-es="Visualizaciones de partidos">Match-day visualizations</p>
+             class="card fade-in">
+            <div class="thumb fit-cover">
+              <span class="index">03</span>
+              <span class="badge"><span data-en="Archive" data-es="Archivo">Archive</span> ’14–’16</span>
+              <img src="/img/Matchs.webp" alt="Fútbol" loading="lazy"
+                   style="object-position: 50% 60%; transform: scale(1.28); transform-origin: 50% 60%;" />
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3 class="card-title" data-en="Football" data-es="Fútbol">Football</h3>
+                <svg class="card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
+              </div>
+              <p class="card-desc"
+                 data-en="Match-day visualizations."
+                 data-es="Visualizaciones de partidos.">
+                Match-day visualizations.
+              </p>
+              <div class="tags"><span class="tag">#sports</span></div>
             </div>
           </a>
 
           <a href="/viz/goals/" data-viz-card data-title="goals goles" data-tags="sports"
-             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
-            <img src="/img/Goals.webp" alt="Goals" class="aspect-video w-full object-cover" loading="lazy" />
-            <div class="p-4">
-              <h3 class="font-semibold group-hover:text-brand transition" data-en="Goals" data-es="Goles">Goals</h3>
-              <p class="text-sm text-neutral-400 mt-1"
-                 data-en="Football scoring patterns"
-                 data-es="Patrones de anotaciones en fútbol">Football scoring patterns</p>
+             class="card fade-in">
+            <div class="thumb fit-cover">
+              <span class="index">04</span>
+              <span class="badge"><span data-en="Archive" data-es="Archivo">Archive</span> ’14–’16</span>
+              <img src="/img/Goals.webp" alt="Goals" loading="lazy" style="object-position: 50% 38%;" />
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3 class="card-title" data-en="Goals" data-es="Goles">Goals</h3>
+                <svg class="card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
+              </div>
+              <p class="card-desc"
+                 data-en="Football scoring patterns across tournaments."
+                 data-es="Patrones de anotación en el fútbol por torneo.">
+                Football scoring patterns across tournaments.
+              </p>
+              <div class="tags"><span class="tag">#sports</span></div>
             </div>
           </a>
 
           <a href="/viz/ipc/" data-viz-card data-title="ipc inflación inflation" data-tags="economics"
-             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
-            <img src="/img/IPCPond.webp" alt="IPC" class="aspect-video w-full object-cover" loading="lazy" />
-            <div class="p-4">
-              <h3 class="font-semibold group-hover:text-brand transition" data-en="IPC" data-es="IPC">IPC</h3>
-              <p class="text-sm text-neutral-400 mt-1"
-                 data-en="Consumer Price Index"
-                 data-es="Índice de Precios al Consumidor">Consumer Price Index</p>
+             class="card fade-in">
+            <div class="thumb fit-cover">
+              <span class="index">05</span>
+              <img src="/img/IPCPond.webp" alt="IPC" loading="lazy"
+                   style="object-position: 52% 60%; transform: scale(1.22); transform-origin: 52% 60%;" />
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3 class="card-title" data-en="IPC" data-es="IPC">IPC</h3>
+                <svg class="card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
+              </div>
+              <p class="card-desc"
+                 data-en="Consumer Price Index — national weighting wheel."
+                 data-es="Índice de Precios al Consumidor — rueda de ponderación nacional.">
+                Consumer Price Index — national weighting wheel.
+              </p>
+              <div class="tags"><span class="tag">#economics</span></div>
             </div>
           </a>
 
           <a href="/viz/labour/" data-viz-card data-title="labour empleo mercado laboral" data-tags="economics"
-             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
-            <img src="/img/Labour.webp" alt="Labour" class="aspect-video w-full object-cover" loading="lazy" />
-            <div class="p-4">
-              <h3 class="font-semibold group-hover:text-brand transition" data-en="Labour Market" data-es="Mercado Laboral">Labour Market</h3>
-              <p class="text-sm text-neutral-400 mt-1"
-                 data-en="Labour market indicators"
-                 data-es="Indicadores del mercado laboral">Labour market indicators</p>
+             class="card fade-in">
+            <div class="thumb fit-cover">
+              <span class="index">06</span>
+              <img src="/img/Labour.webp" alt="Labour" loading="lazy" style="object-position: 50% 46%;" />
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3 class="card-title" data-en="Labour Market" data-es="Mercado Laboral">Labour Market</h3>
+                <svg class="card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
+              </div>
+              <p class="card-desc"
+                 data-en="National labour market indicators, 2001–2014."
+                 data-es="Indicadores del mercado laboral nacional, 2001–2014.">
+                National labour market indicators, 2001–2014.
+              </p>
+              <div class="tags"><span class="tag">#economics</span></div>
             </div>
           </a>
 
           <a href="/viz/presupuesto/" data-viz-card data-title="presupuesto budget" data-tags="colombia,economics"
-             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
-            <img src="/img/budget.webp" alt="Presupuesto" class="aspect-video w-full object-cover" loading="lazy" />
-            <div class="p-4">
-              <h3 class="font-semibold group-hover:text-brand transition" data-en="Budget" data-es="Presupuesto">Budget</h3>
-              <p class="text-sm text-neutral-400 mt-1"
-                 data-en="Colombian national budget"
-                 data-es="Presupuesto General de la Nación">Colombian national budget</p>
+             class="card fade-in">
+            <div class="thumb fit-cover">
+              <span class="index">07</span>
+              <img src="/img/budget.webp" alt="Budget" loading="lazy"
+                   style="object-position: 46% 82%; transform: scale(1.75); transform-origin: 46% 82%;" />
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3 class="card-title" data-en="Budget" data-es="Presupuesto">Budget</h3>
+                <svg class="card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
+              </div>
+              <p class="card-desc"
+                 data-en="Colombian national budget breakdown by sector."
+                 data-es="Desglose del Presupuesto General de la Nación por sector.">
+                Colombian national budget breakdown by sector.
+              </p>
+              <div class="tags"><span class="tag">#colombia</span><span class="tag">#economics</span></div>
             </div>
           </a>
 
-          <a href="/viz/map-and-horizontal-bars/" data-viz-card data-title="map horizontal bars mapa barras" data-tags="colombia,maps,charts"
-             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
-            <img src="/img/map-n-bars.webp" alt="Map and Horizontal Bars" class="aspect-video w-full object-cover" loading="lazy" />
-            <div class="p-4">
-              <h3 class="font-semibold group-hover:text-brand transition" data-en="Map &amp; Bars" data-es="Mapa y Barras">Map &amp; Bars</h3>
-              <p class="text-sm text-neutral-400 mt-1"
-                 data-en="Geographic data with paired bar chart"
-                 data-es="Datos geográficos con barras paralelas">Geographic data with paired bar chart</p>
+          <a href="/viz/map-and-horizontal-bars/" data-viz-card data-title="map bars mapa barras" data-tags="colombia,maps,charts"
+             class="card fade-in">
+            <div class="thumb fit-cover">
+              <span class="index">08</span>
+              <img src="/img/map-n-bars.webp" alt="Map &amp; Bars" loading="lazy" style="object-position: 50% 48%;" />
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3 class="card-title" data-en="Map &amp; Bars" data-es="Mapa y Barras">Map &amp; Bars</h3>
+                <svg class="card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
+              </div>
+              <p class="card-desc"
+                 data-en="Geographic data paired with a horizontal bar chart."
+                 data-es="Datos geográficos junto a un gráfico de barras horizontales.">
+                Geographic data paired with a horizontal bar chart.
+              </p>
+              <div class="tags"><span class="tag">#colombia</span><span class="tag">#maps</span><span class="tag">#charts</span></div>
             </div>
           </a>
 
-          <a href="/viz/population-pyramid/" data-viz-card data-title="population pyramid pirámide poblacional" data-tags="charts"
-             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
-            <img src="/img/Pyramid.webp" alt="Population Pyramid" class="aspect-video w-full object-cover" loading="lazy" />
-            <div class="p-4">
-              <h3 class="font-semibold group-hover:text-brand transition" data-en="Population Pyramid" data-es="Pirámide Poblacional">Population Pyramid</h3>
-              <p class="text-sm text-neutral-400 mt-1"
-                 data-en="Demographic age structure"
-                 data-es="Estructura demográfica por edad">Demographic age structure</p>
+          <a href="/viz/population-pyramid/" data-viz-card data-title="population pyramid piramide" data-tags="charts,colombia"
+             class="card fade-in">
+            <div class="thumb fit-cover">
+              <span class="index">09</span>
+              <img src="/img/Pyramid.webp" alt="Population Pyramid" loading="lazy"
+                   style="object-position: 50% 62%; transform: scale(1.12); transform-origin: 50% 62%;" />
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3 class="card-title" data-en="Population Pyramid" data-es="Pirámide Poblacional">Population Pyramid</h3>
+                <svg class="card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
+              </div>
+              <p class="card-desc"
+                 data-en="Demographic age structure of Colombia."
+                 data-es="Estructura demográfica por edad de Colombia.">
+                Demographic age structure of Colombia.
+              </p>
+              <div class="tags"><span class="tag">#charts</span><span class="tag">#colombia</span></div>
             </div>
           </a>
 
-          <a href="/viz/circular-bar-chart/" data-viz-card data-title="circular bar chart barras circular" data-tags="charts"
-             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
-            <img src="/img/circular-bar.webp" alt="Circular Bar Chart" class="aspect-video w-full object-cover" loading="lazy" />
-            <div class="p-4">
-              <h3 class="font-semibold group-hover:text-brand transition" data-en="Circular Bar Chart" data-es="Gráfico Circular de Barras">Circular Bar Chart</h3>
-              <p class="text-sm text-neutral-400 mt-1"
-                 data-en="Radial bar visualization"
-                 data-es="Visualización de barras radiales">Radial bar visualization</p>
+          <a href="/viz/circular-bar-chart/" data-viz-card data-title="circular bar chart radial" data-tags="charts"
+             class="card fade-in">
+            <div class="thumb fit-cover">
+              <span class="index">10</span>
+              <img src="/img/circular-bar.webp" alt="Circular Bar Chart" loading="lazy"
+                   style="object-position: 30% 36%; transform: scale(1.4); transform-origin: 30% 36%;" />
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3 class="card-title" data-en="Circular Bar Chart" data-es="Gráfico Circular de Barras">Circular Bar Chart</h3>
+                <svg class="card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
+              </div>
+              <p class="card-desc"
+                 data-en="Radial bar visualization."
+                 data-es="Visualización de barras radiales.">
+                Radial bar visualization.
+              </p>
+              <div class="tags"><span class="tag">#charts</span></div>
             </div>
           </a>
 
           <a href="/viz/conceptual-map/" data-viz-card data-title="conceptual map mapa conceptual" data-tags="charts"
-             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
-            <img src="/img/D3charts.webp" alt="Conceptual Map" class="aspect-video w-full object-cover" loading="lazy" />
-            <div class="p-4">
-              <h3 class="font-semibold group-hover:text-brand transition" data-en="Conceptual Map" data-es="Mapa Conceptual">Conceptual Map</h3>
-              <p class="text-sm text-neutral-400 mt-1"
-                 data-en="Network of connected concepts"
-                 data-es="Red de conceptos conectados">Network of connected concepts</p>
+             class="card fade-in">
+            <div class="thumb fit-cover">
+              <span class="index">11</span>
+              <img src="/img/D3charts.webp" alt="Conceptual Map" loading="lazy"
+                   style="object-position: 72% 86%; transform: scale(1.95); transform-origin: 72% 86%;" />
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3 class="card-title" data-en="Conceptual Map" data-es="Mapa Conceptual">Conceptual Map</h3>
+                <svg class="card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
+              </div>
+              <p class="card-desc"
+                 data-en="Force-directed network of connected concepts."
+                 data-es="Red dirigida por fuerzas de conceptos conectados.">
+                Force-directed network of connected concepts.
+              </p>
+              <div class="tags"><span class="tag">#charts</span></div>
             </div>
           </a>
 
-          <a href="/viz/focaldata/" data-viz-card data-title="focaldata focal data encuestas" data-tags="charts"
-             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
-            <img src="/img/focaldata.webp" alt="FocalData" class="aspect-video w-full object-cover" loading="lazy" />
-            <div class="p-4">
-              <h3 class="font-semibold group-hover:text-brand transition" data-en="FocalData" data-es="FocalData">FocalData</h3>
-              <p class="text-sm text-neutral-400 mt-1"
-                 data-en="Survey response visualization"
-                 data-es="Visualización de respuestas de encuestas">Survey response visualization</p>
+          <a href="/viz/focaldata/" data-viz-card data-title="focaldata uk survey" data-tags="charts"
+             class="card fade-in">
+            <div class="thumb fit-cover">
+              <span class="index">12</span>
+              <span class="badge"><span data-en="Archive" data-es="Archivo">Archive</span> ’14–’16</span>
+              <img src="/img/focaldata.webp" alt="FocalData" loading="lazy" style="object-position: 50% 20%;" />
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3 class="card-title" data-en="FocalData" data-es="FocalData">FocalData</h3>
+                <svg class="card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
+              </div>
+              <p class="card-desc"
+                 data-en="UK survey response visualization."
+                 data-es="Visualización de respuestas de encuestas (Reino Unido).">
+                UK survey response visualization.
+              </p>
+              <div class="tags"><span class="tag">#charts</span></div>
             </div>
           </a>
 
           <a href="/viz/temp/" data-viz-card data-title="temperature temperatura" data-tags="charts,colombia"
-             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
-            <img src="/img/Temp.webp" alt="Temperature" class="aspect-video w-full object-cover" loading="lazy" />
-            <div class="p-4">
-              <h3 class="font-semibold group-hover:text-brand transition" data-en="Temperature" data-es="Temperatura">Temperature</h3>
-              <p class="text-sm text-neutral-400 mt-1"
-                 data-en="Time-series temperature plots"
-                 data-es="Series temporales de temperatura">Time-series temperature plots</p>
+             class="card fade-in">
+            <div class="thumb fit-cover">
+              <span class="index">13</span>
+              <img src="/img/Temp.webp" alt="Temperature" loading="lazy" style="object-position: 50% 8%;" />
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3 class="card-title" data-en="Temperature" data-es="Temperatura">Temperature</h3>
+                <svg class="card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
+              </div>
+              <p class="card-desc"
+                 data-en="Time-series temperature plots across stations."
+                 data-es="Series de tiempo de temperatura por estación.">
+                Time-series temperature plots across stations.
+              </p>
+              <div class="tags"><span class="tag">#charts</span><span class="tag">#colombia</span></div>
             </div>
           </a>
 
-          <a href="/viz/zoom-treemap/" data-viz-card data-title="zoomable treemap zoomable" data-tags="charts"
-             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
-            <img src="/img/zoomtreemap.webp" alt="Zoomable Treemap" class="aspect-video w-full object-cover" loading="lazy" />
-            <div class="p-4">
-              <h3 class="font-semibold group-hover:text-brand transition" data-en="Zoomable Treemap" data-es="Treemap Zoomable">Zoomable Treemap</h3>
-              <p class="text-sm text-neutral-400 mt-1"
-                 data-en="Hierarchical drill-down"
-                 data-es="Exploración jerárquica">Hierarchical drill-down</p>
+          <a href="/viz/zoom-treemap/" data-viz-card data-title="zoom treemap" data-tags="charts"
+             class="card fade-in">
+            <div class="thumb fit-cover">
+              <span class="index">14</span>
+              <img src="/img/zoomtreemap.webp" alt="Zoomable Treemap" loading="lazy" style="object-position: 50% 42%;" />
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3 class="card-title" data-en="Zoomable Treemap" data-es="Treemap Zoomable">Zoomable Treemap</h3>
+                <svg class="card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
+              </div>
+              <p class="card-desc"
+                 data-en="Hierarchical drill-down treemap."
+                 data-es="Treemap jerárquico con exploración por niveles.">
+                Hierarchical drill-down treemap.
+              </p>
+              <div class="tags"><span class="tag">#charts</span></div>
             </div>
           </a>
 
-          <a href="/viz/zoom-aggr-treemap/" data-viz-card data-title="zoomable aggregated treemap agregado" data-tags="charts"
-             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
-            <img src="/img/zoomaggrtreemap.webp" alt="Zoomable Aggregated Treemap" class="aspect-video w-full object-cover" loading="lazy" />
-            <div class="p-4">
-              <h3 class="font-semibold group-hover:text-brand transition" data-en="Aggregated Treemap" data-es="Treemap Agregado">Aggregated Treemap</h3>
-              <p class="text-sm text-neutral-400 mt-1"
-                 data-en="Aggregated hierarchical view"
-                 data-es="Vista jerárquica agregada">Aggregated hierarchical view</p>
+          <a href="/viz/zoom-aggr-treemap/" data-viz-card data-title="zoom aggregated treemap agregado" data-tags="charts"
+             class="card fade-in">
+            <div class="thumb fit-cover">
+              <span class="index">15</span>
+              <img src="/img/zoomaggrtreemap.webp" alt="Aggregated Treemap" loading="lazy" style="object-position: 50% 58%;" />
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3 class="card-title" data-en="Aggregated Treemap" data-es="Treemap Agregado">Aggregated Treemap</h3>
+                <svg class="card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
+              </div>
+              <p class="card-desc"
+                 data-en="Aggregated hierarchical treemap view."
+                 data-es="Vista jerárquica agregada de treemap.">
+                Aggregated hierarchical treemap view.
+              </p>
+              <div class="tags"><span class="tag">#charts</span></div>
             </div>
           </a>
 
           <a href="/viz/d3-charts/" data-viz-card data-title="d3 charts gallery galería" data-tags="charts"
-             class="group block bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden hover:border-brand focus:outline-none focus:ring-2 focus:ring-brand transition">
-            <img src="/img/D3charts.webp" alt="D3 Charts" class="aspect-video w-full object-cover" loading="lazy" />
-            <div class="p-4">
-              <h3 class="font-semibold group-hover:text-brand transition" data-en="D3 Charts Gallery" data-es="Galería D3 Charts">D3 Charts Gallery</h3>
-              <p class="text-sm text-neutral-400 mt-1"
-                 data-en="Reusable D3 chart collection"
-                 data-es="Colección de gráficos D3 reutilizables">Reusable D3 chart collection</p>
+             class="card fade-in">
+            <div class="thumb fit-cover">
+              <span class="index">16</span>
+              <img src="/img/D3charts.webp" alt="D3 Charts Gallery" loading="lazy"
+                   style="object-position: 45% 16%; transform: scale(1.6); transform-origin: 45% 16%;" />
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3 class="card-title" data-en="D3 Charts Gallery" data-es="Galería D3 Charts">D3 Charts Gallery</h3>
+                <svg class="card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8" /></svg>
+              </div>
+              <p class="card-desc"
+                 data-en="A reusable collection of D3 chart types."
+                 data-es="Colección reutilizable de tipos de gráficos D3.">
+                A reusable collection of D3 chart types.
+              </p>
+              <div class="tags"><span class="tag">#charts</span></div>
             </div>
           </a>
 
+          <p id="empty-state" class="empty hidden"
+             data-en="No visualizations match your filters."
+             data-es="Ninguna visualización coincide.">No visualizations match your filters.</p>
         </div>
-
-        <p id="empty-state" class="hidden text-center text-neutral-500 py-12"
-           data-en="No visualizations match."
-           data-es="No hay visualizaciones que coincidan.">No visualizations match.</p>
-      </section>
-    </main>
-
-    <footer class="border-t border-neutral-800 mt-16">
-      <div class="max-w-6xl mx-auto px-6 py-8 text-sm text-neutral-500 flex flex-wrap gap-4 justify-between">
-        <a href="https://github.com/klapen/charts-d3" class="hover:text-brand focus:outline-none focus:ring-2 focus:ring-brand rounded">github.com/klapen/charts-d3</a>
-        <span data-en="© Orlando A. Saavedra" data-es="© Orlando A. Saavedra">© Orlando A. Saavedra</span>
-      </div>
-    </footer>
+      </main>
+    </div>
 
     <script type="module" src="/src/landing/main.js"></script>
   </body>
