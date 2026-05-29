@@ -25,12 +25,15 @@
       </label>
     </header>
 
-    <nav class="px-4 py-2 border-b border-neutral-800 flex gap-2" role="tablist" aria-label="Dashboards">
+    <nav class="px-4 py-2 border-b border-neutral-800 flex gap-2 flex-wrap" role="tablist" aria-label="Dashboards">
       <button class="dash-tab on" data-dash-tab="compare" style="--c:#4ade80" role="tab" aria-selected="true">
         <span class="dot"></span> Dashboard 1 — Compare
       </button>
       <button class="dash-tab" data-dash-tab="explore" style="--c:#60a5fa" role="tab" aria-selected="false">
         <span class="dot"></span> Dashboard 2 — Explore
+      </button>
+      <button class="dash-tab" data-dash-tab="reference" style="--c:#a3a3a3" role="tab" aria-selected="false">
+        <span class="dot"></span> Reference
       </button>
     </nav>
 
@@ -47,6 +50,108 @@
           <section id="view-radar"  class="bg-neutral-900 border border-neutral-800 rounded p-3" aria-label="Radar comparison"></section>
         </div>
         <section id="view-parcoords" class="bg-neutral-900 border border-neutral-800 rounded p-3" aria-label="Parallel coordinates"></section>
+      </section>
+
+      <section data-dash-section="reference" class="flex flex-col gap-4" hidden>
+        <p class="text-xs text-neutral-500 border-l-2 border-neutral-500 pl-3">
+          Metric glossary and chart-reading recipes. Always available — open this tab any time you forget what an axis means.
+        </p>
+
+        <article class="bg-neutral-900 border border-neutral-800 rounded p-5 text-sm text-neutral-200 leading-relaxed">
+          <h3 class="text-base font-semibold mb-1">What each metric means</h3>
+          <p class="text-xs text-neutral-500 mb-4">Numbers in italics show coverage — how many of the 15 seeded models have a real value vs. <code>null</code>.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-[160px_1fr_120px] gap-x-4 gap-y-2 text-xs">
+            <div class="text-neutral-500 col-span-3 uppercase tracking-wide text-[10px] mt-1">Quality</div>
+
+            <div class="text-neutral-300 font-medium">Arena Elo</div>
+            <div class="text-neutral-400">LMArena head-to-head Elo from blind human votes. Best general-quality proxy we have. Higher is better. <i>~1100&ndash;1430</i> across these models.</div>
+            <div class="text-neutral-500"><i>12/15</i></div>
+
+            <div class="text-neutral-300 font-medium">Composite</div>
+            <div class="text-neutral-400">Our combined score — direction-aware mean of normalized Arena Elo, GPQA, MMLU-Pro and HumanEval. 0&ndash;1 scale. Higher is better. Sparse for now.</div>
+            <div class="text-neutral-500"><i>5/15</i></div>
+
+            <div class="text-neutral-300 font-medium">GPQA</div>
+            <div class="text-neutral-400">Graduate-level science Q&amp;A (physics/chem/bio) — tests deep reasoning, not memorization. Higher is better.</div>
+            <div class="text-neutral-500"><i>5/15</i></div>
+
+            <div class="text-neutral-300 font-medium">MMLU-Pro</div>
+            <div class="text-neutral-400">Hardened MMLU — broad knowledge benchmark, less saturated than the original. Higher is better.</div>
+            <div class="text-neutral-500"><i>5/15</i></div>
+
+            <div class="text-neutral-500 col-span-3 uppercase tracking-wide text-[10px] mt-3">Cost (hosted API)</div>
+
+            <div class="text-neutral-300 font-medium">$/M in</div>
+            <div class="text-neutral-400">USD per million <b>input</b> tokens — cheapest offering across OpenRouter providers. Lower is better.</div>
+            <div class="text-neutral-500"><i>12/15</i></div>
+
+            <div class="text-neutral-300 font-medium">$/M out</div>
+            <div class="text-neutral-400">USD per million <b>output</b> tokens. Usually 2&ndash;5&times; the input price. Lower is better.</div>
+            <div class="text-neutral-500"><i>12/15</i></div>
+
+            <div class="text-neutral-500 col-span-3 uppercase tracking-wide text-[10px] mt-3">Local-deploy fit</div>
+
+            <div class="text-neutral-300 font-medium">Context</div>
+            <div class="text-neutral-400">Max prompt window in tokens. Bigger = can read longer documents in one shot. Higher is better.</div>
+            <div class="text-neutral-500"><i>15/15</i></div>
+
+            <div class="text-neutral-300 font-medium">VRAM q4 / q8</div>
+            <div class="text-neutral-400">GPU memory needed to run locally at 4-bit / 8-bit quantization. Estimated as <code>params &times; bytes &times; 1.2</code> overhead. q4 fits more on small GPUs; quality drops slightly. Lower is better.</div>
+            <div class="text-neutral-500"><i>15/15</i></div>
+
+            <div class="text-neutral-300 font-medium">Params total</div>
+            <div class="text-neutral-400">Total parameter count in billions. Rough proxy for capacity.</div>
+            <div class="text-neutral-500"><i>15/15</i></div>
+
+            <div class="text-neutral-300 font-medium">Params active</div>
+            <div class="text-neutral-400">For Mixture-of-Experts models (DeepSeek-V3, Mixtral): how many params actually compute per token. Compute scales with <i>active</i>, memory scales with <i>total</i>.</div>
+            <div class="text-neutral-500"><i>15/15</i></div>
+          </div>
+        </article>
+
+        <article class="bg-neutral-900 border border-neutral-800 rounded p-5 text-sm text-neutral-200 leading-relaxed">
+          <h3 class="text-base font-semibold mb-2">How to read the scatter</h3>
+          <p class="text-xs text-neutral-400 mb-3">Each dot is one model. The four dropdowns encode four metrics at once: position (X, Y), size, and color.</p>
+
+          <ul class="list-disc pl-5 space-y-2 text-xs text-neutral-300">
+            <li><b>Cheap + strong:</b> X = <i>$/M in</i>, Y = <i>Arena Elo</i>. <span class="text-neutral-500">Top-left corner = best value.</span></li>
+            <li><b>Local-friendly + capable:</b> X = <i>VRAM q4</i>, Y = <i>Arena Elo</i>. <span class="text-neutral-500">Top-left = strong on a small GPU.</span></li>
+            <li><b>Bigger = better?</b> X = <i>Params total</i>, Y = <i>Composite</i>. <span class="text-neutral-500">Spot small models that outperform big ones.</span></li>
+            <li><b>Add a third dimension:</b> set Size = <i>Params total</i> on the cheap+strong view — a small dot in the top-left is a tiny model with great Elo at a low price.</li>
+            <li><b>Color by license</b> to see which licenses dominate which corners of the chart.</li>
+          </ul>
+        </article>
+
+        <article class="bg-neutral-900 border border-neutral-800 rounded p-5 text-sm text-neutral-200 leading-relaxed">
+          <h3 class="text-base font-semibold mb-2">How to read the other views</h3>
+          <ul class="list-disc pl-5 space-y-2 text-xs text-neutral-300">
+            <li><b>View 1 — Ranked list:</b> top 25 models after current filters / preset, sorted by the preset's metric (or Composite if none active). Click a row to add it to Compare.</li>
+            <li><b>View 2 — Parallel coordinates:</b> each line is one model crossing several metrics. All axes scaled <i>low at bottom, high at top</i>; the <b>↑ / ↓</b> beside each label shows which direction is "better". Hover a line for values; hover an axis label to compare the selected models on that axis.</li>
+            <li><b>View 4 — Radar:</b> 0&ndash;3 selected models overlaid on 6 axes. Each axis is direction-flipped so <b>"better" is always outside</b>, meaning <b>bigger polygon = better overall</b>. A lopsided polygon reveals a model's strengths and weaknesses.</li>
+          </ul>
+        </article>
+
+        <article class="bg-neutral-900 border border-neutral-800 rounded p-5 text-sm text-neutral-200 leading-relaxed">
+          <h3 class="text-base font-semibold mb-2">Presets &amp; the OSI toggle</h3>
+          <ul class="list-disc pl-5 space-y-2 text-xs text-neutral-300">
+            <li><b>Presets</b> (top header chips) apply a filter + sort: e.g. <i>Laptop</i> caps VRAM ≤ 16 GB and params ≤ 14 B, sorted by Composite.</li>
+            <li><b>OSI-approved only</b> hides models whose license isn't on the OSI list (Llama Community, Qwen License, Gemma Terms, DeepSeek License, Mistral Research, CC-BY-NC).</li>
+            <li>Click an active preset chip again to clear it.</li>
+          </ul>
+        </article>
+
+        <article class="bg-neutral-900 border border-neutral-800 rounded p-5 text-sm text-neutral-200 leading-relaxed">
+          <h3 class="text-base font-semibold mb-2">Data sources</h3>
+          <p class="text-xs text-neutral-300 mb-2">Refreshed by running <code>npm run sync:llm</code>. Last sync time shown in the top strip.</p>
+          <ul class="list-disc pl-5 space-y-1 text-xs text-neutral-400">
+            <li><b>HF Open LLM Leaderboard</b> — public benchmark scores.</li>
+            <li><b>OpenRouter</b> — hosted API prices (input + output per million tokens).</li>
+            <li><b>LMArena</b> — Elo from blind head-to-head human votes (via fboulnois mirror).</li>
+            <li><b>models.yaml</b> — ground-truth metadata (params, license, context, family) we curated for the seed list.</li>
+          </ul>
+          <p class="text-xs text-neutral-500 mt-2">Raw dataset: <a class="underline text-blue-400" href="/ai-llm-dataset.json" target="_blank" rel="noopener">/ai-llm-dataset.json</a> · schema: <a class="underline text-blue-400" href="/ai-llm-dataset.schema.json" target="_blank" rel="noopener">/ai-llm-dataset.schema.json</a></p>
+        </article>
       </section>
 
       <section data-dash-section="explore" class="flex flex-col gap-4" hidden>

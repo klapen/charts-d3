@@ -1,10 +1,11 @@
-// Tabbed detail cards — one tab per selected model, one card visible at a time.
-// Click ✕ → deselect.
+// Tabbed detail aside. "Metrics" tab is always first (default view); each selected
+// model adds its own tab with full metadata. Click ✕ on a card → deselect.
 
 const COLORS = ['#4ade80', '#60a5fa', '#fbbf24'];
 
 export function mountDetailCards(container, store, { toggleSelection }) {
-  let activeIdx = 0;
+  let activeIdx = -1;          // -1 = Metrics; 0..N-1 = selected[idx]
+  let lastSelectedId = null;
 
   render();
   store.subscribe(s => ({ sel: s.exploreSelectedIds, ready: !!s.data, dash: s.activeDashboard }), render);
@@ -15,14 +16,29 @@ export function mountDetailCards(container, store, { toggleSelection }) {
     const all = s.data.flatModels;
     const selected = s.exploreSelectedIds.map(id => all.find(m => m.model_id === id)).filter(Boolean);
 
-    if (selected.length === 0) { container.innerHTML = ''; activeIdx = 0; return; }
-    if (activeIdx >= selected.length) activeIdx = selected.length - 1;
+    // Auto-focus the newest model when selection actually changes.
+    const lastId = selected.length ? selected[selected.length - 1].model_id : null;
+    if (lastId !== lastSelectedId && selected.length > 0) {
+      activeIdx = selected.length - 1;
+    } else if (selected.length === 0) {
+      activeIdx = -1;
+    } else if (activeIdx >= selected.length) {
+      activeIdx = selected.length - 1;
+    }
+    lastSelectedId = lastId;
 
-    const tabs = selected.map((m, i) => `
-      <button class="detail-tab${i === activeIdx ? ' on' : ''}" data-tab-idx="${i}" style="--c:${COLORS[i]}">${escape(m.__raw.name)}</button>
-    `).join('');
+    const tabs = [
+      `<button class="detail-tab${activeIdx === -1 ? ' on' : ''}" data-tab-idx="-1" style="--c:#a3a3a3">Metrics</button>`,
+      ...selected.map((m, i) =>
+        `<button class="detail-tab${i === activeIdx ? ' on' : ''}" data-tab-idx="${i}" style="--c:${COLORS[i]}">${escape(m.__raw.name)}</button>`
+      ),
+    ].join('');
 
-    container.innerHTML = `<div class="detail-tabs">${tabs}</div>${cardHtml(selected[activeIdx], COLORS[activeIdx])}`;
+    const body = activeIdx === -1
+      ? metricsHtml(s.data.dimensions)
+      : cardHtml(selected[activeIdx], COLORS[activeIdx]);
+
+    container.innerHTML = `<div class="detail-tabs">${tabs}</div>${body}`;
 
     container.querySelectorAll('[data-tab-idx]').forEach(el => {
       el.addEventListener('click', () => { activeIdx = Number(el.dataset.tabIdx); render(); });
@@ -30,6 +46,32 @@ export function mountDetailCards(container, store, { toggleSelection }) {
     container.querySelectorAll('[data-close-id]').forEach(el => {
       el.addEventListener('click', () => toggleSelection(el.dataset.closeId));
     });
+  }
+
+  function metricsHtml() {
+    return `
+      <div class="detail-card metrics-card" style="border-left-color:#a3a3a3">
+        <h4><span>Metrics reference</span></h4>
+        <p class="text-xs text-neutral-500 mb-2">What you can pick in the X / Y / Size dropdowns.</p>
+        <div class="metric-group">Quality (↑ better)</div>
+        <div class="metric-row"><span class="m-name">Arena Elo</span><span class="m-desc">LMArena Elo from blind human votes.</span></div>
+        <div class="metric-row"><span class="m-name">Composite</span><span class="m-desc">Mean of normalized Arena Elo, GPQA, MMLU-Pro, HumanEval. 0–1.</span></div>
+        <div class="metric-row"><span class="m-name">GPQA</span><span class="m-desc">Graduate-level science reasoning.</span></div>
+        <div class="metric-row"><span class="m-name">MMLU-Pro</span><span class="m-desc">Hardened broad-knowledge benchmark.</span></div>
+
+        <div class="metric-group">Cost (↓ better)</div>
+        <div class="metric-row"><span class="m-name">$/M in</span><span class="m-desc">USD per million input tokens (cheapest hosted offering).</span></div>
+        <div class="metric-row"><span class="m-name">$/M out</span><span class="m-desc">USD per million output tokens.</span></div>
+
+        <div class="metric-group">Local-deploy fit</div>
+        <div class="metric-row"><span class="m-name">Context</span><span class="m-desc">Max prompt window in tokens. ↑ better.</span></div>
+        <div class="metric-row"><span class="m-name">VRAM q4 / q8</span><span class="m-desc">GPU memory to run locally at 4- / 8-bit. ↓ better.</span></div>
+        <div class="metric-row"><span class="m-name">Params total</span><span class="m-desc">Total parameter count in billions.</span></div>
+        <div class="metric-row"><span class="m-name">Params active</span><span class="m-desc">For MoE: params compute per token. Memory still scales with total.</span></div>
+
+        <p class="text-xs text-neutral-500 mt-3">Full glossary in the <b>Reference</b> tab at the top.</p>
+      </div>
+    `;
   }
 
   function cardHtml(m, color) {

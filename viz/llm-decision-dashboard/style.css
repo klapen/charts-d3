@@ -150,3 +150,23 @@
 .detail-card h4 { display: flex; justify-content: space-between; font-size: 13px; margin: 0 0 6px; }
 .detail-card .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; font-size: 11px; }
 .detail-card .grid .k { color: rgb(115 115 115); }
+
+.metrics-card .metric-group {
+  margin: 8px 0 4px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(115 115 115);
+}
+.metrics-card .metric-group:first-of-type { margin-top: 4px; }
+.metrics-card .metric-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 8px;
+  font-size: 11px;
+  padding: 2px 0;
+  border-bottom: 1px dotted rgb(38 38 38);
+}
+.metrics-card .metric-row:last-of-type { border-bottom: none; }
+.metrics-card .metric-row .m-name { color: rgb(229 229 229); font-weight: 500; }
+.metrics-card .metric-row .m-desc { color: rgb(150 150 150); }

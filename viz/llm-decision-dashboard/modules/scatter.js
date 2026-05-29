@@ -28,14 +28,18 @@ export function mountScatter(container, store, { filtered, isSelected, toggleSel
     const dims = s.data.dimensions;
     const data = filtered(s);
     const ax = s.scatterAxes;
+    const all = s.data.flatModels;
+    const hasData = key => all.some(m => m[key] != null);
+    const numericOpts = NUMERIC_DIMS.filter(hasData);
+    const categoricalOpts = CATEGORICAL_DIMS.filter(hasData);
 
     container.innerHTML = `
       <div class="text-xs text-neutral-500 mb-2 flex items-center gap-2 flex-wrap">
         <span>View 3 — Scatter</span>
-        ${selectHtml('x', ax.x, NUMERIC_DIMS, dims)}
-        ${selectHtml('y', ax.y, NUMERIC_DIMS, dims)}
-        ${selectHtml('size', ax.size, NUMERIC_DIMS, dims)}
-        ${selectHtml('color', ax.color, CATEGORICAL_DIMS, dims)}
+        ${selectHtml('x', ax.x, numericOpts, dims)}
+        ${selectHtml('y', ax.y, numericOpts, dims)}
+        ${selectHtml('size', ax.size, numericOpts, dims)}
+        ${selectHtml('color', ax.color, categoricalOpts, dims)}
       </div>
       <div id="scatter-plot"></div>
     `;
