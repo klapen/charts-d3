@@ -5,6 +5,7 @@ import { PRESETS, getPreset } from './modules/presets.js';
 import { mountRankedList } from './modules/ranked-list.js';
 import { mountParcoords } from './modules/parcoords.js';
 import { mountScatter } from './modules/scatter.js';
+import { mountRadar } from './modules/radar.js';
 
 const store = createStore({
   data: null,
@@ -47,6 +48,11 @@ async function bootstrap() {
       document.getElementById('view-scatter'),
       store,
       { filtered, isSelected, toggleSelection }
+    );
+    mountRadar(
+      document.getElementById('view-radar'),
+      store,
+      { filtered }
     );
   } catch (err) {
     console.error(err);
