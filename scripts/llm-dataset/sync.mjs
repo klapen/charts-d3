@@ -13,6 +13,7 @@ import { normalize } from './normalize.mjs';
 import * as hfLeaderboard       from './sources/hf-leaderboard.mjs';
 import * as artificialAnalysis  from './sources/artificial-analysis.mjs';
 import * as lmarena             from './sources/lmarena.mjs';
+import * as bigcodeLeaderboard  from './sources/bigcode-leaderboard.mjs';
 
 const __dirname  = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT  = join(__dirname, '..', '..');
@@ -22,7 +23,7 @@ const OUT_DATA   = join(REPO_ROOT, 'src', 'public', 'ai-llm-dataset.json');
 const OUT_SCHEMA = join(REPO_ROOT, 'src', 'public', 'ai-llm-dataset.schema.json');
 const REPORT     = join(__dirname, 'sync-report.md');
 
-const SOURCES = [hfLeaderboard, artificialAnalysis, lmarena];
+const SOURCES = [hfLeaderboard, artificialAnalysis, lmarena, bigcodeLeaderboard];
 
 async function main() {
   console.log('• loading models.yaml');

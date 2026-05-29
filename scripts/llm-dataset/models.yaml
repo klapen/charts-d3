@@ -182,6 +182,56 @@
   aliases: [c4ai-command-r-plus, CohereForAI/c4ai-command-r-plus]
   model_card_url: https://huggingface.co/CohereForAI/c4ai-command-r-plus
 
+# --- Coding specialists ----------------------------------------------------
+
+- model_id: deepseek-coder-33b
+  name: DeepSeek Coder 33B
+  family: deepseek-coder
+  vendor: deepseek
+  release_date: "2023-11-05"
+  params: { total_b: 33, active_b: 33, is_moe: false }
+  context_window: 16384
+  license: deepseek-license
+  modalities: { input: [text], output: [text] }
+  aliases: [DeepSeek-Coder-33b-instruct, DeepSeek-Coder-33b-base, deepseek-ai/deepseek-coder-33b-instruct]
+  model_card_url: https://huggingface.co/deepseek-ai/deepseek-coder-33b-instruct
+
+- model_id: codellama-70b
+  name: Code Llama 70B
+  family: code-llama
+  vendor: meta
+  release_date: "2024-01-29"
+  params: { total_b: 70, active_b: 70, is_moe: false }
+  context_window: 16384
+  license: llama-community
+  modalities: { input: [text], output: [text] }
+  aliases: [CodeLlama-70b-Instruct, CodeLlama-70b-Python, CodeLlama-70b, codellama/CodeLlama-70b-Instruct-hf]
+  model_card_url: https://huggingface.co/codellama/CodeLlama-70b-Instruct-hf
+
+- model_id: codeqwen1-5-7b
+  name: CodeQwen 1.5 7B
+  family: codeqwen
+  vendor: alibaba
+  release_date: "2024-04-16"
+  params: { total_b: 7, active_b: 7, is_moe: false }
+  context_window: 65536
+  license: qwen-license
+  modalities: { input: [text], output: [text] }
+  aliases: [CodeQwen1.5-7B-Chat, CodeQwen1.5-7B, Qwen/CodeQwen1.5-7B-Chat]
+  model_card_url: https://huggingface.co/Qwen/CodeQwen1.5-7B-Chat
+
+- model_id: starcoder2-15b
+  name: StarCoder2 15B
+  family: starcoder2
+  vendor: bigcode
+  release_date: "2024-02-28"
+  params: { total_b: 15, active_b: 15, is_moe: false }
+  context_window: 16384
+  license: bigcode-openrail-m
+  modalities: { input: [text], output: [text] }
+  aliases: [StarCoder2-15B, bigcode/starcoder2-15b]
+  model_card_url: https://huggingface.co/bigcode/starcoder2-15b
+
 - __licenses__:
     apache-2.0:        { name: "Apache 2.0",        osi_approved: true,  url: "https://www.apache.org/licenses/LICENSE-2.0" }
     mit:               { name: "MIT",               osi_approved: true,  url: "https://opensource.org/license/mit" }
@@ -192,3 +242,4 @@
     deepseek-license:  { name: "DeepSeek License",  osi_approved: false, url: "https://github.com/deepseek-ai/DeepSeek-LLM/blob/main/LICENSE-MODEL" }
     mistral-research:  { name: "Mistral Research",  osi_approved: false, url: "https://mistral.ai/licenses/MRL-0.1.md" }
     cc-by-nc-4.0:      { name: "CC BY-NC 4.0",      osi_approved: false, url: "https://creativecommons.org/licenses/by-nc/4.0/" }
+    bigcode-openrail-m: { name: "BigCode OpenRAIL-M", osi_approved: false, url: "https://www.bigcode-project.org/docs/pages/bigcode-openrail/" }

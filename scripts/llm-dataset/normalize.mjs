@@ -176,7 +176,7 @@ function dimensionsManifest() {
     'quality.composite_score':             { label: 'Composite',           unit: null,      direction: 'higher_better', source: 'derived' },
     'quality.reasoning.gpqa':              { label: 'GPQA',                unit: null,      direction: 'higher_better', source: 'hf_leaderboard' },
     'quality.reasoning.mmlu_pro':          { label: 'MMLU-Pro',            unit: null,      direction: 'higher_better', source: 'hf_leaderboard' },
-    'quality.coding.humaneval':            { label: 'HumanEval',           unit: null,      direction: 'higher_better', source: 'hf_leaderboard' },
+    'quality.coding.humaneval':            { label: 'HumanEval',           unit: null,      direction: 'higher_better', source: 'bigcode_leaderboard' },
     'quality.coding.livecodebench':        { label: 'LiveCodeBench',       unit: null,      direction: 'higher_better', source: 'hf_leaderboard' },
     'quality.coding.swe_bench':            { label: 'SWE-bench',           unit: null,      direction: 'higher_better', source: 'hf_leaderboard' },
     'quality.multilingual_score':          { label: 'Multilingual',        unit: null,      direction: 'higher_better', source: 'hf_leaderboard' },
