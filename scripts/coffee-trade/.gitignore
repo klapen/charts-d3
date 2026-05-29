@@ -1,0 +1,8 @@
+data/raw/
+data/raw/fnc/
+data/processed/
+data/processed/colombia_monthly.parquet
+.venv/
+__pycache__/
+*.pyc
+failures.csv
