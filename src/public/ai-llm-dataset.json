@@ -1,20 +1,20 @@
 {
   "schema_version": "1.0.0",
-  "synced_at": "2026-05-28T20:07:36.205Z",
+  "synced_at": "2026-05-29T18:37:52.692Z",
   "sources": {
     "hf_leaderboard": {
       "url": "https://huggingface.co/datasets/open-llm-leaderboard/contents",
-      "synced_at": "2026-05-28T20:07:35.528Z",
+      "synced_at": "2026-05-29T18:37:52.005Z",
       "record_count": 1000
     },
     "artificial_analysis": {
       "url": "https://openrouter.ai/api/v1/models",
-      "synced_at": "2026-05-28T20:07:35.950Z",
+      "synced_at": "2026-05-29T18:37:52.388Z",
       "record_count": 357
     },
     "lmarena": {
       "url": "https://raw.githubusercontent.com/fboulnois/llm-leaderboard-csv/main/csv/lmarena_text.csv",
-      "synced_at": "2026-05-28T20:07:36.192Z",
+      "synced_at": "2026-05-29T18:37:52.680Z",
       "record_count": 266
     }
   },
@@ -389,8 +389,8 @@
         "throughput_tok_s": null
       },
       "pricing_hosted": {
-        "input_per_mtok_usd": 0.287,
-        "output_per_mtok_usd": 0.431,
+        "input_per_mtok_usd": 0.252,
+        "output_per_mtok_usd": 0.378,
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/deepseek-ai/DeepSeek-V3",
