@@ -3,7 +3,7 @@
 
 export function mountRankedList(container, store, { filtered, toggleSelection, isSelected, sortByForPreset }) {
   render();
-  store.subscribe(s => ({ filters: s.filters, osi: s.osiOnly, sel: s.selectedIds, preset: s.activePreset }), render);
+  store.subscribe(s => ({ filters: s.filters, osi: s.osiOnly, sel: s.compareSelectedIds, preset: s.activePreset, dash: s.activeDashboard }), render);
 
   function render() {
     const s = store.get();

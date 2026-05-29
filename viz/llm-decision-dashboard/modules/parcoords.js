@@ -16,7 +16,7 @@ const COLORS = ['#4ade80', '#60a5fa', '#fbbf24'];
 
 export function mountParcoords(container, store, { filtered, isSelected }) {
   render();
-  store.subscribe(s => ({ filters: s.filters, osi: s.osiOnly, sel: s.selectedIds, ready: !!s.data }), render);
+  store.subscribe(s => ({ filters: s.filters, osi: s.osiOnly, sel: s.compareSelectedIds, ready: !!s.data, dash: s.activeDashboard }), render);
 
   function render() {
     const s = store.get();
@@ -27,8 +27,8 @@ export function mountParcoords(container, store, { filtered, isSelected }) {
     const data = filtered(s);
 
     const selectionIdx = {};
-    s.selectedIds.forEach((id, i) => { selectionIdx[id] = i; });
-    const selectedModels = s.selectedIds.map(id => data.find(d => d.model_id === id)).filter(Boolean);
+    s.compareSelectedIds.forEach((id, i) => { selectionIdx[id] = i; });
+    const selectedModels = s.compareSelectedIds.map(id => data.find(d => d.model_id === id)).filter(Boolean);
     const legend = selectedModels.length
       ? selectedModels.map(m => `<span class="parcoord-legend" style="--c:${COLORS[selectionIdx[m.model_id]]}">${escapeHtml(m.name)}</span>`).join('')
       : '<span class="text-neutral-600">click a model in any other view to highlight its line</span>';

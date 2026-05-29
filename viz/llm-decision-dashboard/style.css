@@ -1,4 +1,33 @@
 /* Local overrides on top of Tailwind. Keep this small. */
+
+.dash-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgb(23 23 23);
+  border: 1px solid rgb(38 38 38);
+  border-radius: 9999px;
+  font-size: 13px;
+  color: rgb(163 163 163);
+  cursor: pointer;
+}
+.dash-tab .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c, transparent);
+}
+.dash-tab.on {
+  background: rgb(38 38 38);
+  color: white;
+  border-color: var(--c, rgb(60 60 60));
+}
+.dash-tab:focus-visible {
+  outline: 2px solid rgb(59 130 246);
+  outline-offset: 2px;
+}
+
 .chip {
   display: inline-flex;
   align-items: center;

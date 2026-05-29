@@ -7,13 +7,13 @@ export function mountDetailCards(container, store, { toggleSelection }) {
   let activeIdx = 0;
 
   render();
-  store.subscribe(s => ({ sel: s.selectedIds, ready: !!s.data }), render);
+  store.subscribe(s => ({ sel: s.exploreSelectedIds, ready: !!s.data, dash: s.activeDashboard }), render);
 
   function render() {
     const s = store.get();
     if (!s.data) { container.innerHTML = ''; return; }
     const all = s.data.flatModels;
-    const selected = s.selectedIds.map(id => all.find(m => m.model_id === id)).filter(Boolean);
+    const selected = s.exploreSelectedIds.map(id => all.find(m => m.model_id === id)).filter(Boolean);
 
     if (selected.length === 0) { container.innerHTML = ''; activeIdx = 0; return; }
     if (activeIdx >= selected.length) activeIdx = selected.length - 1;

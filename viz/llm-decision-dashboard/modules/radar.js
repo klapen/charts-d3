@@ -16,14 +16,14 @@ const COLORS = ['#4ade80', '#60a5fa', '#fbbf24'];
 
 export function mountRadar(container, store, { filtered }) {
   render();
-  store.subscribe(s => ({ sel: s.selectedIds, ready: !!s.data, filters: s.filters, osi: s.osiOnly }), render);
+  store.subscribe(s => ({ sel: s.compareSelectedIds, ready: !!s.data, filters: s.filters, osi: s.osiOnly, dash: s.activeDashboard }), render);
 
   function render() {
     const s = store.get();
     if (!s.data) return;
     const dims = s.data.dimensions;
     const all = s.data.flatModels;
-    const selected = s.selectedIds.map(id => all.find(m => m.model_id === id)).filter(Boolean);
+    const selected = s.compareSelectedIds.map(id => all.find(m => m.model_id === id)).filter(Boolean);
 
     container.innerHTML = `
       <div class="text-sm text-neutral-200 font-medium mb-1">View 4 — Radar</div>

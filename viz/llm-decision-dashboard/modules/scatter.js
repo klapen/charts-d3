@@ -18,7 +18,9 @@ const CATEGORICAL_DIMS = ['license.id', 'family', 'vendor'];
 
 export function mountScatter(container, store, { filtered, isSelected, toggleSelection }) {
   render();
-  store.subscribe(s => ({ filters: s.filters, osi: s.osiOnly, sel: s.selectedIds, axes: s.scatterAxes, ready: !!s.data }), render);
+  // Intentionally NOT subscribing to exploreSelectedIds — clicking a dot updates
+  // the side detail panel but must not re-render this plot.
+  store.subscribe(s => ({ filters: s.filters, osi: s.osiOnly, axes: s.scatterAxes, ready: !!s.data, dash: s.activeDashboard }), render);
 
   function render() {
     const s = store.get();
@@ -45,28 +47,20 @@ export function mountScatter(container, store, { filtered, isSelected, toggleSel
     });
 
     const points = data.filter(d => d[ax.x] != null && d[ax.y] != null);
-    const selectedPoints = points.filter(d => isSelected(d.model_id));
-    const xDomain = paddedExtent(selectedPoints, ax.x);
-    const yDomain = paddedExtent(selectedPoints, ax.y);
 
     const plot = Plot.plot({
       width: container.clientWidth - 30, height: 280,
       marginLeft: 56, marginBottom: 36,
       style: { background: 'transparent', color: '#aaa', fontSize: '10px' },
-      x: { label: dims[ax.x]?.label ?? ax.x, grid: true, ...(xDomain ? { domain: xDomain } : {}) },
-      y: { label: dims[ax.y]?.label ?? ax.y, grid: true, ...(yDomain ? { domain: yDomain } : {}) },
+      x: { label: dims[ax.x]?.label ?? ax.x, grid: true },
+      y: { label: dims[ax.y]?.label ?? ax.y, grid: true },
       r: { range: [3, 14] },
       color: { legend: true },
       marks: [
         Plot.dot(points, {
           x: ax.x, y: ax.y, r: ax.size, fill: ax.color,
-          stroke: d => isSelected(d.model_id) ? '#4ade80' : null,
-          strokeWidth: 2,
           channels: { name: 'name' },
           tip: false,
-        }),
-        Plot.text(points.filter(d => isSelected(d.model_id)), {
-          x: ax.x, y: ax.y, text: 'name', dy: -12, fill: '#4ade80', fontSize: 10,
         }),
       ],
     });
@@ -81,21 +75,6 @@ export function mountScatter(container, store, { filtered, isSelected, toggleSel
     });
 
     container.querySelector('#scatter-plot').appendChild(plot);
-  }
-
-  function paddedExtent(rows, key) {
-    if (!rows.length) return null;
-    let lo = Infinity, hi = -Infinity;
-    for (const r of rows) {
-      const v = r[key];
-      if (v == null) continue;
-      if (v < lo) lo = v;
-      if (v > hi) hi = v;
-    }
-    if (lo === Infinity) return null;
-    const range = hi - lo;
-    const pad = range > 0 ? range * 0.3 : Math.max(Math.abs(lo) * 0.3, 1);
-    return [lo - pad, hi + pad];
   }
 
   function selectHtml(axis, current, options, dims) {
