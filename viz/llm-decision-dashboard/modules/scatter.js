@@ -7,7 +7,6 @@ const NUMERIC_DIMS = [
   'quality.arena_elo', 'quality.composite_score',
   'quality.coding.humaneval', 'quality.coding.livecodebench', 'quality.coding.swe_bench',
   'quality.reasoning.gpqa', 'quality.reasoning.mmlu_pro',
-  'quality.multilingual_score',
   'performance.latency_ttft_ms', 'performance.throughput_tok_s',
   'pricing_hosted.input_per_mtok_usd', 'pricing_hosted.output_per_mtok_usd',
   'context_window',
@@ -33,6 +32,12 @@ export function mountScatter(container, store, { filtered, isSelected, toggleSel
     const numericOpts = NUMERIC_DIMS.filter(hasData);
     const categoricalOpts = CATEGORICAL_DIMS.filter(hasData);
 
+    const points = data.filter(d => d[ax.x] != null && d[ax.y] != null);
+    const hidden = data.length - points.length;
+    const hiddenNotice = hidden > 0
+      ? `<div class="text-xs text-amber-400/80 mb-2">Plotting ${points.length} of ${data.length} filtered models — ${hidden} lack data for ${escapeHtml(dims[ax.x]?.label ?? ax.x)} or ${escapeHtml(dims[ax.y]?.label ?? ax.y)}. Try axes like <i>HumanEval</i>, <i>Params</i>, or <i>VRAM q4</i> for the missing ones.</div>`
+      : '';
+
     container.innerHTML = `
       <div class="text-xs text-neutral-500 mb-2 flex items-center gap-2 flex-wrap">
         <span>View 3 — Scatter</span>
@@ -41,6 +46,7 @@ export function mountScatter(container, store, { filtered, isSelected, toggleSel
         ${selectHtml('size', ax.size, numericOpts, dims)}
         ${selectHtml('color', ax.color, categoricalOpts, dims)}
       </div>
+      ${hiddenNotice}
       <div id="scatter-plot"></div>
     `;
 
@@ -49,8 +55,6 @@ export function mountScatter(container, store, { filtered, isSelected, toggleSel
         store.set({ scatterAxes: { ...ax, [e.target.dataset.axis]: e.target.value } });
       });
     });
-
-    const points = data.filter(d => d[ax.x] != null && d[ax.y] != null);
 
     const plot = Plot.plot({
       width: container.clientWidth - 30, height: 280,
@@ -79,6 +83,10 @@ export function mountScatter(container, store, { filtered, isSelected, toggleSel
     });
 
     container.querySelector('#scatter-plot').appendChild(plot);
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
   }
 
   function selectHtml(axis, current, options, dims) {
