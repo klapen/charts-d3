@@ -91,7 +91,6 @@ export function mountDetailCards(container, store, { toggleSelection }) {
           <span class="k">arena elo</span><span>${raw.quality.arena_elo ?? '—'}</span>
           <span class="k">composite</span><span>${raw.quality.composite_score?.toFixed(2) ?? '—'}</span>
           <span class="k">coding (HumanEval)</span><span>${pct(raw.quality.coding.humaneval)}</span>
-          <span class="k">multilingual</span><span>${pct(raw.quality.multilingual_score)}</span>
           <span class="k">latency (TTFT)</span><span>${raw.performance.latency_ttft_ms ?? '—'} ms</span>
           <span class="k">throughput</span><span>${raw.performance.throughput_tok_s ?? '—'} tok/s</span>
           <span class="k">$/Mtok in/out</span><span>${dollar(raw.pricing_hosted.input_per_mtok_usd)} / ${dollar(raw.pricing_hosted.output_per_mtok_usd)}</span>

@@ -35,14 +35,6 @@ export const PRESETS = [
     },
     sortBy: 'quality.composite_score',
   },
-  {
-    id: 'best-multilingual',
-    label: 'Best multilingual',
-    filters: {
-      'quality.multilingual_score': { min: 0.5 },
-    },
-    sortBy: 'quality.multilingual_score',
-  },
 ];
 
 export function getPreset(id) { return PRESETS.find(p => p.id === id); }

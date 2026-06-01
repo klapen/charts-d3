@@ -100,8 +100,7 @@
                   "livecodebench": { "type": ["number", "null"] },
                   "swe_bench":     { "type": ["number", "null"] }
                 }
-              },
-              "multilingual_score": { "type": ["number", "null"] }
+              }
             }
           },
           "performance": {

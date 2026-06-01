@@ -177,7 +177,7 @@ export function mountParcoords(container, store, { filtered, isSelected }) {
     if (ax === 'vram_estimate_gb.q4') return v.toFixed(1) + ' GB';
     if (ax === 'params.total_b') return v + 'B';
     if (ax === 'quality.arena_elo') return String(Math.round(v));
-    if (ax === 'quality.coding.humaneval' || ax === 'quality.multilingual_score') return (v * 100).toFixed(0) + '%';
+    if (ax === 'quality.coding.humaneval') return (v * 100).toFixed(0) + '%';
     return String(v);
   }
 

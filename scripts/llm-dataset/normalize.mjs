@@ -40,8 +40,7 @@ export function normalize(ground, sourceResults) {
       vram_estimate_gb: estimateVram(g.params.total_b),
       quality: { arena_elo: null, composite_score: null,
                  reasoning: { gpqa: null, mmlu_pro: null },
-                 coding: { humaneval: null, livecodebench: null, swe_bench: null },
-                 multilingual_score: null },
+                 coding: { humaneval: null, livecodebench: null, swe_bench: null } },
       performance: { latency_ttft_ms: null, throughput_tok_s: null },
       pricing_hosted: { input_per_mtok_usd: null, output_per_mtok_usd: null, provider_count: null },
       model_card_url: g.model_card_url,
@@ -141,7 +140,6 @@ function scanMissing(m) {
   const watch = [
     'quality.arena_elo', 'quality.reasoning.gpqa', 'quality.reasoning.mmlu_pro',
     'quality.coding.humaneval', 'quality.coding.livecodebench', 'quality.coding.swe_bench',
-    'quality.multilingual_score',
     'performance.latency_ttft_ms', 'performance.throughput_tok_s',
     'pricing_hosted.input_per_mtok_usd', 'pricing_hosted.output_per_mtok_usd',
   ];
@@ -179,7 +177,6 @@ function dimensionsManifest() {
     'quality.coding.humaneval':            { label: 'HumanEval',           unit: null,      direction: 'higher_better', source: 'bigcode_leaderboard' },
     'quality.coding.livecodebench':        { label: 'LiveCodeBench',       unit: null,      direction: 'higher_better', source: 'hf_leaderboard' },
     'quality.coding.swe_bench':            { label: 'SWE-bench',           unit: null,      direction: 'higher_better', source: 'hf_leaderboard' },
-    'quality.multilingual_score':          { label: 'Multilingual',        unit: null,      direction: 'higher_better', source: 'hf_leaderboard' },
     'performance.latency_ttft_ms':         { label: 'Latency (TTFT)',      unit: 'ms',      direction: 'lower_better',  source: 'artificial_analysis' },
     'performance.throughput_tok_s':        { label: 'Throughput',          unit: 'tok/s',   direction: 'higher_better', source: 'artificial_analysis' },
     'pricing_hosted.input_per_mtok_usd':   { label: '$/M in',              unit: 'USD',     direction: 'lower_better',  source: 'artificial_analysis' },

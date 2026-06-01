@@ -13,7 +13,7 @@ Test URL (prod):  `https://klapen.com.co/viz/llm-decision-dashboard/`
 - [ ] `<meta name="robots" content="noindex,nofollow">` present in page source
 
 ## Header
-- [ ] 5 preset chips visible: Laptop, 24GB GPU, Best coding, Cheapest API, Best multilingual
+- [ ] 4 preset chips visible: Laptop, 24GB GPU, Best coding, Cheapest API
 - [ ] Click each preset → it highlights, "visible" count drops, ranked list reorders
 - [ ] Click an active preset again → it clears
 - [ ] Toggle "OSI-approved only" → non-OSI rows (Llama-CC, Qwen License, Gemma, DeepSeek License, Mistral Research, CC-BY-NC) disappear

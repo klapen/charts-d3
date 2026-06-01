@@ -31,7 +31,6 @@ export async function fetch_() {
         'quality.coding.humaneval':       numOrNull(row['HumanEval']),
         'quality.coding.livecodebench':   numOrNull(row['LiveCodeBench']),
         'quality.coding.swe_bench':       numOrNull(row['SWE-Bench'] ?? row['SWE_Bench']),
-        'quality.multilingual_score':     numOrNull(row['MMMLU'] ?? row['Multilingual']),
         'quality.reasoning.ifeval':       numOrNull(row['IFEval']),
         'quality.reasoning.bbh':          numOrNull(row['BBH']),
         'quality.reasoning.math':         numOrNull(row['MATH']),
