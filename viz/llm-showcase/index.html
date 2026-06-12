@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>What Can Your Machine Run? · Klapen</title>
+    <meta name="description" content="A visual story about open-weight LLMs and the hardware they need." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body class="antialiased">
+    <div id="scanlines" aria-hidden="true"></div>
+    <div id="error-strip" class="error-strip" hidden>
+      Could not load /ai-llm-dataset.json — charts are empty. Try opening the file directly.
+    </div>
+    <nav id="rail" aria-label="Page sections"></nav>
+
+    <header class="hero" id="section-hero">
+      <p class="kicker" data-reveal>// OPEN_WEIGHTS.SYS — 19 OPEN MODELS · LIVE DATA</p>
+      <h1 data-reveal>WHAT CAN YOUR<br />MACHINE RUN?</h1>
+      <p class="sub" data-reveal>
+        Every dot below is an open-weight model, floating at the height of the GPU memory it needs.
+        Pick your hardware — the plane is your memory ceiling, and everything under it is yours to run.
+      </p>
+      <div data-reveal>
+        <div id="gpu-chips" class="gpu-chips" role="group" aria-label="GPU presets"></div>
+        <div class="vram-slider">
+          <span>VRAM</span>
+          <input type="range" id="vram-range" min="4" max="200" step="2" value="24" aria-label="VRAM in gigabytes" />
+          <span class="val" id="vram-val">24 GB</span>
+        </div>
+      </div>
+      <div class="hero-panes">
+        <div id="hero-scene" class="hero-scene" aria-label="Models in memory space (interactive 3D)"></div>
+        <div class="hero-readout">
+          <div class="big-counter"><span id="fit-count">0</span><span class="of" id="fit-total"></span></div>
+          <div class="counter-cap">models fit on your machine at q4</div>
+          <div id="fit-bars" class="fit-bars"></div>
+        </div>
+      </div>
+      <p class="footnote">
+        VRAM estimates assume q4 quantization + 20% overhead for KV cache.
+        Data: <a href="/ai-llm-dataset.json">/ai-llm-dataset.json</a><span id="sync-stamp"></span>
+      </p>
+    </header>
+
+    <section class="story" id="section-tradeoff">
+      <p class="kicker" data-reveal>01 — THE TRADE-OFF</p>
+      <h2 data-reveal>More VRAM buys quality.<br />Until it doesn't.</h2>
+      <p class="sub" data-reveal>
+        Arena Elo (human-judged quality) against the memory each model needs.
+        The dashed line is <b>your machine</b> — green dots run on it. Past the mid-sizes, the curve flattens hard.
+      </p>
+      <div id="chart-tradeoff" class="chart"></div>
+    </section>
+
+    <section class="story" id="section-coding">
+      <p class="kicker" data-reveal>02 — THE SPECIALISTS</p>
+      <h2 data-reveal>A 7B coder outscores<br />a 70B generalist.</h2>
+      <p class="sub" data-reveal>
+        HumanEval pass rate, with each model's parameter count on its bar.
+        Specialist training beats raw scale — good news for small GPUs.
+      </p>
+      <div id="chart-coding" class="chart"></div>
+    </section>
+
+    <section class="story" id="section-pricing">
+      <p class="kicker" data-reveal>03 — RENTING INSTEAD</p>
+      <h2 data-reveal>Too big for your GPU?<br />Renting is pocket change.</h2>
+      <p class="sub" data-reveal>
+        Hosted price per million input tokens (output price alongside).
+        Most open models cost well under a dollar — green bars still fit your machine locally.
+      </p>
+      <div id="chart-pricing" class="chart"></div>
+    </section>
+
+    <section class="story" id="section-license">
+      <p class="kicker" data-reveal>04 — THE FINE PRINT</p>
+      <h2 data-reveal>One word — "open" —<br />nine different licenses.</h2>
+      <p class="sub" data-reveal>
+        Only <b><span id="osi-count">…</span> of 19</b> carry an OSI-approved license.
+        The rest range from "fine for most uses" to "research only" — check before you ship.
+      </p>
+      <div id="chart-license" class="chart"></div>
+    </section>
+
+    <section class="cta" id="section-cta">
+      <p class="kicker" data-reveal>EXPLORE</p>
+      <h2 data-reveal>19 models · 14 metrics · 4 views</h2>
+      <p class="sub" data-reveal>Filter, compare and shortlist in the full decision dashboard.</p>
+      <a class="cta-btn" data-reveal href="/viz/llm-decision-dashboard/">Open the full dashboard →</a>
+    </section>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
