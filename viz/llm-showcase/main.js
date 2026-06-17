@@ -4,6 +4,7 @@ import { createHwState } from './modules/hw-state.js';
 import { mountHeroControls } from './modules/hero-controls.js';
 import { mountHeroScene } from './modules/hero-scene.js';
 import { mountTradeoff } from './modules/story-tradeoff.js';
+import { mountCoding } from './modules/story-coding.js';
 import { initScrollUi } from './modules/scroll.js';
 
 bootstrap();
@@ -25,5 +26,6 @@ async function bootstrap() {
   mountHeroControls(models, hwState);
   mountHeroScene(document.getElementById('hero-scene'), models, hwState);
   mountTradeoff(models, hwState);
+  mountCoding(models, hwState);
   initScrollUi();
 }
