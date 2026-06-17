@@ -6,6 +6,7 @@ import { mountHeroScene } from './modules/hero-scene.js';
 import { mountTradeoff } from './modules/story-tradeoff.js';
 import { mountCoding } from './modules/story-coding.js';
 import { mountPricing } from './modules/story-pricing.js';
+import { mountLicense } from './modules/story-license.js';
 import { initScrollUi } from './modules/scroll.js';
 
 bootstrap();
@@ -29,5 +30,6 @@ async function bootstrap() {
   mountTradeoff(models, hwState);
   mountCoding(models, hwState);
   mountPricing(models, hwState);
+  mountLicense(models);
   initScrollUi();
 }
