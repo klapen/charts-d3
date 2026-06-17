@@ -15,7 +15,12 @@
 }
 
 html { background: var(--bg); scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  /* Honor the page's reduced-motion contract: JS still sets final widths/colors,
+     so killing these transitions makes bars/tiles/dots appear in place instantly. */
+  .fit-row .fill, .hbar-row .fill, .license-tile, #chart-tradeoff circle { transition: none; }
+}
 body { background: var(--bg); color: var(--text); font-family: var(--mono); }
 
 #scanlines {
