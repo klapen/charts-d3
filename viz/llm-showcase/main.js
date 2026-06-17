@@ -3,6 +3,7 @@ import { loadDataset } from '../llm-decision-dashboard/modules/data.js';
 import { createHwState } from './modules/hw-state.js';
 import { mountHeroControls } from './modules/hero-controls.js';
 import { mountHeroScene } from './modules/hero-scene.js';
+import { mountTradeoff } from './modules/story-tradeoff.js';
 import { initScrollUi } from './modules/scroll.js';
 
 bootstrap();
@@ -23,5 +24,6 @@ async function bootstrap() {
   const hwState = createHwState(24);
   mountHeroControls(models, hwState);
   mountHeroScene(document.getElementById('hero-scene'), models, hwState);
+  mountTradeoff(models, hwState);
   initScrollUi();
 }
