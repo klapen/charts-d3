@@ -1,5 +1,7 @@
 import '../../src/styles/main.css';
 import { loadDataset } from '../llm-decision-dashboard/modules/data.js';
+import { createHwState } from './modules/hw-state.js';
+import { mountHeroControls } from './modules/hero-controls.js';
 
 bootstrap();
 
@@ -13,7 +15,8 @@ async function bootstrap() {
     return;
   }
   const models = data.models;
-  console.log(`loaded ${models.length} models`);
   document.getElementById('sync-stamp').textContent =
     ` · synced ${new Date(data.syncedAt).toISOString().slice(0, 10)}`;
+  const hwState = createHwState(24);
+  mountHeroControls(models, hwState);
 }
