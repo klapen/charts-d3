@@ -44,6 +44,9 @@ export function normalize(ground, sourceResults) {
       performance: { latency_ttft_ms: null, throughput_tok_s: null },
       pricing_hosted: { input_per_mtok_usd: null, output_per_mtok_usd: null, provider_count: null },
       model_card_url: g.model_card_url,
+      // Vendor-declared benchmarks from models.yaml. Passed through untouched —
+      // never enriched from or overwritten by leaderboard sources.
+      vendor_reported: g.vendor_reported || null,
       sources_used: [],
       missing_fields: [],
     };

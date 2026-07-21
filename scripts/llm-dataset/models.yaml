@@ -13,6 +13,19 @@
   modalities: { input: [text, image, audio], output: [text] }
   aliases: [thinkingmachines/Inkling, thinkingmachines/inkling, Inkling, inkling]
   model_card_url: https://huggingface.co/thinkingmachines/Inkling
+  # Self-reported by the vendor at launch — NOT from the public leaderboards this
+  # dashboard syncs (LMArena / HF / BigCode), which haven't scored Inkling yet.
+  # Kept separate from `quality.*` so sync never treats these as leaderboard data.
+  vendor_reported:
+    note: "Vendor-reported by Thinking Machines Lab at launch — not from the public leaderboards this dashboard syncs, so they don't appear in the charts."
+    source_url: https://thinkingmachines.ai/news/introducing-inkling/
+    benchmarks:
+      - { label: "GPQA Diamond", value: 0.872 }
+      - { label: "AIME 2026", value: 0.971 }
+      - { label: "SWE-bench Verified", value: 0.776 }
+      - { label: "SWE-bench Pro", value: 0.543 }
+      - { label: "MMMU Pro", value: 0.733 }
+      - { label: "HLE (text)", value: 0.297 }
 
 - model_id: qwen3-72b
   name: Qwen3 72B

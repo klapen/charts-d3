@@ -104,6 +104,18 @@ body { background: var(--bg); color: var(--text); font-family: var(--mono); }
 #chart-tradeoff circle { fill: var(--dim); stroke: var(--dim-line); transition: fill 0.4s; }
 #chart-tradeoff circle.fit { fill: var(--accent); stroke: none; filter: drop-shadow(0 0 5px var(--accent-soft)); }
 
+/* vendor-reported callout (models not yet on public leaderboards) */
+.vendor-note {
+  margin-top: 18px; padding: 12px 14px; max-width: 720px;
+  border: 1px dashed var(--dim-line); border-radius: 6px;
+  background: rgba(52, 211, 153, 0.04);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.vendor-note .vn-head { font-size: 11px; color: var(--accent); letter-spacing: 0.5px; }
+.vendor-note .vn-scores { font-size: 11px; color: var(--text); line-height: 1.7; }
+.vendor-note .vn-cap { font-size: 10px; color: var(--faint); line-height: 1.5; }
+.vendor-note .vn-cap a { color: var(--muted); text-decoration: underline; }
+
 .hbar-row { display: flex; align-items: center; gap: 12px; font-size: 11px; color: var(--muted); margin-bottom: 9px; }
 .hbar-row .nm { width: 150px; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hbar-row .track { flex: 1; height: 22px; background: #0d1411; border-radius: 3px; overflow: hidden; }

@@ -58,6 +58,22 @@ export function mountTradeoff(models, hwState) {
 
   host.appendChild(svg.node());
 
+  // Newest models (e.g. Inkling) carry vendor-reported benchmarks but aren't on the
+  // public leaderboards yet, so they're filtered out of the scatter above. Surface
+  // their self-reported scores so an empty chart slot doesn't read as "weak".
+  const shownIds = new Set(data.map(d => d.model_id));
+  for (const m of models.filter(m => m.vendor_reported && !shownIds.has(m.model_id))) {
+    const vr = m.vendor_reported;
+    const scores = vr.benchmarks.map(b => `${b.label} ${Math.round(b.value * 100)}%`).join('  ·  ');
+    const box = document.createElement('div');
+    box.className = 'vendor-note';
+    box.innerHTML =
+      `<span class="vn-head">⚑ ${m.name} — not on the public leaderboards yet</span>` +
+      `<span class="vn-scores">${scores}</span>` +
+      `<span class="vn-cap">${vr.note} <a href="${vr.source_url}" target="_blank" rel="noopener">source ↗</a></span>`;
+    host.appendChild(box);
+  }
+
   let firstFire = true;
   hwState.subscribe(v => {
     const cx = x(Math.max(1.5, Math.min(450, v)));
