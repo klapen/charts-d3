@@ -2,6 +2,18 @@
 # The sync script enriches these with benchmark/perf/price data from sources.
 # Add aliases to help match across HF / Artificial Analysis / LMArena naming.
 
+- model_id: inkling
+  name: Inkling
+  family: inkling
+  vendor: thinking-machines
+  release_date: "2026-07-15"
+  params: { total_b: 975, active_b: 41, is_moe: true }
+  context_window: 1000000
+  license: apache-2.0
+  modalities: { input: [text, image, audio], output: [text] }
+  aliases: [thinkingmachines/Inkling, thinkingmachines/inkling, Inkling, inkling]
+  model_card_url: https://huggingface.co/thinkingmachines/Inkling
+
 - model_id: qwen3-72b
   name: Qwen3 72B
   family: qwen3
