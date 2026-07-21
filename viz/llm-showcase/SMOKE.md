@@ -18,7 +18,7 @@ Open /viz/llm-showcase/ (dev: http://localhost:5173/viz/llm-showcase/)
 ## Story
 - [ ] §01: 13 dots stagger in ("13 of 20" note); "your machine" line tracks selection; fit dots glow
 - [ ] §02: 5 bars, CodeQwen 7B (87%) first; size tags on bars
-- [ ] §03: 12 bars cheap→expensive; FREE tags on $0 entries; in/out prices
+- [ ] §03: 13 bars cheap→expensive (Inkling $1/$4.05); FREE tags on $0 entries; in/out prices
 - [ ] §04: "6 of 20" in sub; 6 OSI tiles green-first; rest amber RESTRICTED
 - [ ] CTA button opens /viz/llm-decision-dashboard/
 
