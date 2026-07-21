@@ -164,6 +164,82 @@ def build_brazil_monthly() -> None:
     log.info("wrote %s (%d months)", out, len(months))
 
 
+def build_mexico() -> None:
+    """Emit mexico.json for the Mexico story tab.
+
+    Two views feed one chart: (a) the competitive split of Mexico's coffee
+    imports by source, green vs roasted, over the most recent 3 years; and
+    (b) Colombia's coffee exports to Mexico by year. Plus unit values for the
+    strategy tables. Green = HS 0901.11/12, roasted = HS 0901.21/22.
+    """
+    flows = PROCESSED / "flows.parquet"
+    if not flows.exists():
+        log.warning("Skipping mexico.json: %s not found", flows)
+        return
+    con = duckdb.connect(":memory:")
+    years = con.execute(
+        f"SELECT DISTINCT year FROM read_parquet('{_sql_path(flows)}') ORDER BY year"
+    ).df()["year"].tolist()
+    if not years:
+        log.warning("Skipping mexico.json: no flows")
+        return
+    recent = [int(y) for y in years[-3:]]
+    recent_sql = ",".join(str(y) for y in recent)
+    green = "('090111','090112')"
+    roasted = "('090121','090122')"
+
+    sources_df = con.execute(f"""
+        SELECT source AS iso3,
+            SUM(CASE WHEN hs_code IN {green}   THEN value_usd ELSE 0 END) AS green,
+            SUM(CASE WHEN hs_code IN {roasted} THEN value_usd ELSE 0 END) AS roasted
+        FROM read_parquet('{_sql_path(flows)}')
+        WHERE target = 'MEX' AND year IN ({recent_sql})
+        GROUP BY source
+        ORDER BY (green + roasted) DESC
+        LIMIT 10
+    """).df()
+    sources = [
+        {"iso3": r.iso3, "green": float(r.green), "roasted": float(r.roasted)}
+        for r in sources_df.itertuples(index=False)
+    ]
+
+    col_df = con.execute(f"""
+        SELECT year,
+            SUM(CASE WHEN hs_code IN {green}   THEN value_usd ELSE 0 END) AS green,
+            SUM(CASE WHEN hs_code IN {roasted} THEN value_usd ELSE 0 END) AS roasted
+        FROM read_parquet('{_sql_path(flows)}')
+        WHERE source = 'COL' AND target = 'MEX'
+        GROUP BY year ORDER BY year
+    """).df()
+
+    def unit_value(where: str) -> float | None:
+        row = con.execute(f"""
+            SELECT SUM(value_usd) AS v, SUM(quantity_kg) AS q
+            FROM read_parquet('{_sql_path(flows)}')
+            WHERE {where} AND year IN ({recent_sql})
+        """).fetchone()
+        return float(row[0] / row[1]) if row and row[1] else None
+
+    payload = {
+        "recent_window": recent,
+        "sources": sources,
+        "colombia": {
+            "years":   [int(y) for y in col_df["year"].tolist()],
+            "green":   [float(v) for v in col_df["green"].tolist()],
+            "roasted": [float(v) for v in col_df["roasted"].tolist()],
+        },
+        "unit_values": {
+            "green_import":   unit_value(f"target = 'MEX' AND hs_code IN {green}"),
+            "roasted_import": unit_value(f"target = 'MEX' AND hs_code IN {roasted}"),
+            "green_export":   unit_value(f"source = 'MEX' AND hs_code IN {green}"),
+            "roasted_export": unit_value(f"source = 'MEX' AND hs_code IN {roasted}"),
+        },
+    }
+    (VIZ_DATA / "mexico.json").write_text(json.dumps(payload, separators=(",", ":")))
+    log.info("Wrote mexico.json (%d sources, %d COL years)",
+             len(sources), len(payload["colombia"]["years"]))
+
+
 def main() -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     VIZ_DATA.mkdir(parents=True, exist_ok=True)
@@ -228,6 +304,7 @@ def main() -> int:
 
     build_colombia_monthly()
     build_brazil_monthly()
+    build_mexico()
 
     log.info("Done. meta.json + %d year files", len(years) * 3)
     return 0

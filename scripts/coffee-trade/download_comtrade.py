@@ -13,7 +13,7 @@ import time
 from pathlib import Path
 import httpx
 
-YEARS: list[int] = list(range(2015, 2024))  # inclusive 2015..2023
+YEARS: list[int] = list(range(2015, 2025))  # inclusive 2015..2024
 HS_CODES = ["090111", "090112", "090121", "090122"]
 BASE_URL = "https://comtradeapi.un.org/public/v1/preview/C/A/HS"
 REQ_SLEEP_SECONDS = 1.1  # respect ~1 req/sec free-tier limit
