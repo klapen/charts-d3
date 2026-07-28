@@ -119,6 +119,24 @@
             }
           },
           "model_card_url": { "type": "string", "format": "uri" },
+          "vendor_reported": {
+            "type": ["object", "null"],
+            "properties": {
+              "note": { "type": "string" },
+              "source_url": { "type": "string", "format": "uri" },
+              "benchmarks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["label", "value"],
+                  "properties": {
+                    "label": { "type": "string" },
+                    "value": { "type": ["number", "null"] }
+                  }
+                }
+              }
+            }
+          },
           "sources_used":   { "type": "array", "items": { "type": "string" } },
           "missing_fields": { "type": "array", "items": { "type": "string" } }
         }

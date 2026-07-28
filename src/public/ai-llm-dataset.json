@@ -1,25 +1,25 @@
 {
   "schema_version": "1.0.0",
-  "synced_at": "2026-06-01T18:51:26.563Z",
+  "synced_at": "2026-07-21T22:24:00.972Z",
   "sources": {
     "hf_leaderboard": {
       "url": "https://huggingface.co/datasets/open-llm-leaderboard/contents",
-      "synced_at": "2026-06-01T18:51:25.691Z",
+      "synced_at": "2026-07-21T22:24:00.336Z",
       "record_count": 1000
     },
     "artificial_analysis": {
       "url": "https://openrouter.ai/api/v1/models",
-      "synced_at": "2026-06-01T18:51:26.067Z",
-      "record_count": 343
+      "synced_at": "2026-07-21T22:24:00.645Z",
+      "record_count": 342
     },
     "lmarena": {
       "url": "https://raw.githubusercontent.com/fboulnois/llm-leaderboard-csv/main/csv/lmarena_text.csv",
-      "synced_at": "2026-06-01T18:51:26.215Z",
+      "synced_at": "2026-07-21T22:24:00.772Z",
       "record_count": 266
     },
     "bigcode_leaderboard": {
       "url": "https://huggingface.co/spaces/bigcode/bigcode-models-leaderboard/resolve/main/data/code_eval_board.csv",
-      "synced_at": "2026-06-01T18:51:26.547Z",
+      "synced_at": "2026-07-21T22:24:00.962Z",
       "record_count": 60
     }
   },
@@ -129,6 +129,106 @@
   },
   "models": [
     {
+      "model_id": "inkling",
+      "name": "Inkling",
+      "family": "inkling",
+      "vendor": "thinking-machines",
+      "release_date": "2026-07-15",
+      "license": {
+        "id": "apache-2.0",
+        "name": "Apache 2.0",
+        "osi_approved": true,
+        "url": "https://www.apache.org/licenses/LICENSE-2.0"
+      },
+      "params": {
+        "total_b": 975,
+        "active_b": 41,
+        "is_moe": true
+      },
+      "context_window": 1000000,
+      "modalities": {
+        "input": [
+          "text",
+          "image",
+          "audio"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 585,
+        "q8": 1170,
+        "fp16": 2340
+      },
+      "quality": {
+        "arena_elo": null,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        }
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 1,
+        "output_per_mtok_usd": 4.05,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/thinkingmachines/Inkling",
+      "vendor_reported": {
+        "note": "Vendor-reported by Thinking Machines Lab at launch — not from the public leaderboards this dashboard syncs, so they don't appear in the charts.",
+        "source_url": "https://thinkingmachines.ai/news/introducing-inkling/",
+        "benchmarks": [
+          {
+            "label": "GPQA Diamond",
+            "value": 0.872
+          },
+          {
+            "label": "AIME 2026",
+            "value": 0.971
+          },
+          {
+            "label": "SWE-bench Verified",
+            "value": 0.776
+          },
+          {
+            "label": "SWE-bench Pro",
+            "value": 0.543
+          },
+          {
+            "label": "MMMU Pro",
+            "value": 0.733
+          },
+          {
+            "label": "HLE (text)",
+            "value": 0.297
+          }
+        ]
+      },
+      "sources_used": [
+        "artificial_analysis"
+      ],
+      "missing_fields": [
+        "quality.arena_elo",
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
       "model_id": "qwen3-72b",
       "name": "Qwen3 72B",
       "family": "qwen3",
@@ -182,6 +282,7 @@
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/Qwen/Qwen3-72B",
+      "vendor_reported": null,
       "sources_used": [],
       "missing_fields": [
         "quality.arena_elo",
@@ -250,6 +351,7 @@
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/Qwen/Qwen3-32B",
+      "vendor_reported": null,
       "sources_used": [
         "artificial_analysis",
         "lmarena"
@@ -318,6 +420,7 @@
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/Qwen/Qwen3-7B",
+      "vendor_reported": null,
       "sources_used": [],
       "missing_fields": [
         "quality.arena_elo",
@@ -381,11 +484,12 @@
         "throughput_tok_s": null
       },
       "pricing_hosted": {
-        "input_per_mtok_usd": 0.2288,
-        "output_per_mtok_usd": 0.3432,
+        "input_per_mtok_usd": 0.269,
+        "output_per_mtok_usd": 0.4,
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/deepseek-ai/DeepSeek-V3",
+      "vendor_reported": null,
       "sources_used": [
         "artificial_analysis",
         "lmarena"
@@ -449,11 +553,12 @@
         "throughput_tok_s": null
       },
       "pricing_hosted": {
-        "input_per_mtok_usd": 0,
-        "output_per_mtok_usd": 0,
+        "input_per_mtok_usd": 0.13,
+        "output_per_mtok_usd": 0.4,
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct",
+      "vendor_reported": null,
       "sources_used": [
         "artificial_analysis",
         "lmarena"
@@ -522,6 +627,7 @@
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/mistralai/Mistral-Large-Instruct-2407",
+      "vendor_reported": null,
       "sources_used": [
         "artificial_analysis",
         "lmarena"
@@ -590,6 +696,7 @@
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/mistralai/Mixtral-8x22B-Instruct-v0.1",
+      "vendor_reported": null,
       "sources_used": [
         "artificial_analysis",
         "lmarena"
@@ -654,11 +761,12 @@
         "throughput_tok_s": null
       },
       "pricing_hosted": {
-        "input_per_mtok_usd": 0.08,
-        "output_per_mtok_usd": 0.16,
+        "input_per_mtok_usd": 0.1,
+        "output_per_mtok_usd": 0.3,
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/google/gemma-3-27b-it",
+      "vendor_reported": null,
       "sources_used": [
         "artificial_analysis",
         "lmarena"
@@ -723,11 +831,12 @@
         "throughput_tok_s": null
       },
       "pricing_hosted": {
-        "input_per_mtok_usd": 0.04,
-        "output_per_mtok_usd": 0.13,
+        "input_per_mtok_usd": 0.05,
+        "output_per_mtok_usd": 0.15,
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/google/gemma-3-12b-it",
+      "vendor_reported": null,
       "sources_used": [
         "artificial_analysis",
         "lmarena"
@@ -793,11 +902,12 @@
         "throughput_tok_s": null
       },
       "pricing_hosted": {
-        "input_per_mtok_usd": 0.08,
-        "output_per_mtok_usd": 0.35,
+        "input_per_mtok_usd": 0.07,
+        "output_per_mtok_usd": 0.14,
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/microsoft/phi-4",
+      "vendor_reported": null,
       "sources_used": [
         "hf_leaderboard",
         "artificial_analysis",
@@ -867,6 +977,7 @@
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/microsoft/Phi-3.5-mini-instruct",
+      "vendor_reported": null,
       "sources_used": [
         "hf_leaderboard"
       ],
@@ -932,11 +1043,12 @@
         "throughput_tok_s": null
       },
       "pricing_hosted": {
-        "input_per_mtok_usd": 0,
-        "output_per_mtok_usd": 0,
+        "input_per_mtok_usd": 0.0509,
+        "output_per_mtok_usd": 0.335,
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct",
+      "vendor_reported": null,
       "sources_used": [
         "hf_leaderboard",
         "artificial_analysis",
@@ -1004,6 +1116,7 @@
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct",
+      "vendor_reported": null,
       "sources_used": [
         "artificial_analysis",
         "lmarena",
@@ -1074,6 +1187,7 @@
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/deepseek-ai/DeepSeek-R1",
+      "vendor_reported": null,
       "sources_used": [
         "hf_leaderboard",
         "artificial_analysis",
@@ -1143,6 +1257,7 @@
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/CohereForAI/c4ai-command-r-plus",
+      "vendor_reported": null,
       "sources_used": [
         "hf_leaderboard",
         "artificial_analysis",
@@ -1210,6 +1325,7 @@
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/deepseek-ai/deepseek-coder-33b-instruct",
+      "vendor_reported": null,
       "sources_used": [
         "bigcode_leaderboard"
       ],
@@ -1279,6 +1395,7 @@
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/codellama/CodeLlama-70b-Instruct-hf",
+      "vendor_reported": null,
       "sources_used": [
         "lmarena",
         "bigcode_leaderboard"
@@ -1348,6 +1465,7 @@
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/Qwen/CodeQwen1.5-7B-Chat",
+      "vendor_reported": null,
       "sources_used": [
         "bigcode_leaderboard"
       ],
@@ -1417,6 +1535,7 @@
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/bigcode/starcoder2-15b",
+      "vendor_reported": null,
       "sources_used": [
         "bigcode_leaderboard"
       ],
