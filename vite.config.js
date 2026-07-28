@@ -57,6 +57,7 @@ export default defineConfig({
         ipc: resolve(__dirname, 'viz/ipc/index.html'),
         presupuesto: resolve(__dirname, 'viz/presupuesto/index.html'),
         'coffee-trade': resolve(__dirname, 'viz/coffee-trade/index.html'),
+        'llm-decision-dashboard': resolve(__dirname, 'viz/llm-decision-dashboard/index.html'),
       },
     },
   },

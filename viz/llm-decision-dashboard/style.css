@@ -1,0 +1,172 @@
+/* Local overrides on top of Tailwind. Keep this small. */
+
+.dash-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgb(23 23 23);
+  border: 1px solid rgb(38 38 38);
+  border-radius: 9999px;
+  font-size: 13px;
+  color: rgb(163 163 163);
+  cursor: pointer;
+}
+.dash-tab .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c, transparent);
+}
+.dash-tab.on {
+  background: rgb(38 38 38);
+  color: white;
+  border-color: var(--c, rgb(60 60 60));
+}
+.dash-tab:focus-visible {
+  outline: 2px solid rgb(59 130 246);
+  outline-offset: 2px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  background: rgb(38 38 38);
+  font-size: 11px;
+  cursor: pointer;
+  user-select: none;
+}
+.chip.on { background: rgb(30 58 138); color: white; }
+.chip:focus-visible { outline: 2px solid rgb(59 130 246); outline-offset: 2px; }
+
+.ranked-row {
+  display: grid;
+  grid-template-columns: 32px 1fr 100px 80px 1fr 60px;
+  gap: 8px;
+  align-items: center;
+  padding: 4px 0;
+  border-bottom: 1px dotted rgb(38 38 38);
+  cursor: pointer;
+}
+.ranked-row:hover { background: rgb(23 23 23); }
+.ranked-row.selected { background: rgb(20 83 45 / 0.15); }
+.ranked-row .bar { height: 6px; background: rgb(74 222 128); border-radius: 2px; }
+
+.parcoord-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px 2px 6px;
+  background: rgb(23 23 23);
+  border-radius: 9999px;
+  font-size: 11px;
+  color: rgb(229 229 229);
+}
+.parcoord-legend::before {
+  content: '';
+  width: 14px;
+  height: 3px;
+  background: var(--c, #fff);
+  border-radius: 2px;
+}
+
+.parcoord-wrap {
+  position: relative;
+}
+.parcoord-tooltip {
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+  background: rgb(15 15 18 / 0.96);
+  border: 1px solid rgb(64 64 64);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: rgb(229 229 229);
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.4);
+}
+.parcoord-tooltip h5 {
+  font-weight: 600;
+  margin: 0 0 6px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.parcoord-tooltip h5 .dir {
+  font-weight: 400;
+  font-size: 10px;
+  color: rgb(115 115 115);
+}
+.parcoord-tooltip .row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 1px 0;
+}
+.parcoord-tooltip .row .k {
+  color: rgb(150 150 150);
+  flex: 1;
+}
+.parcoord-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 3px;
+  background: var(--c, #fff);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.detail-tabs {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.detail-tab {
+  padding: 4px 10px;
+  background: rgb(23 23 23);
+  border: 1px solid rgb(38 38 38);
+  border-left: 3px solid var(--c, transparent);
+  border-radius: 4px;
+  font-size: 12px;
+  color: rgb(163 163 163);
+  cursor: pointer;
+}
+.detail-tab.on { background: rgb(38 38 38); color: white; }
+.detail-tab:focus-visible { outline: 2px solid rgb(59 130 246); outline-offset: 2px; }
+
+.detail-card {
+  flex: 1 1 280px;
+  min-width: 0;
+  background: rgb(15 15 18);
+  border-left: 3px solid rgb(74 222 128);
+  border-radius: 4px;
+  padding: 10px;
+}
+.detail-card h4 { display: flex; justify-content: space-between; font-size: 13px; margin: 0 0 6px; }
+.detail-card .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; font-size: 11px; }
+.detail-card .grid .k { color: rgb(115 115 115); }
+
+.metrics-card .metric-group {
+  margin: 8px 0 4px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(115 115 115);
+}
+.metrics-card .metric-group:first-of-type { margin-top: 4px; }
+.metrics-card .metric-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 8px;
+  font-size: 11px;
+  padding: 2px 0;
+  border-bottom: 1px dotted rgb(38 38 38);
+}
+.metrics-card .metric-row:last-of-type { border-bottom: none; }
+.metrics-card .metric-row .m-name { color: rgb(229 229 229); font-weight: 500; }
+.metrics-card .metric-row .m-desc { color: rgb(150 150 150); }
