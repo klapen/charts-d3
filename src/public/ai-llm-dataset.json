@@ -1,25 +1,25 @@
 {
   "schema_version": "1.0.0",
-  "synced_at": "2026-07-21T22:24:00.972Z",
+  "synced_at": "2026-07-31T18:19:38.736Z",
   "sources": {
     "hf_leaderboard": {
       "url": "https://huggingface.co/datasets/open-llm-leaderboard/contents",
-      "synced_at": "2026-07-21T22:24:00.336Z",
+      "synced_at": "2026-07-31T18:19:37.891Z",
       "record_count": 1000
     },
     "artificial_analysis": {
       "url": "https://openrouter.ai/api/v1/models",
-      "synced_at": "2026-07-21T22:24:00.645Z",
-      "record_count": 342
+      "synced_at": "2026-07-31T18:19:38.206Z",
+      "record_count": 337
     },
     "lmarena": {
       "url": "https://raw.githubusercontent.com/fboulnois/llm-leaderboard-csv/main/csv/lmarena_text.csv",
-      "synced_at": "2026-07-21T22:24:00.772Z",
+      "synced_at": "2026-07-31T18:19:38.399Z",
       "record_count": 266
     },
     "bigcode_leaderboard": {
       "url": "https://huggingface.co/spaces/bigcode/bigcode-models-leaderboard/resolve/main/data/code_eval_board.csv",
-      "synced_at": "2026-07-21T22:24:00.962Z",
+      "synced_at": "2026-07-31T18:19:38.721Z",
       "record_count": 60
     }
   },
@@ -179,8 +179,8 @@
         "throughput_tok_s": null
       },
       "pricing_hosted": {
-        "input_per_mtok_usd": 1,
-        "output_per_mtok_usd": 4.05,
+        "input_per_mtok_usd": 0.58,
+        "output_per_mtok_usd": 1.44,
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/thinkingmachines/Inkling",
@@ -761,8 +761,8 @@
         "throughput_tok_s": null
       },
       "pricing_hosted": {
-        "input_per_mtok_usd": 0.1,
-        "output_per_mtok_usd": 0.3,
+        "input_per_mtok_usd": 0.08,
+        "output_per_mtok_usd": 0.45,
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/google/gemma-3-27b-it",
@@ -1043,8 +1043,8 @@
         "throughput_tok_s": null
       },
       "pricing_hosted": {
-        "input_per_mtok_usd": 0.0509,
-        "output_per_mtok_usd": 0.335,
+        "input_per_mtok_usd": 0.05,
+        "output_per_mtok_usd": 0.33,
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct",
