@@ -1,0 +1,11 @@
+:root { --bg:#0a0e0f; --panel:#11181a; --accent:#34d399; --text:#e6f0ee; --muted:#7d908c; --border:#1f2b28; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--text); font-family:"JetBrains Mono",ui-monospace,monospace; }
+.app-header { display:flex; align-items:center; gap:1.5rem; padding:1rem 1.5rem; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+.app-title { font-size:1.1rem; letter-spacing:0.15em; margin:0; color:var(--accent); }
+.app-body { display:grid; grid-template-columns:340px 1fr; gap:1rem; padding:1.5rem; align-items:start; }
+.panel { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:1rem; min-height:260px; }
+.money-strip { border-top:1px solid var(--border); padding:1rem 1.5rem; background:var(--panel); }
+.error-strip { background:#3a1414; color:#ffb4b4; padding:0.6rem 1rem; font-size:0.85rem; }
+.hint { color:var(--muted); font-size:0.9rem; }
+@media (max-width:720px){ .app-body{ grid-template-columns:1fr; } }
