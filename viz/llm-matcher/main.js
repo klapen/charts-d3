@@ -1,6 +1,8 @@
 import { createStore } from './modules/store.js';
 import { mountModeToggle } from './modules/mode-toggle.js';
 import { mountContextSlider } from './modules/context-slider.js';
+import { mountModelPicker } from './modules/model-picker.js';
+import { mountResultModel } from './modules/result-model.js';
 
 async function loadJSON(url) {
   const r = await fetch(url);
@@ -16,7 +18,11 @@ function boot({ models, gpus, gpuUpdated }) {
   });
   mountModeToggle(document.getElementById('mode-slot'), store);
   mountContextSlider(document.getElementById('ctx-slot'), store);
-  // input/result/money mounts come in later tasks; keep refs for them:
+  const inputSlot = document.getElementById('input-slot');
+  const resultSlot = document.getElementById('result-slot');
+  mountModelPicker(inputSlot, store, models);   // (PC form added next task; shown per-mode in Task 9 wiring)
+  mountResultModel(resultSlot, store, models, gpus);
+  // money mount comes in a later task; keep refs for it:
   boot.ctx = { store, models, gpus, gpuUpdated };
 }
 // Module scripts don't leak top-level names to window; expose boot for
