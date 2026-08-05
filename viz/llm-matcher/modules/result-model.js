@@ -19,7 +19,7 @@ export function mountResultModel(el, store, models, gpus) {
     if (s.mode !== 'model') return;
     const m = models.find(x => x.model_id === s.selectedModelId);
     if (!m) { el.innerHTML = `<p class="hint">Pick a model to see the hardware it needs.</p>`; return; }
-    const mo = minOptimal(m, gpus);
+    const mo = minOptimal(m, gpus, s.contextTokens);
     el.innerHTML = `<h2 class="res-name">${m.name}</h2>
       <div class="hw-cards">${card('MIN (cheapest)', mo.min)}${card('OPTIMAL (comfy)', mo.optimal)}</div>
       <p class="hint">≈ estimates — weights + KV cache at short/long context.</p>`;

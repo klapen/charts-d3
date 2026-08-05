@@ -45,10 +45,10 @@ export function smallestRigThatFits(need, gpus) {
   return multi.length ? multi[0] : { datacenter: true };
 }
 
-export function minOptimal(model, gpus) {
-  const minNeed = neededGb(model, 'q4', 4096);
+export function minOptimal(model, gpus, ctxTokens) {
+  const minNeed = neededGb(model, 'q4', ctxTokens);
   const optQuant = model.params.total_b <= 13 ? 'fp16' : 'q8';
-  const optNeed = neededGb(model, optQuant, 32768) * 1.2;   // headroom
+  const optNeed = neededGb(model, optQuant, ctxTokens) * 1.2;   // headroom
   return {
     min:     { quant: 'q4',     neededGb: minNeed, rig: smallestRigThatFits(minNeed, gpus) },
     optimal: { quant: optQuant, neededGb: optNeed, rig: smallestRigThatFits(optNeed, gpus) },
