@@ -5,6 +5,7 @@ import { mountModelPicker } from './modules/model-picker.js';
 import { mountResultModel } from './modules/result-model.js';
 import { mountPcForm } from './modules/pc-form.js';
 import { mountResultPc } from './modules/result-pc.js';
+import { mountMoneyPanel } from './modules/money-panel.js';
 
 async function loadJSON(url) {
   const r = await fetch(url);
@@ -37,6 +38,7 @@ function boot({ models, gpus, gpuUpdated }) {
   mountPcForm(inPc, store, gpus);
   mountResultModel(resModel, store, models, gpus);
   mountResultPc(resPc, store, models, gpus);
+  mountMoneyPanel(document.getElementById('money-slot'), store, models, gpus);
 
   store.subscribe(s => {
     const isModel = s.mode === 'model';
@@ -46,7 +48,6 @@ function boot({ models, gpus, gpuUpdated }) {
     resPc.hidden = isModel;
   });
 
-  // money mount comes in a later task; keep refs for it:
   boot.ctx = { store, models, gpus, gpuUpdated };
 }
 // Module scripts don't leak top-level names to window; expose boot for
