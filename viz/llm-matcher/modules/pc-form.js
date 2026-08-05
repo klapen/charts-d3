@@ -31,5 +31,7 @@ export function mountPcForm(el, store, gpus) {
   const s = store.get();
   el.querySelector('.pf-gpu').value = s.pc.gpuId;
   el.querySelector('.pf-ram').value = String(s.pc.ramGb);
+  el.querySelector('.pf-count').value = String(s.pc.gpuCount);
+  el.querySelector('.pf-quant').value = s.pc.quant;
   read();
 }

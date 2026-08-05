@@ -51,8 +51,9 @@ function boot({ models, gpus, gpuUpdated }) {
   boot.ctx = { store, models, gpus, gpuUpdated };
 }
 // Module scripts don't leak top-level names to window; expose boot for
-// manual console verification and later-task wiring (see brief Step 4).
-window.boot = boot;
+// manual console verification only in dev — dropped from the production
+// bundle (see brief Step 4).
+if (import.meta.env.DEV) window.boot = boot;
 
 (async () => {
   try {
