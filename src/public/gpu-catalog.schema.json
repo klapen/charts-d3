@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["updated", "gpus"],
+  "properties": {
+    "updated": { "type": "string" },
+    "gpus": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id","name","vram_gb","buy_usd","rent_usd_hr","watts","class","unified"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "vram_gb": { "type": "number" },
+          "buy_usd": { "type": "number" },
+          "rent_usd_hr": { "type": "number" },
+          "watts": { "type": "number" },
+          "class": { "type": "string", "enum": ["consumer","prosumer","datacenter"] },
+          "unified": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}
