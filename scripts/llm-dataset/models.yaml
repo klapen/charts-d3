@@ -27,6 +27,39 @@
       - { label: "MMMU Pro", value: 0.733 }
       - { label: "HLE (text)", value: 0.297 }
 
+- model_id: qwen3-8-max
+  name: Qwen 3.8 Max
+  family: qwen3-8
+  vendor: alibaba
+  release_date: "2026-08-03"
+  # active_b is vendor-reported (~95B), not independently confirmed.
+  params: { total_b: 2400, active_b: 95, is_moe: true }
+  context_window: 1000000
+  license: qwen-license
+  modalities: { input: [text, image, video], output: [text] }
+  aliases: [qwen/qwen3.8-max, Qwen3.8-Max, qwen3.8-max, qwen3-8-max]
+  model_card_url: https://openrouter.ai/qwen/qwen3.8-max
+  vendor_reported:
+    note: "Vendor-reported by Alibaba at launch (2026-08-03). Hosted API at $2 / $6 per Mtok; open weights promised post-launch. Not yet on the public leaderboards this dashboard syncs."
+    source_url: https://www.marktechpost.com/2026/08/03/alibaba-qwen-releases-qwen3-8-max/
+    benchmarks: []
+
+- model_id: qwen3-8-27b
+  name: Qwen 3.8 27B
+  family: qwen3-8
+  vendor: alibaba
+  release_date: "2026-08-03"
+  params: { total_b: 27, active_b: 27, is_moe: false }
+  context_window: 262144
+  license: apache-2.0
+  modalities: { input: [text], output: [text] }
+  aliases: [qwen/qwen3.8-27b, Qwen3.8-27B, qwen3.8-27b, qwen3-8-27b]
+  model_card_url: https://huggingface.co/Qwen/Qwen3.8-27B
+  vendor_reported:
+    note: "Open-weight checkpoint released alongside Qwen 3.8-Max (2026-08-03). Fits ordinary on-prem GPUs. Not yet on the public leaderboards this dashboard syncs."
+    source_url: https://www.marktechpost.com/2026/08/03/alibaba-qwen-releases-qwen3-8-max/
+    benchmarks: []
+
 - model_id: qwen3-72b
   name: Qwen3 72B
   family: qwen3
