@@ -3,6 +3,8 @@ import { mountModeToggle } from './modules/mode-toggle.js';
 import { mountContextSlider } from './modules/context-slider.js';
 import { mountModelPicker } from './modules/model-picker.js';
 import { mountResultModel } from './modules/result-model.js';
+import { mountPcForm } from './modules/pc-form.js';
+import { mountResultPc } from './modules/result-pc.js';
 
 async function loadJSON(url) {
   const r = await fetch(url);
@@ -20,8 +22,30 @@ function boot({ models, gpus, gpuUpdated }) {
   mountContextSlider(document.getElementById('ctx-slot'), store);
   const inputSlot = document.getElementById('input-slot');
   const resultSlot = document.getElementById('result-slot');
-  mountModelPicker(inputSlot, store, models);   // (PC form added next task; shown per-mode in Task 9 wiring)
-  mountResultModel(resultSlot, store, models, gpus);
+
+  // Per-mode child containers: model-first pair (#in-model/#res-model) and
+  // pc-first pair (#in-pc/#res-pc) both mount up front; visibility toggles
+  // with `mode` below so each module's own store.subscribe keeps working.
+  inputSlot.innerHTML = `<div id="in-model"></div><div id="in-pc"></div>`;
+  resultSlot.innerHTML = `<div id="res-model"></div><div id="res-pc"></div>`;
+  const inModel = document.getElementById('in-model');
+  const inPc = document.getElementById('in-pc');
+  const resModel = document.getElementById('res-model');
+  const resPc = document.getElementById('res-pc');
+
+  mountModelPicker(inModel, store, models);
+  mountPcForm(inPc, store, gpus);
+  mountResultModel(resModel, store, models, gpus);
+  mountResultPc(resPc, store, models, gpus);
+
+  store.subscribe(s => {
+    const isModel = s.mode === 'model';
+    inModel.hidden = !isModel;
+    resModel.hidden = !isModel;
+    inPc.hidden = isModel;
+    resPc.hidden = isModel;
+  });
+
   // money mount comes in a later task; keep refs for it:
   boot.ctx = { store, models, gpus, gpuUpdated };
 }

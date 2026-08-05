@@ -1,5 +1,6 @@
 :root { --bg:#0a0e0f; --panel:#11181a; --accent:#34d399; --text:#e6f0ee; --muted:#7d908c; --border:#1f2b28; }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body { margin:0; background:var(--bg); color:var(--text); font-family:"JetBrains Mono",ui-monospace,monospace; }
 .app-header { display:flex; align-items:center; gap:1.5rem; padding:1rem 1.5rem; border-bottom:1px solid var(--border); flex-wrap:wrap; }
 .app-title { font-size:1.1rem; letter-spacing:0.15em; margin:0; color:var(--accent); }
@@ -41,6 +42,24 @@ body { margin:0; background:var(--bg); color:var(--text); font-family:"JetBrains
 .mp-list li.active { background:var(--accent); color:var(--bg); font-weight:700; }
 .mp-list li.active .mp-sz { color:var(--bg); opacity:0.75; }
 .mp-sz { color:var(--muted); font-size:0.8rem; }
+
+.pc-form { display:flex; flex-direction:column; gap:0.75rem; }
+.pc-form label { display:flex; flex-direction:column; gap:0.3rem; font-size:0.8rem; color:var(--muted); }
+.pc-form select {
+  background:var(--bg); color:var(--text); border:1px solid var(--border);
+  border-radius:6px; padding:0.5rem 0.7rem; font-family:inherit; font-size:0.85rem;
+}
+.pc-form select:focus { outline:none; border-color:var(--accent); }
+
+.bucket { border-left:3px solid var(--border); padding:0.35rem 0 0.35rem 0.85rem; margin-bottom:1rem; }
+.bucket h3 { margin:0 0 0.5rem; font-size:0.9rem; letter-spacing:0.03em; }
+.bucket ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:0.15rem; }
+.bucket li { padding:0.4rem 0.5rem; border-radius:6px; font-size:0.85rem; cursor:pointer; transition:background 0.15s; }
+.bucket li:not(.hint):hover { background:var(--bg); }
+.bucket.runs { border-left-color:var(--accent); }
+.bucket.almost { border-left-color:#f5c542; }
+.bucket.buy { border-left-color:#e5484d; }
+.fix { color:var(--muted); font-size:0.8rem; }
 
 .res-name { margin:0 0 1rem; color:var(--accent); font-size:1.1rem; letter-spacing:0.05em; }
 .hw-cards { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:0.75rem; }
