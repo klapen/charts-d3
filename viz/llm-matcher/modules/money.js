@@ -32,7 +32,7 @@ export function tco2yr(money, tokPerSec, opts = {}) {
   const H = opts.horizonHours ?? HORIZON_HOURS;
   const ownUsd  = money.datacenter ? null : money.buyUsd + money.powerHr * H;
   const rentUsd = money.datacenter ? null : money.rentHr * H;
-  const apiUsd  = (money.api && tokPerSec != null && isFinite(tokPerSec))
+  const apiUsd  = (money.api && isFinite(money.api.out) && tokPerSec != null && isFinite(tokPerSec))
     ? (tokPerSec * 3600 * H / 1e6) * money.api.out
     : null;
   const legs = { OWN: ownUsd, RENT: rentUsd, API: apiUsd };
