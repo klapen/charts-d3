@@ -5,8 +5,10 @@ const usd = n => n == null ? '—' : `$${n.toLocaleString(undefined,{maximumFrac
 const rigLabel = rig => rig.datacenter ? '🏭 data center'
   : (rig.count>1 ? `${rig.count}× ${rig.gpu.name}` : rig.gpu.name);
 
-export function mountMoneyPanel(el, store, models, gpus) {
+export function mountMoneyPanel(el, store, models, gpus, meta = {}) {
+  const syncedDate = meta.datasetSynced ? new Date(meta.datasetSynced).toISOString().slice(0, 10) : 'n/a';
   store.subscribe(s => {
+    const wasOpen = el.querySelector('.money-src')?.open;
     const m = models.find(x => x.model_id === s.focusModelId);
     if (!m) { el.innerHTML = `<p class="hint">Select a model to compare buy vs rent.</p>`; return; }
     const mo = minOptimal(m, gpus, s.contextTokens);
@@ -39,8 +41,9 @@ export function mountMoneyPanel(el, store, models, gpus) {
       <div class="money-rows"><span>${own}</span><span>${rent}</span><span>${api}</span></div>
       <div class="money-be">${be}</div>
       <details class="money-src"><summary>sources & assumptions</summary>
-        <p class="hint">GPU buy prices: approx. street prices (gpu-catalog, updated 2026-08). Rental: cloud on-demand (Jarvislabs/Lambda/getdeploying, Aug 2026). API: from ai-llm-dataset.json (synced). Assumes $0.15/kWh, additive multi-GPU VRAM, bucketed KV — all ≈ estimates.</p>
+        <p class="hint">GPU buy prices: approx. street prices (gpu-catalog, updated ${meta.gpuUpdated}). Rental: cloud on-demand (Jarvislabs/Lambda/getdeploying, Aug 2026). API: from ai-llm-dataset.json (synced ${syncedDate}). Assumes $0.15/kWh, additive multi-GPU VRAM, bucketed KV — all ≈ estimates.</p>
       </details>`;
+    if (wasOpen) el.querySelector('.money-src').open = true;
     el.querySelectorAll('button[data-rig]').forEach(b =>
       b.addEventListener('click', () => store.set({ targetRig: b.dataset.rig })));
     el.querySelector('.usage').addEventListener('change', e =>

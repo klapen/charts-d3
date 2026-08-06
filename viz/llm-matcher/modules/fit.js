@@ -1,5 +1,3 @@
-export const BYTES_PER_PARAM = { q4: 0.5, q8: 1.0, fp16: 2.0 };
-
 // KV cache grows with context; rate (GB per 1K tokens, fp16) is bucketed by the
 // model's attention scale (active params for MoE, total for dense). Coarse — a
 // tier-level estimate, not exact. See spec §3.1.

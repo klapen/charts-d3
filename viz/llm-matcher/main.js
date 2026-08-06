@@ -13,7 +13,7 @@ async function loadJSON(url) {
   return r.json();
 }
 
-function boot({ models, gpus, gpuUpdated }) {
+function boot({ models, gpus, gpuUpdated, datasetSynced }) {
   const store = createStore({
     mode: 'model', selectedModelId: null,
     pc: { gpuId: gpus[0].id, gpuCount: 1, ramGb: 32, quant: 'q4' },
@@ -38,7 +38,7 @@ function boot({ models, gpus, gpuUpdated }) {
   mountPcForm(inPc, store, gpus);
   mountResultModel(resModel, store, models, gpus);
   mountResultPc(resPc, store, models, gpus);
-  mountMoneyPanel(document.getElementById('money-slot'), store, models, gpus);
+  mountMoneyPanel(document.getElementById('money-slot'), store, models, gpus, { gpuUpdated, datasetSynced });
 
   store.subscribe(s => {
     const isModel = s.mode === 'model';
@@ -48,12 +48,14 @@ function boot({ models, gpus, gpuUpdated }) {
     resPc.hidden = isModel;
   });
 
-  boot.ctx = { store, models, gpus, gpuUpdated };
+  // Module scripts don't leak top-level names to window; expose boot for
+  // manual console verification only in dev — dropped from the production
+  // bundle (see brief Step 4).
+  if (import.meta.env.DEV) {
+    window.boot = boot;
+    boot.ctx = { store, models, gpus, gpuUpdated };
+  }
 }
-// Module scripts don't leak top-level names to window; expose boot for
-// manual console verification only in dev — dropped from the production
-// bundle (see brief Step 4).
-if (import.meta.env.DEV) window.boot = boot;
 
 (async () => {
   try {
@@ -61,7 +63,7 @@ if (import.meta.env.DEV) window.boot = boot;
       loadJSON('/ai-llm-dataset.json'),
       loadJSON('/gpu-catalog.json'),
     ]);
-    boot({ models: dataset.models, gpus: catalog.gpus, gpuUpdated: catalog.updated });
+    boot({ models: dataset.models, gpus: catalog.gpus, gpuUpdated: catalog.updated, datasetSynced: dataset.synced_at });
   } catch (e) {
     console.error(e);
     const strip = document.getElementById('error-strip');
