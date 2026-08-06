@@ -1,6 +1,29 @@
 // KV cache grows with context; rate (GB per 1K tokens, fp16) is bucketed by the
 // model's attention scale (active params for MoE, total for dense). Coarse — a
 // tier-level estimate, not exact. See spec §3.1.
+
+export const BPP = { q4: 0.5, q8: 1.0, fp16: 2.0 };   // GB per billion params
+export const SYS_RAM_GBPS = 80;                        // assumed DDR5 dual-channel
+
+// Bytes of weights read per token: MoE reads only active experts, dense reads all.
+export function weightBytesGb(model, quant) {
+  const scaleB = model.params.is_moe ? model.params.active_b : model.params.total_b;
+  return scaleB * BPP[quant];
+}
+
+// Coarse bandwidth-bound throughput: tok/s ≈ memory bandwidth ÷ weight bytes/token.
+// Ignores compute limits, batching, prompt processing. A rough estimate.
+export function estimateToksPerSec(model, bandwidthGbps, quant) {
+  return bandwidthGbps / weightBytesGb(model, quant);
+}
+
+export function speedBadge(toks) {
+  if (toks >= 15) return { emoji: '⚡', label: 'fast' };
+  if (toks >= 5)  return { emoji: '🚶', label: 'usable' };
+  if (toks >= 1)  return { emoji: '🐌', label: 'slow' };
+  return { emoji: '🧊', label: 'crawling' };
+}
+
 export function kvCacheGb(model, ctxTokens) {
   const scaleB = model.params.is_moe ? model.params.active_b : model.params.total_b;
   const ratePer1k = scaleB <= 8 ? 0.06 : scaleB <= 34 ? 0.13 : scaleB <= 80 ? 0.24 : 0.40;
@@ -64,7 +87,7 @@ export function classify(model, pc, gpu, ctxTokens, gpus) {
   if (quant !== 'q4' && neededGb(model, 'q4', ctxTokens) <= vram)
     return { bucket: 'almost', fix: 'drop to q4' };
   if (need <= total)
-    return { bucket: 'almost', fix: 'runs but slow — CPU offload' };
+    return { bucket: 'almost', fix: 'runs but slow — CPU offload', offloaded: true };
   if (need <= vram * 1.15)
     return { bucket: 'almost', fix: `needs ~${Math.ceil(need - vram)} GB more VRAM` };
 
