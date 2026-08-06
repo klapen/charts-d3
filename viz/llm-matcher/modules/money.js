@@ -8,7 +8,7 @@ export function moneyFor(model, rig, usagePreset) {
     : null;
 
   if (rig?.datacenter || !rig?.gpu) {
-    return { datacenter: true, buyUsd: null, powerMo: null, rentHr: null, rentMo: null, api, breakEvenHours: null };
+    return { datacenter: true, buyUsd: null, powerHr: null, powerMo: null, rentHr: null, rentMo: null, api, breakEvenHours: null };
   }
 
   const { gpu, count, buyUsd } = rig;
@@ -20,5 +20,23 @@ export function moneyFor(model, rig, usagePreset) {
   // premium over your own power. Null if renting isn't cheaper per hour.
   const breakEvenHours = rentHr > powerHr ? buyUsd / (rentHr - powerHr) : null;
 
-  return { datacenter: false, buyUsd, powerMo, rentHr, rentMo, api, breakEvenHours };
+  return { datacenter: false, buyUsd, powerHr, powerMo, rentHr, rentMo, api, breakEvenHours };
+}
+
+export const HORIZON_HOURS = 2 * 365 * 24;   // 17520 — fixed 2-year, 24/7 window
+
+// Fixed 2-year @ 24/7 total cost. OWN = upfront + power; RENT = cloud hourly;
+// API = generate non-stop at tokPerSec, priced on OUTPUT tokens (an intentional
+// worst case — API bills only while generating). Legs are null when N/A.
+export function tco2yr(money, tokPerSec, opts = {}) {
+  const H = opts.horizonHours ?? HORIZON_HOURS;
+  const ownUsd  = money.datacenter ? null : money.buyUsd + money.powerHr * H;
+  const rentUsd = money.datacenter ? null : money.rentHr * H;
+  const apiUsd  = (money.api && tokPerSec != null && isFinite(tokPerSec))
+    ? (tokPerSec * 3600 * H / 1e6) * money.api.out
+    : null;
+  const legs = { OWN: ownUsd, RENT: rentUsd, API: apiUsd };
+  const defined = Object.entries(legs).filter(([, v]) => v != null);
+  const cheapest = defined.length ? defined.sort((a, b) => a[1] - b[1])[0][0] : null;
+  return { ownUsd, rentUsd, apiUsd, cheapest };
 }
