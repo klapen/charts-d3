@@ -9,7 +9,8 @@
       "rent_usd_hr": 0.2,
       "watts": 170,
       "class": "consumer",
-      "unified": false
+      "unified": false,
+      "mem_bandwidth_gbps": 360
     },
     {
       "id": "rtx-4060ti-16",
@@ -19,7 +20,8 @@
       "rent_usd_hr": 0.25,
       "watts": 165,
       "class": "consumer",
-      "unified": false
+      "unified": false,
+      "mem_bandwidth_gbps": 288
     },
     {
       "id": "rtx-4070",
@@ -29,7 +31,8 @@
       "rent_usd_hr": 0.28,
       "watts": 200,
       "class": "consumer",
-      "unified": false
+      "unified": false,
+      "mem_bandwidth_gbps": 504
     },
     {
       "id": "rtx-3090",
@@ -39,7 +42,8 @@
       "rent_usd_hr": 0.3,
       "watts": 350,
       "class": "consumer",
-      "unified": false
+      "unified": false,
+      "mem_bandwidth_gbps": 936
     },
     {
       "id": "rtx-4090",
@@ -49,7 +53,8 @@
       "rent_usd_hr": 0.4,
       "watts": 450,
       "class": "consumer",
-      "unified": false
+      "unified": false,
+      "mem_bandwidth_gbps": 1008
     },
     {
       "id": "rtx-6000-ada",
@@ -59,7 +64,8 @@
       "rent_usd_hr": 0.8,
       "watts": 300,
       "class": "prosumer",
-      "unified": false
+      "unified": false,
+      "mem_bandwidth_gbps": 960
     },
     {
       "id": "l40s",
@@ -69,7 +75,8 @@
       "rent_usd_hr": 0.9,
       "watts": 350,
       "class": "datacenter",
-      "unified": false
+      "unified": false,
+      "mem_bandwidth_gbps": 864
     },
     {
       "id": "a100-40",
@@ -79,7 +86,8 @@
       "rent_usd_hr": 1.2,
       "watts": 400,
       "class": "datacenter",
-      "unified": false
+      "unified": false,
+      "mem_bandwidth_gbps": 1555
     },
     {
       "id": "a100-80",
@@ -89,7 +97,8 @@
       "rent_usd_hr": 1.5,
       "watts": 400,
       "class": "datacenter",
-      "unified": false
+      "unified": false,
+      "mem_bandwidth_gbps": 2039
     },
     {
       "id": "h100",
@@ -99,7 +108,8 @@
       "rent_usd_hr": 2.69,
       "watts": 700,
       "class": "datacenter",
-      "unified": false
+      "unified": false,
+      "mem_bandwidth_gbps": 3350
     },
     {
       "id": "h200",
@@ -109,7 +119,8 @@
       "rent_usd_hr": 3.99,
       "watts": 700,
       "class": "datacenter",
-      "unified": false
+      "unified": false,
+      "mem_bandwidth_gbps": 4800
     },
     {
       "id": "b200",
@@ -119,7 +130,8 @@
       "rent_usd_hr": 7,
       "watts": 1000,
       "class": "datacenter",
-      "unified": false
+      "unified": false,
+      "mem_bandwidth_gbps": 8000
     },
     {
       "id": "apple-m-64",
@@ -129,7 +141,8 @@
       "rent_usd_hr": 0,
       "watts": 60,
       "class": "consumer",
-      "unified": true
+      "unified": true,
+      "mem_bandwidth_gbps": 400
     },
     {
       "id": "apple-m-128",
@@ -139,7 +152,8 @@
       "rent_usd_hr": 0,
       "watts": 90,
       "class": "consumer",
-      "unified": true
+      "unified": true,
+      "mem_bandwidth_gbps": 800
     }
   ]
 }
