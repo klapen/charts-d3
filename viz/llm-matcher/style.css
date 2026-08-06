@@ -5,7 +5,7 @@ body { margin:0; background:var(--bg); color:var(--text); font-family:"JetBrains
 .app-header { display:flex; align-items:center; gap:1.5rem; padding:1rem 1.5rem; border-bottom:1px solid var(--border); flex-wrap:wrap; }
 .app-title { font-size:1.1rem; letter-spacing:0.15em; margin:0; color:var(--accent); }
 .app-body { display:grid; grid-template-columns:340px 1fr; grid-template-rows:auto auto; gap:1rem; padding:1.5rem; align-items:start; }
-#input-slot  { grid-column:1; grid-row:1 / 3; }
+#input-slot  { grid-column:1; grid-row:1 / 3; align-self:stretch; }
 #result-slot { grid-column:2; grid-row:1; }
 #money-slot  { grid-column:2; grid-row:2; }
 .panel { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:1rem; min-height:260px; }
@@ -34,7 +34,7 @@ body { margin:0; background:var(--bg); color:var(--text); font-family:"JetBrains
   border-radius:6px; padding:0.5rem 0.7rem; font-family:inherit; font-size:0.85rem;
 }
 .mp-search:focus { outline:none; border-color:var(--accent); }
-.mp-list { list-style:none; margin:0; padding:0; max-height:420px; overflow-y:auto; display:flex; flex-direction:column; gap:0.15rem; }
+.mp-list { list-style:none; margin:0; padding:0; flex:1 1 auto; min-height:0; overflow-y:auto; display:flex; flex-direction:column; gap:0.15rem; }
 .mp-list li {
   display:flex; justify-content:space-between; align-items:center; gap:0.5rem;
   padding:0.5rem 0.6rem; border-radius:6px; cursor:pointer; font-size:0.85rem;
