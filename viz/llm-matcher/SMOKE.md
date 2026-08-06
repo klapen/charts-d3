@@ -46,6 +46,12 @@ Open /viz/llm-matcher/ (dev: http://localhost:5173/viz/llm-matcher/)
 - [ ] min/optimal toggle changes the 2-year rig/tok/s; hobby/daily/always changes ONLY the monthly rows, not the 2-year block (fixed 24/7).
 - [ ] Data-center model: OWN/RENT/API all show `—`, no crash.
 - [ ] "sources & assumptions" mentions the 2-year/24/7 horizon, the tok/s formula, 80 GB/s system RAM, and the API worst case.
+- [ ] The 2-year block shows the caption "Rough cost if you ran this model non-stop for 2 years (17,520 hours):" above the bars, and a 3-line plain-language legend (OWN/RENT/API) below the bars in muted small text.
+
+## Layout
+- [ ] Desktop (>720px): model picker runs tall down the LEFT column spanning both rows; the RIGHT column shows the model result on top and the Buy-vs-Rent + 2-year cost panel directly beneath it (no full-width footer). Same arrangement in "I have a PC" mode (cost panel under the bucket list).
+- [ ] The cost panel looks like a card (matches the result panel styling), not a full-bleed footer bar.
+- [ ] 375px / ≤720px: all three panels stack in order picker → result → cost; no horizontal scroll; money rows collapse to one column.
 
 ## Cross-cutting
 - [ ] 375px: `.app-body` collapses to one column, `.money-rows` stack to one column, header wraps (title / mode toggle / context slider), no horizontal scroll anywhere on the page

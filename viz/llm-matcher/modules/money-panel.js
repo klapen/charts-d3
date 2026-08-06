@@ -31,9 +31,15 @@ export function mountMoneyPanel(el, store, models, gpus, meta = {}) {
     const tcoBlock = `
       <div class="tco">
         <div class="tco-head">📅 2-YEAR COST @ 24/7 ${tco.cheapest ? `— cheapest: <b>${tco.cheapest}</b>` : ''}</div>
+        <p class="tco-caption hint">Rough cost if you ran this model non-stop for 2 years (17,520 hours):</p>
         ${legRow('🛒', 'OWN', tco.ownUsd)}
         ${legRow('☁️', 'RENT', tco.rentUsd)}
         ${legRow('🔌', 'API', tco.apiUsd, tco.apiUsd != null ? ' <span class="warn">⚠ non-stop generation — worst case</span>' : '')}
+        <ul class="tco-legend">
+          <li>🛒 <b>OWN</b> — buy the hardware, then pay electricity to keep it running</li>
+          <li>☁️ <b>RENT</b> — rent the same rig from a cloud provider, billed per hour</li>
+          <li>🔌 <b>API</b> — pay a provider per token; shown as if you never stop generating (worst case — real API use is bursty, usually far less)</li>
+        </ul>
       </div>`;
 
     const own = money.datacenter
