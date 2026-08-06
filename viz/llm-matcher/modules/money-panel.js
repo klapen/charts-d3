@@ -1,5 +1,5 @@
-import { moneyFor, USAGE } from './money.js';
-import { minOptimal } from './fit.js';
+import { moneyFor, USAGE, tco2yr } from './money.js';
+import { minOptimal, estimateToksPerSec } from './fit.js';
 
 const usd = n => n == null ? '—' : `$${n.toLocaleString(undefined,{maximumFractionDigits: n<10?2:0})}`;
 const rigLabel = rig => rig.datacenter ? '🏭 data center'
@@ -15,6 +15,26 @@ export function mountMoneyPanel(el, store, models, gpus, meta = {}) {
     const rig = s.targetRig === 'optimal' ? mo.optimal.rig : mo.min.rig;
     const money = moneyFor(m, rig, s.usagePreset);
     const hrs = USAGE[s.usagePreset];
+
+    const targetQuant = s.targetRig === 'optimal' ? mo.optimal.quant : mo.min.quant;
+    const tokPerSec = rig.datacenter ? null : estimateToksPerSec(m, rig.gpu.mem_bandwidth_gbps, targetQuant);
+    const tco = tco2yr(money, tokPerSec);
+    const bar = v => { // proportional width vs the max defined leg
+      const vals = [tco.ownUsd, tco.rentUsd, tco.apiUsd].filter(x => x != null);
+      const max = vals.length ? Math.max(...vals) : 1;
+      return v == null ? 0 : Math.round((v / max) * 100);
+    };
+    const legRow = (icon, name, v, extra = '') =>
+      `<div class="tco-row"><span class="tco-lbl">${icon} ${name}</span>`
+      + `<span class="tco-bar"><i style="width:${bar(v)}%"></i></span>`
+      + `<span class="tco-val">${usd(v)}${extra}</span></div>`;
+    const tcoBlock = `
+      <div class="tco">
+        <div class="tco-head">📅 2-YEAR COST @ 24/7 ${tco.cheapest ? `— cheapest: <b>${tco.cheapest}</b>` : ''}</div>
+        ${legRow('🛒', 'OWN', tco.ownUsd)}
+        ${legRow('☁️', 'RENT', tco.rentUsd)}
+        ${legRow('🔌', 'API', tco.apiUsd, tco.apiUsd != null ? ' <span class="warn">⚠ non-stop generation — worst case</span>' : '')}
+      </div>`;
 
     const own = money.datacenter
       ? `🛒 OWN IT <b>🙅 ~$480k — don't</b>`
@@ -40,8 +60,9 @@ export function mountMoneyPanel(el, store, models, gpus, meta = {}) {
         </span></div>
       <div class="money-rows"><span>${own}</span><span>${rent}</span><span>${api}</span></div>
       <div class="money-be">${be}</div>
+      ${tcoBlock}
       <details class="money-src"><summary>sources & assumptions</summary>
-        <p class="hint">GPU buy prices: approx. street prices (gpu-catalog, updated ${meta.gpuUpdated}). Rental: cloud on-demand (Jarvislabs/Lambda/getdeploying, Aug 2026). API: from ai-llm-dataset.json (synced ${syncedDate}). Assumes $0.15/kWh, additive multi-GPU VRAM, bucketed KV — all ≈ estimates.</p>
+        <p class="hint">GPU buy prices: approx. street prices (gpu-catalog, updated ${meta.gpuUpdated}). Rental: cloud on-demand (Jarvislabs/Lambda/getdeploying, Aug 2026). API: from ai-llm-dataset.json (synced ${syncedDate}). Assumes $0.15/kWh, additive multi-GPU VRAM, bucketed KV — all ≈ estimates. 2-year projection assumes 24/7 (17,520 h); tok/s ≈ memory bandwidth ÷ weight bytes/token (rough); system-RAM offload assumed ~80 GB/s; API leg assumes non-stop output generation — a deliberate worst case.</p>
       </details>`;
     if (wasOpen) el.querySelector('.money-src').open = true;
     el.querySelectorAll('button[data-rig]').forEach(b =>
