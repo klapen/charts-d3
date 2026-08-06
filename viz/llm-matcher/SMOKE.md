@@ -35,6 +35,18 @@ Open /viz/llm-matcher/ (dev: http://localhost:5173/viz/llm-matcher/)
 ## Apple unified path
 - [ ] Selecting an Apple Silicon (unified) GPU in PC-first mode shows "≈ N GB usable (unified memory)" (≈75% of system RAM) instead of a VRAM-total figure, and buckets recompute accordingly
 
+## Speed (tok/s)
+- [ ] PC-first, RTX 4090 24GB, q4: "Runs now" models show `≈ N tok/s` with a badge (⚡/🚶); a "CPU offload" row shows a low tok/s (🐌/🧊). Header note names the GPU bandwidth vs ~80 GB/s system RAM.
+- [ ] Switch to an Apple Silicon (unified) GPU: runs-now tok/s recompute using the unified bandwidth (400/800 GB/s) — noticeably different numbers.
+- [ ] Model-first, Qwen3 32B: MIN and OPTIMAL cards each show a `≈ N tok/s` + badge line. Data-center case (Qwen 3.8 Max @ 256K) shows NO tok/s line and does not crash.
+
+## 2-year ROI
+- [ ] Money panel shows "📅 2-YEAR COST @ 24/7" with OWN / RENT / API bars, dollar amounts, and a "cheapest: X" callout.
+- [ ] API row carries the "⚠ non-stop generation — worst case" tag.
+- [ ] min/optimal toggle changes the 2-year rig/tok/s; hobby/daily/always changes ONLY the monthly rows, not the 2-year block (fixed 24/7).
+- [ ] Data-center model: OWN/RENT/API all show `—`, no crash.
+- [ ] "sources & assumptions" mentions the 2-year/24/7 horizon, the tok/s formula, 80 GB/s system RAM, and the API worst case.
+
 ## Cross-cutting
 - [ ] 375px: `.app-body` collapses to one column, `.money-rows` stack to one column, header wraps (title / mode toggle / context slider), no horizontal scroll anywhere on the page
 - [ ] Reduced motion (`prefers-reduced-motion: reduce`): all CSS transitions/animations are suppressed; page remains fully usable
