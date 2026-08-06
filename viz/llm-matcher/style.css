@@ -8,7 +8,7 @@ body { margin:0; background:var(--bg); color:var(--text); font-family:"JetBrains
 #input-slot  { grid-column:1; grid-row:1 / 3; }
 #result-slot { grid-column:2; grid-row:1; }
 #money-slot  { grid-column:2; grid-row:2; }
-.panel { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:1rem; }
+.panel { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:1rem; min-height:260px; }
 .error-strip { background:#3a1414; color:#ffb4b4; padding:0.6rem 1rem; font-size:0.85rem; }
 .hint { color:var(--muted); font-size:0.9rem; }
 
@@ -53,7 +53,8 @@ body { margin:0; background:var(--bg); color:var(--text); font-family:"JetBrains
 }
 .pc-form select:focus { outline:none; border-color:var(--accent); }
 
-.bucket { border-left:3px solid var(--border); padding:0.35rem 0 0.35rem 0.85rem; margin-bottom:1rem; }
+.buckets { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; align-items:start; }
+.bucket { border-left:3px solid var(--border); padding:0.35rem 0 0.35rem 0.85rem; margin-bottom:0; }
 .bucket h3 { margin:0 0 0.5rem; font-size:0.9rem; letter-spacing:0.03em; }
 .bucket ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:0.15rem; }
 .bucket li { padding:0.4rem 0.5rem; border-radius:6px; font-size:0.85rem; cursor:pointer; transition:background 0.15s; }
@@ -99,6 +100,7 @@ body { margin:0; background:var(--bg); color:var(--text); font-family:"JetBrains
   .app-body{ grid-template-columns:1fr; }
   #input-slot, #result-slot, #money-slot { grid-column:1; grid-row:auto; }
   .money-rows{ grid-template-columns:1fr; }
+  .buckets{ grid-template-columns:1fr; }
 }
 
 /* Focus-visible: keyboard-navigable controls get a visible accent outline. */

@@ -25,9 +25,11 @@ export function mountResultPc(el, store, models, gpus) {
       `<li data-id="${m.model_id}">${m.name}${speedTag(m, r)}${r.fix ? ` <span class="fix">— ${r.fix}</span>` : ''}</li>`;
     el.innerHTML = `
       <p class="hint speed-note">Speed ≈ bandwidth-bound: ${gpu.name} ${gpu.mem_bandwidth_gbps} GB/s vs ~${SYS_RAM_GBPS} GB/s system-RAM offload — why unified-memory Macs punch above their VRAM. ≈ rough.</p>
-      <div class="bucket runs"><h3>✅ Runs now (${buckets.runs.length})</h3><ul>${buckets.runs.map(row).join('')||'<li class="hint">none</li>'}</ul></div>
-      <div class="bucket almost"><h3>⚠️ Almost (${buckets.almost.length})</h3><ul>${buckets.almost.map(row).join('')||'<li class="hint">none</li>'}</ul></div>
-      <div class="bucket buy"><h3>❌ Buy to run (${buckets.buy.length})</h3><ul>${buckets.buy.map(row).join('')||'<li class="hint">none</li>'}</ul></div>`;
+      <div class="buckets">
+        <div class="bucket runs"><h3>✅ Runs now (${buckets.runs.length})</h3><ul>${buckets.runs.map(row).join('')||'<li class="hint">none</li>'}</ul></div>
+        <div class="bucket almost"><h3>⚠️ Almost (${buckets.almost.length})</h3><ul>${buckets.almost.map(row).join('')||'<li class="hint">none</li>'}</ul></div>
+        <div class="bucket buy"><h3>❌ Buy to run (${buckets.buy.length})</h3><ul>${buckets.buy.map(row).join('')||'<li class="hint">none</li>'}</ul></div>
+      </div>`;
     el.querySelectorAll('li[data-id]').forEach(li =>
       li.addEventListener('click', () => store.set({ focusModelId: li.dataset.id })));
 
