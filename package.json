@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "sync:llm": "node scripts/llm-dataset/sync.mjs",
     "deploy": "aws s3 cp dist/ s3://klapen.com.co/ --recursive",
-    "deploy:llm": "aws s3 cp dist/viz/llm-decision-dashboard/ s3://klapen.com.co/viz/llm-decision-dashboard/ --recursive && aws s3 cp dist/viz/llm-showcase/ s3://klapen.com.co/viz/llm-showcase/ --recursive && aws s3 cp dist/assets/ s3://klapen.com.co/assets/ --recursive && aws s3 cp dist/ai-llm-dataset.json s3://klapen.com.co/ai-llm-dataset.json && aws s3 cp dist/ai-llm-dataset.schema.json s3://klapen.com.co/ai-llm-dataset.schema.json"
+    "deploy:llm": "aws s3 cp dist/viz/llm-decision-dashboard/ s3://klapen.com.co/viz/llm-decision-dashboard/ --recursive && aws s3 cp dist/viz/llm-showcase/ s3://klapen.com.co/viz/llm-showcase/ --recursive && aws s3 cp dist/assets/ s3://klapen.com.co/assets/ --recursive && aws s3 cp dist/ai-llm-dataset.json s3://klapen.com.co/ai-llm-dataset.json && aws s3 cp dist/ai-llm-dataset.schema.json s3://klapen.com.co/ai-llm-dataset.schema.json && aws cloudfront create-invalidation --distribution-id E2IINH9ZW0TPTC --paths '/viz/llm-decision-dashboard/*' '/viz/llm-showcase/*' /ai-llm-dataset.json /ai-llm-dataset.schema.json"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",

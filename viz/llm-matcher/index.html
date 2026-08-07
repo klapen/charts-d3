@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>LLM Matcher · Klapen</title>
+    <meta name="description" content="Match an open LLM to the hardware that runs it — and what it costs to own, rent, or call." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body class="antialiased">
+    <div id="error-strip" class="error-strip" hidden>
+      Could not load data — try opening /ai-llm-dataset.json directly.
+    </div>
+    <header class="app-header">
+      <h1 class="app-title">LLM&nbsp;MATCHER</h1>
+      <div id="mode-slot"></div>
+      <div id="ctx-slot"></div>
+    </header>
+    <main class="app-body">
+      <section id="input-slot" class="panel input-panel"></section>
+      <section id="result-slot" class="panel result-panel"></section>
+      <section id="money-slot" class="panel money-panel-card"></section>
+    </main>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

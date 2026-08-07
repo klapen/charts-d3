@@ -1,25 +1,25 @@
 {
   "schema_version": "1.0.0",
-  "synced_at": "2026-07-21T22:24:00.972Z",
+  "synced_at": "2026-08-05T19:42:43.335Z",
   "sources": {
     "hf_leaderboard": {
       "url": "https://huggingface.co/datasets/open-llm-leaderboard/contents",
-      "synced_at": "2026-07-21T22:24:00.336Z",
+      "synced_at": "2026-08-05T19:42:42.495Z",
       "record_count": 1000
     },
     "artificial_analysis": {
       "url": "https://openrouter.ai/api/v1/models",
-      "synced_at": "2026-07-21T22:24:00.645Z",
-      "record_count": 342
+      "synced_at": "2026-08-05T19:42:42.816Z",
+      "record_count": 338
     },
     "lmarena": {
       "url": "https://raw.githubusercontent.com/fboulnois/llm-leaderboard-csv/main/csv/lmarena_text.csv",
-      "synced_at": "2026-07-21T22:24:00.772Z",
+      "synced_at": "2026-08-05T19:42:42.996Z",
       "record_count": 266
     },
     "bigcode_leaderboard": {
       "url": "https://huggingface.co/spaces/bigcode/bigcode-models-leaderboard/resolve/main/data/code_eval_board.csv",
-      "synced_at": "2026-07-21T22:24:00.962Z",
+      "synced_at": "2026-08-05T19:42:43.327Z",
       "record_count": 60
     }
   },
@@ -179,8 +179,8 @@
         "throughput_tok_s": null
       },
       "pricing_hosted": {
-        "input_per_mtok_usd": 1,
-        "output_per_mtok_usd": 4.05,
+        "input_per_mtok_usd": 0.5,
+        "output_per_mtok_usd": 1.2,
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/thinkingmachines/Inkling",
@@ -226,6 +226,154 @@
         "quality.coding.swe_bench",
         "performance.latency_ttft_ms",
         "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "qwen3-8-max",
+      "name": "Qwen 3.8 Max",
+      "family": "qwen3-8",
+      "vendor": "alibaba",
+      "release_date": "2026-08-03",
+      "license": {
+        "id": "qwen-license",
+        "name": "Qwen License",
+        "osi_approved": false,
+        "url": "https://huggingface.co/Qwen"
+      },
+      "params": {
+        "total_b": 2400,
+        "active_b": 95,
+        "is_moe": true
+      },
+      "context_window": 1000000,
+      "modalities": {
+        "input": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 1440,
+        "q8": 2880,
+        "fp16": 5760
+      },
+      "quality": {
+        "arena_elo": null,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        }
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 2,
+        "output_per_mtok_usd": 6,
+        "provider_count": null
+      },
+      "model_card_url": "https://openrouter.ai/qwen/qwen3.8-max",
+      "vendor_reported": {
+        "note": "Vendor-reported by Alibaba at launch (2026-08-03). Hosted API at $2 / $6 per Mtok; open weights promised post-launch. Not yet on the public leaderboards this dashboard syncs.",
+        "source_url": "https://www.marktechpost.com/2026/08/03/alibaba-qwen-releases-qwen3-8-max/",
+        "benchmarks": []
+      },
+      "sources_used": [
+        "artificial_analysis"
+      ],
+      "missing_fields": [
+        "quality.arena_elo",
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "qwen3-8-27b",
+      "name": "Qwen 3.8 27B",
+      "family": "qwen3-8",
+      "vendor": "alibaba",
+      "release_date": "2026-08-03",
+      "license": {
+        "id": "apache-2.0",
+        "name": "Apache 2.0",
+        "osi_approved": true,
+        "url": "https://www.apache.org/licenses/LICENSE-2.0"
+      },
+      "params": {
+        "total_b": 27,
+        "active_b": 27,
+        "is_moe": false
+      },
+      "context_window": 262144,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 16.2,
+        "q8": 32.4,
+        "fp16": 64.8
+      },
+      "quality": {
+        "arena_elo": null,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        }
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": null,
+        "output_per_mtok_usd": null,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/Qwen/Qwen3.8-27B",
+      "vendor_reported": {
+        "note": "Open-weight checkpoint released alongside Qwen 3.8-Max (2026-08-03). Fits ordinary on-prem GPUs. Not yet on the public leaderboards this dashboard syncs.",
+        "source_url": "https://www.marktechpost.com/2026/08/03/alibaba-qwen-releases-qwen3-8-max/",
+        "benchmarks": []
+      },
+      "sources_used": [],
+      "missing_fields": [
+        "quality.arena_elo",
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s",
+        "pricing_hosted.input_per_mtok_usd",
+        "pricing_hosted.output_per_mtok_usd"
       ]
     },
     {
@@ -553,8 +701,8 @@
         "throughput_tok_s": null
       },
       "pricing_hosted": {
-        "input_per_mtok_usd": 0.13,
-        "output_per_mtok_usd": 0.4,
+        "input_per_mtok_usd": 0.1,
+        "output_per_mtok_usd": 0.32,
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct",
@@ -761,8 +909,8 @@
         "throughput_tok_s": null
       },
       "pricing_hosted": {
-        "input_per_mtok_usd": 0.1,
-        "output_per_mtok_usd": 0.3,
+        "input_per_mtok_usd": 0.08,
+        "output_per_mtok_usd": 0.45,
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/google/gemma-3-27b-it",
@@ -1043,8 +1191,8 @@
         "throughput_tok_s": null
       },
       "pricing_hosted": {
-        "input_per_mtok_usd": 0.0509,
-        "output_per_mtok_usd": 0.335,
+        "input_per_mtok_usd": 0.05,
+        "output_per_mtok_usd": 0.33,
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct",

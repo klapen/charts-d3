@@ -1,0 +1,159 @@
+{
+  "updated": "2026-08",
+  "gpus": [
+    {
+      "id": "rtx-3060",
+      "name": "RTX 3060 12GB",
+      "vram_gb": 12,
+      "buy_usd": 300,
+      "rent_usd_hr": 0.2,
+      "watts": 170,
+      "class": "consumer",
+      "unified": false,
+      "mem_bandwidth_gbps": 360
+    },
+    {
+      "id": "rtx-4060ti-16",
+      "name": "RTX 4060 Ti 16GB",
+      "vram_gb": 16,
+      "buy_usd": 450,
+      "rent_usd_hr": 0.25,
+      "watts": 165,
+      "class": "consumer",
+      "unified": false,
+      "mem_bandwidth_gbps": 288
+    },
+    {
+      "id": "rtx-4070",
+      "name": "RTX 4070 12GB",
+      "vram_gb": 12,
+      "buy_usd": 550,
+      "rent_usd_hr": 0.28,
+      "watts": 200,
+      "class": "consumer",
+      "unified": false,
+      "mem_bandwidth_gbps": 504
+    },
+    {
+      "id": "rtx-3090",
+      "name": "RTX 3090 24GB",
+      "vram_gb": 24,
+      "buy_usd": 900,
+      "rent_usd_hr": 0.3,
+      "watts": 350,
+      "class": "consumer",
+      "unified": false,
+      "mem_bandwidth_gbps": 936
+    },
+    {
+      "id": "rtx-4090",
+      "name": "RTX 4090 24GB",
+      "vram_gb": 24,
+      "buy_usd": 1600,
+      "rent_usd_hr": 0.4,
+      "watts": 450,
+      "class": "consumer",
+      "unified": false,
+      "mem_bandwidth_gbps": 1008
+    },
+    {
+      "id": "rtx-6000-ada",
+      "name": "RTX 6000 Ada 48GB",
+      "vram_gb": 48,
+      "buy_usd": 4500,
+      "rent_usd_hr": 0.8,
+      "watts": 300,
+      "class": "prosumer",
+      "unified": false,
+      "mem_bandwidth_gbps": 960
+    },
+    {
+      "id": "l40s",
+      "name": "L40S 48GB",
+      "vram_gb": 48,
+      "buy_usd": 9000,
+      "rent_usd_hr": 0.9,
+      "watts": 350,
+      "class": "datacenter",
+      "unified": false,
+      "mem_bandwidth_gbps": 864
+    },
+    {
+      "id": "a100-40",
+      "name": "A100 40GB",
+      "vram_gb": 40,
+      "buy_usd": 7500,
+      "rent_usd_hr": 1.2,
+      "watts": 400,
+      "class": "datacenter",
+      "unified": false,
+      "mem_bandwidth_gbps": 1555
+    },
+    {
+      "id": "a100-80",
+      "name": "A100 80GB",
+      "vram_gb": 80,
+      "buy_usd": 15000,
+      "rent_usd_hr": 1.5,
+      "watts": 400,
+      "class": "datacenter",
+      "unified": false,
+      "mem_bandwidth_gbps": 2039
+    },
+    {
+      "id": "h100",
+      "name": "H100 80GB",
+      "vram_gb": 80,
+      "buy_usd": 27000,
+      "rent_usd_hr": 2.69,
+      "watts": 700,
+      "class": "datacenter",
+      "unified": false,
+      "mem_bandwidth_gbps": 3350
+    },
+    {
+      "id": "h200",
+      "name": "H200 141GB",
+      "vram_gb": 141,
+      "buy_usd": 32000,
+      "rent_usd_hr": 3.99,
+      "watts": 700,
+      "class": "datacenter",
+      "unified": false,
+      "mem_bandwidth_gbps": 4800
+    },
+    {
+      "id": "b200",
+      "name": "B200 192GB",
+      "vram_gb": 192,
+      "buy_usd": 40000,
+      "rent_usd_hr": 7,
+      "watts": 1000,
+      "class": "datacenter",
+      "unified": false,
+      "mem_bandwidth_gbps": 8000
+    },
+    {
+      "id": "apple-m-64",
+      "name": "Apple Silicon 64GB (unified)",
+      "vram_gb": 48,
+      "buy_usd": 2600,
+      "rent_usd_hr": 0,
+      "watts": 60,
+      "class": "consumer",
+      "unified": true,
+      "mem_bandwidth_gbps": 400
+    },
+    {
+      "id": "apple-m-128",
+      "name": "Apple Silicon 128GB (unified)",
+      "vram_gb": 96,
+      "buy_usd": 4800,
+      "rent_usd_hr": 0,
+      "watts": 90,
+      "class": "consumer",
+      "unified": true,
+      "mem_bandwidth_gbps": 800
+    }
+  ]
+}

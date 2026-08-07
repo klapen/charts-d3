@@ -1,0 +1,79 @@
+import { moneyFor, USAGE, tco2yr } from './money.js';
+import { minOptimal, estimateToksPerSec } from './fit.js';
+
+const usd = n => n == null ? '—' : `$${n.toLocaleString(undefined,{maximumFractionDigits: n<10?2:0})}`;
+const rigLabel = rig => rig.datacenter ? '🏭 data center'
+  : (rig.count>1 ? `${rig.count}× ${rig.gpu.name}` : rig.gpu.name);
+
+export function mountMoneyPanel(el, store, models, gpus, meta = {}) {
+  const syncedDate = meta.datasetSynced ? new Date(meta.datasetSynced).toISOString().slice(0, 10) : 'n/a';
+  store.subscribe(s => {
+    const wasOpen = el.querySelector('.money-src')?.open;
+    const m = models.find(x => x.model_id === s.focusModelId);
+    if (!m) { el.innerHTML = `<p class="hint">Select a model to compare buy vs rent.</p>`; return; }
+    const mo = minOptimal(m, gpus, s.contextTokens);
+    const rig = s.targetRig === 'optimal' ? mo.optimal.rig : mo.min.rig;
+    const money = moneyFor(m, rig, s.usagePreset);
+    const hrs = USAGE[s.usagePreset];
+
+    const targetQuant = s.targetRig === 'optimal' ? mo.optimal.quant : mo.min.quant;
+    const tokPerSec = rig.datacenter ? null : estimateToksPerSec(m, rig.gpu.mem_bandwidth_gbps, targetQuant);
+    const tco = tco2yr(money, tokPerSec);
+    const bar = v => { // proportional width vs the max defined leg
+      const vals = [tco.ownUsd, tco.rentUsd, tco.apiUsd].filter(x => x != null);
+      const max = vals.length ? Math.max(...vals) : 1;
+      return v == null ? 0 : Math.round((v / max) * 100);
+    };
+    const legRow = (icon, name, v, extra = '') =>
+      `<div class="tco-row"><span class="tco-lbl">${icon} ${name}</span>`
+      + `<span class="tco-bar"><i style="width:${bar(v)}%"></i></span>`
+      + `<span class="tco-val">${usd(v)}${extra}</span></div>`;
+    const tcoBlock = `
+      <div class="tco">
+        <div class="tco-head">📅 2-YEAR COST @ 24/7 ${tco.cheapest ? `— cheapest: <b>${tco.cheapest}</b>` : ''}</div>
+        <p class="tco-caption hint">Rough cost if you ran this model non-stop for 2 years (17,520 hours):</p>
+        ${legRow('🛒', 'OWN', tco.ownUsd)}
+        ${legRow('☁️', 'RENT', tco.rentUsd)}
+        ${legRow('🔌', 'API', tco.apiUsd, tco.apiUsd != null ? ' <span class="warn">⚠ non-stop generation — worst case</span>' : '')}
+        <ul class="tco-legend">
+          <li>🛒 <b>OWN</b> — buy the hardware, then pay electricity to keep it running</li>
+          <li>☁️ <b>RENT</b> — rent the same rig from a cloud provider, billed per hour</li>
+          <li>🔌 <b>API</b> — pay a provider per token; shown as if you never stop generating (worst case — real API use is bursty, usually far less)</li>
+        </ul>
+      </div>`;
+
+    const own = money.datacenter
+      ? `🛒 OWN IT <b>🙅 ~$480k — don't</b>`
+      : `🛒 OWN IT <b>${usd(money.buyUsd)}</b> upfront + ~${usd(money.powerMo)}/mo power`;
+    const rent = money.datacenter
+      ? `☁️ RENT RIG <b>cloud cluster</b> — see providers`
+      : `☁️ RENT RIG <b>${usd(money.rentHr)}/hr</b> ≈ ${usd(money.rentMo)}/mo at ${hrs}h/day`;
+    const api = money.api
+      ? `🔌 API <b>${usd(money.api.in)}</b> in / <b>${usd(money.api.out)}</b> out per 1M tok`
+      : `🔌 API <b>self-host only</b> (no public API yet)`;
+    const be = money.breakEvenHours
+      ? `⚖️ Owning beats renting the rig after ≈ ${Math.round(money.breakEvenHours)} h of use — heavy daily? buy. bursty? rent. light? API.`
+      : `⚖️ Renting/API is the sensible path at this scale.`;
+
+    el.innerHTML = `
+      <div class="money-head">💰 BUY vs RENT — ${m.name}
+        <span class="money-controls">
+          <button data-rig="min" class="${s.targetRig==='min'?'active':''}">min</button>
+          <button data-rig="optimal" class="${s.targetRig==='optimal'?'active':''}">optimal</button>
+          <select class="usage">${Object.keys(USAGE).map(k =>
+            `<option value="${k}" ${k===s.usagePreset?'selected':''}>${k}</option>`).join('')}</select>
+          <span class="hint">target: ${rigLabel(rig)}</span>
+        </span></div>
+      <div class="money-rows"><span>${own}</span><span>${rent}</span><span>${api}</span></div>
+      <div class="money-be">${be}</div>
+      ${tcoBlock}
+      <details class="money-src"><summary>sources & assumptions</summary>
+        <p class="hint">GPU buy prices: approx. street prices (gpu-catalog, updated ${meta.gpuUpdated}). Rental: cloud on-demand (Jarvislabs/Lambda/getdeploying, Aug 2026). API: from ai-llm-dataset.json (synced ${syncedDate}). Assumes $0.15/kWh, additive multi-GPU VRAM, bucketed KV — all ≈ estimates. 2-year projection assumes 24/7 (17,520 h); tok/s ≈ memory bandwidth ÷ weight bytes/token (rough); system-RAM offload assumed ~80 GB/s; API leg assumes non-stop output generation — a deliberate worst case.</p>
+      </details>`;
+    if (wasOpen) el.querySelector('.money-src').open = true;
+    el.querySelectorAll('button[data-rig]').forEach(b =>
+      b.addEventListener('click', () => store.set({ targetRig: b.dataset.rig })));
+    el.querySelector('.usage').addEventListener('change', e =>
+      store.set({ usagePreset: e.target.value }));
+  });
+}

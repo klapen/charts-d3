@@ -22,6 +22,10 @@ const MODELS     = join(__dirname, 'models.yaml');
 const OUT_DATA   = join(REPO_ROOT, 'src', 'public', 'ai-llm-dataset.json');
 const OUT_SCHEMA = join(REPO_ROOT, 'src', 'public', 'ai-llm-dataset.schema.json');
 const REPORT     = join(__dirname, 'sync-report.md');
+const GPU_YAML    = join(__dirname, 'gpu-catalog.yaml');
+const GPU_SCHEMA  = join(__dirname, 'gpu-catalog.schema.json');
+const OUT_GPU     = join(REPO_ROOT, 'src', 'public', 'gpu-catalog.json');
+const OUT_GPU_SCHEMA = join(REPO_ROOT, 'src', 'public', 'gpu-catalog.schema.json');
 
 const SOURCES = [hfLeaderboard, artificialAnalysis, lmarena, bigcodeLeaderboard];
 
@@ -73,6 +77,23 @@ async function main() {
   console.log(`• writing ${OUT_DATA}`);
   await writeFile(OUT_DATA, JSON.stringify(dataset, null, 2));
   await copyFile(SCHEMA, OUT_SCHEMA);
+
+  // GPU catalog: static reference data, validated and emitted alongside the dataset.
+  console.log('• emitting gpu-catalog.json');
+  const gpuData = yaml.load(await readFile(GPU_YAML, 'utf8'));
+  const gpuSchema = JSON.parse(await readFile(GPU_SCHEMA, 'utf8'));
+  // gpu-catalog.schema.json declares draft-07, but the shared `ajv` instance is
+  // Ajv2020 (2020-12 meta-schema only). The schema uses no draft-07-specific
+  // keywords, so drop $schema before compiling rather than register a second
+  // meta-schema or spin up another Ajv instance.
+  delete gpuSchema.$schema;
+  const gpuValidate = ajv.compile(gpuSchema);
+  if (!gpuValidate(gpuData)) {
+    console.error('✗ gpu-catalog schema validation FAILED', gpuValidate.errors);
+    process.exit(1);
+  }
+  await writeFile(OUT_GPU, JSON.stringify(gpuData, null, 2));
+  await copyFile(GPU_SCHEMA, OUT_GPU_SCHEMA);
 
   console.log(`• writing ${REPORT}`);
   await writeFile(REPORT, renderReport(dataset, report));

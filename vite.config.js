@@ -59,6 +59,7 @@ export default defineConfig({
         'coffee-trade': resolve(__dirname, 'viz/coffee-trade/index.html'),
         'llm-decision-dashboard': resolve(__dirname, 'viz/llm-decision-dashboard/index.html'),
         'llm-showcase': resolve(__dirname, 'viz/llm-showcase/index.html'),
+        'llm-matcher': resolve(__dirname, 'viz/llm-matcher/index.html'),
       },
     },
   },
