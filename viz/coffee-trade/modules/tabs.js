@@ -7,6 +7,11 @@ const PRESETS = {
   insights:  { pinnedId: null,  regionFilter: null, flow: 'both' },
   recent:    { pinnedId: null,  regionFilter: null, flow: 'both' },
   colombia:  { pinnedId: 'COL', regionFilter: null, flow: 'exports' },
+  // Malta is a tiny node absent from the 'top' tier, so force 'full' or the
+  // pinned map comes up empty.
+  malta:     { pinnedId: 'MLT', regionFilter: null, flow: 'imports', tier: 'full' },
+  mexico:    { pinnedId: 'MEX', regionFilter: null, flow: 'imports', tier: 'full' },
+  panama:    { pinnedId: 'PAN', regionFilter: null, flow: 'imports', tier: 'full' },
   corridors: { pinnedId: null,  regionFilter: null, flow: 'imports' },
 }
 
@@ -37,6 +42,10 @@ export function wireTabs() {
     if (colombiaChart) colombiaChart.hidden = name !== 'colombia'
     const brazilChart = document.getElementById('brazil-chart')
     if (brazilChart) brazilChart.hidden = name !== 'brazil'
+    const mexicoChart = document.getElementById('mexico-chart')
+    if (mexicoChart) mexicoChart.hidden = name !== 'mexico'
+    const panamaChart = document.getElementById('panama-chart')
+    if (panamaChart) panamaChart.hidden = name !== 'panama'
     showPanels(name, getState().lang)
     const preset = PRESETS[name]
     if (preset) {
@@ -47,6 +56,8 @@ export function wireTabs() {
       if (cur.pinnedId !== preset.pinnedId) patch.pinnedId = preset.pinnedId
       if (cur.regionFilter !== preset.regionFilter) patch.regionFilter = preset.regionFilter
       if (cur.flow !== preset.flow) patch.flow = preset.flow
+      // Only presets that declare a tier override it; others leave the user's choice.
+      if ('tier' in preset && cur.tier !== preset.tier) patch.tier = preset.tier
       if (Object.keys(patch).length) setState(patch)
     }
   }
