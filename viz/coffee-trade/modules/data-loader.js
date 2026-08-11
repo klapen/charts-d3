@@ -76,6 +76,31 @@ export function loadMexico() {
   return mexicoPromise
 }
 
+let panamaPromise = null
+
+export function loadPanama() {
+  if (!panamaPromise) {
+    panamaPromise = fetch('./data/panama.json').then(async r => {
+      if (!r.ok) throw new Error(`panama: ${r.status}`)
+      const data = await r.json()
+      console.assert(
+        Array.isArray(data.sources)
+          && data.sources.length > 0
+          && Array.isArray(data.price_tiers)
+          && data.price_tiers.length > 0
+          && typeof data.unit_values?.green_import === 'number'
+          && Array.isArray(data.colombia?.years)
+          && data.colombia.years.length === data.colombia.green.length
+          && data.colombia.years.length === data.colombia.roasted.length,
+        'coffee-trade: bad panama.json shape',
+      )
+      return data
+    })
+    panamaPromise.catch(() => { panamaPromise = null })
+  }
+  return panamaPromise
+}
+
 let brazilMonthlyPromise = null
 
 export function loadBrazilMonthly() {

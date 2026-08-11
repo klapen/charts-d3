@@ -11,6 +11,7 @@ const PRESETS = {
   // pinned map comes up empty.
   malta:     { pinnedId: 'MLT', regionFilter: null, flow: 'imports', tier: 'full' },
   mexico:    { pinnedId: 'MEX', regionFilter: null, flow: 'imports', tier: 'full' },
+  panama:    { pinnedId: 'PAN', regionFilter: null, flow: 'imports', tier: 'full' },
   corridors: { pinnedId: null,  regionFilter: null, flow: 'imports' },
 }
 
@@ -43,6 +44,8 @@ export function wireTabs() {
     if (brazilChart) brazilChart.hidden = name !== 'brazil'
     const mexicoChart = document.getElementById('mexico-chart')
     if (mexicoChart) mexicoChart.hidden = name !== 'mexico'
+    const panamaChart = document.getElementById('panama-chart')
+    if (panamaChart) panamaChart.hidden = name !== 'panama'
     showPanels(name, getState().lang)
     const preset = PRESETS[name]
     if (preset) {
