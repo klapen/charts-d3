@@ -1,25 +1,25 @@
 {
   "schema_version": "1.0.0",
-  "synced_at": "2026-08-05T19:42:43.335Z",
+  "synced_at": "2026-08-19T20:40:40.985Z",
   "sources": {
     "hf_leaderboard": {
       "url": "https://huggingface.co/datasets/open-llm-leaderboard/contents",
-      "synced_at": "2026-08-05T19:42:42.495Z",
+      "synced_at": "2026-08-19T20:40:39.882Z",
       "record_count": 1000
     },
     "artificial_analysis": {
       "url": "https://openrouter.ai/api/v1/models",
-      "synced_at": "2026-08-05T19:42:42.816Z",
-      "record_count": 338
+      "synced_at": "2026-08-19T20:40:40.180Z",
+      "record_count": 415
     },
     "lmarena": {
       "url": "https://raw.githubusercontent.com/fboulnois/llm-leaderboard-csv/main/csv/lmarena_text.csv",
-      "synced_at": "2026-08-05T19:42:42.996Z",
+      "synced_at": "2026-08-19T20:40:40.488Z",
       "record_count": 266
     },
     "bigcode_leaderboard": {
       "url": "https://huggingface.co/spaces/bigcode/bigcode-models-leaderboard/resolve/main/data/code_eval_board.csv",
-      "synced_at": "2026-08-05T19:42:43.327Z",
+      "synced_at": "2026-08-19T20:40:40.959Z",
       "record_count": 60
     }
   },
@@ -179,7 +179,7 @@
         "throughput_tok_s": null
       },
       "pricing_hosted": {
-        "input_per_mtok_usd": 0.5,
+        "input_per_mtok_usd": 0.45,
         "output_per_mtok_usd": 1.2,
         "provider_count": null
       },
@@ -352,8 +352,8 @@
         "throughput_tok_s": null
       },
       "pricing_hosted": {
-        "input_per_mtok_usd": null,
-        "output_per_mtok_usd": null,
+        "input_per_mtok_usd": 0.45,
+        "output_per_mtok_usd": 3.2,
         "provider_count": null
       },
       "model_card_url": "https://huggingface.co/Qwen/Qwen3.8-27B",
@@ -362,7 +362,9 @@
         "source_url": "https://www.marktechpost.com/2026/08/03/alibaba-qwen-releases-qwen3-8-max/",
         "benchmarks": []
       },
-      "sources_used": [],
+      "sources_used": [
+        "artificial_analysis"
+      ],
       "missing_fields": [
         "quality.arena_elo",
         "quality.reasoning.gpqa",
@@ -371,9 +373,588 @@
         "quality.coding.livecodebench",
         "quality.coding.swe_bench",
         "performance.latency_ttft_ms",
-        "performance.throughput_tok_s",
-        "pricing_hosted.input_per_mtok_usd",
-        "pricing_hosted.output_per_mtok_usd"
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "gpt-oss-120b",
+      "name": "gpt-oss 120B",
+      "family": "gpt-oss",
+      "vendor": "openai",
+      "release_date": "2025-08-05",
+      "license": {
+        "id": "apache-2.0",
+        "name": "Apache 2.0",
+        "osi_approved": true,
+        "url": "https://www.apache.org/licenses/LICENSE-2.0"
+      },
+      "params": {
+        "total_b": 117,
+        "active_b": 5.1,
+        "is_moe": true
+      },
+      "context_window": 131072,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 70.2,
+        "q8": 140.4,
+        "fp16": 280.8
+      },
+      "quality": {
+        "arena_elo": null,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        }
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 0.03,
+        "output_per_mtok_usd": 0.17,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/openai/gpt-oss-120b",
+      "vendor_reported": null,
+      "sources_used": [
+        "artificial_analysis"
+      ],
+      "missing_fields": [
+        "quality.arena_elo",
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "gpt-oss-20b",
+      "name": "gpt-oss 20B",
+      "family": "gpt-oss",
+      "vendor": "openai",
+      "release_date": "2025-08-05",
+      "license": {
+        "id": "apache-2.0",
+        "name": "Apache 2.0",
+        "osi_approved": true,
+        "url": "https://www.apache.org/licenses/LICENSE-2.0"
+      },
+      "params": {
+        "total_b": 21,
+        "active_b": 3.6,
+        "is_moe": true
+      },
+      "context_window": 131072,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 12.6,
+        "q8": 25.2,
+        "fp16": 50.4
+      },
+      "quality": {
+        "arena_elo": null,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        }
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 0.03,
+        "output_per_mtok_usd": 0.13,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/openai/gpt-oss-20b",
+      "vendor_reported": null,
+      "sources_used": [
+        "artificial_analysis"
+      ],
+      "missing_fields": [
+        "quality.arena_elo",
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "kimi-k3",
+      "name": "Kimi K3",
+      "family": "kimi",
+      "vendor": "moonshot",
+      "release_date": "2026-07-26",
+      "license": {
+        "id": "kimi-k3",
+        "name": "Kimi K3 License",
+        "osi_approved": false,
+        "url": "https://huggingface.co/moonshotai/Kimi-K3"
+      },
+      "params": {
+        "total_b": 2800,
+        "active_b": 104,
+        "is_moe": true
+      },
+      "context_window": 1048576,
+      "modalities": {
+        "input": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 1680,
+        "q8": 3360,
+        "fp16": 6720
+      },
+      "quality": {
+        "arena_elo": null,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        }
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 3,
+        "output_per_mtok_usd": 15,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/moonshotai/Kimi-K3",
+      "vendor_reported": {
+        "note": "Web-reported specs (2026-08-19), not primary-verified. Custom kimi-k3 license gates commercial inference above ~$20M/yr revenue. Not yet on the public leaderboards this dashboard syncs.",
+        "source_url": "https://huggingface.co/moonshotai/Kimi-K3",
+        "benchmarks": []
+      },
+      "sources_used": [
+        "artificial_analysis"
+      ],
+      "missing_fields": [
+        "quality.arena_elo",
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "deepseek-v4-pro",
+      "name": "DeepSeek V4 Pro",
+      "family": "deepseek",
+      "vendor": "deepseek",
+      "release_date": "2026-08-13",
+      "license": {
+        "id": "mit",
+        "name": "MIT",
+        "osi_approved": true,
+        "url": "https://opensource.org/license/mit"
+      },
+      "params": {
+        "total_b": 1600,
+        "active_b": 49,
+        "is_moe": true
+      },
+      "context_window": 1000000,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 960,
+        "q8": 1920,
+        "fp16": 3840
+      },
+      "quality": {
+        "arena_elo": null,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        }
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 0.66,
+        "output_per_mtok_usd": 1.98,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro",
+      "vendor_reported": {
+        "note": "Web-reported specs (2026-08-19), not primary-verified. Pre-trained on 32T+ tokens; 1M context. Not yet on the public leaderboards this dashboard syncs.",
+        "source_url": "https://artificialanalysis.ai/models/comparisons/glm-5-2-vs-deepseek-v4-pro",
+        "benchmarks": []
+      },
+      "sources_used": [
+        "artificial_analysis"
+      ],
+      "missing_fields": [
+        "quality.arena_elo",
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "deepseek-v4-flash",
+      "name": "DeepSeek V4 Flash",
+      "family": "deepseek",
+      "vendor": "deepseek",
+      "release_date": "2026-07-31",
+      "license": {
+        "id": "mit",
+        "name": "MIT",
+        "osi_approved": true,
+        "url": "https://opensource.org/license/mit"
+      },
+      "params": {
+        "total_b": 284,
+        "active_b": 13,
+        "is_moe": true
+      },
+      "context_window": 1000000,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 170.4,
+        "q8": 340.8,
+        "fp16": 681.6
+      },
+      "quality": {
+        "arena_elo": null,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        }
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 0.14,
+        "output_per_mtok_usd": 0.28,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
+      "vendor_reported": {
+        "note": "Web-reported specs (2026-08-19), not primary-verified. Smaller, faster sibling of V4 Pro; 1M context. Not yet on the public leaderboards this dashboard syncs.",
+        "source_url": "https://www.together.ai/models/deepseek-v4-flash-0731",
+        "benchmarks": []
+      },
+      "sources_used": [
+        "artificial_analysis"
+      ],
+      "missing_fields": [
+        "quality.arena_elo",
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "glm-5-2",
+      "name": "GLM-5.2",
+      "family": "glm",
+      "vendor": "zhipu",
+      "release_date": "2026-07-01",
+      "license": {
+        "id": "mit",
+        "name": "MIT",
+        "osi_approved": true,
+        "url": "https://opensource.org/license/mit"
+      },
+      "params": {
+        "total_b": 754,
+        "active_b": 40,
+        "is_moe": true
+      },
+      "context_window": 1000000,
+      "modalities": {
+        "input": [
+          "text"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 452.4,
+        "q8": 904.8,
+        "fp16": 1809.6
+      },
+      "quality": {
+        "arena_elo": null,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        }
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 0.966,
+        "output_per_mtok_usd": 3.036,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/zai-org/GLM-5.2",
+      "vendor_reported": {
+        "note": "Web-reported specs (2026-08-19), not primary-verified. MIT-licensed long-context coding MoE. Not yet on the public leaderboards this dashboard syncs.",
+        "source_url": "https://kingy.ai/blog/glm-5-3-vs-kimi-k3-vs-deepseek-v4-pro/",
+        "benchmarks": []
+      },
+      "sources_used": [
+        "artificial_analysis"
+      ],
+      "missing_fields": [
+        "quality.arena_elo",
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "minimax-m3",
+      "name": "MiniMax M3",
+      "family": "minimax",
+      "vendor": "minimax",
+      "release_date": "2026-06-01",
+      "license": {
+        "id": "minimax-community",
+        "name": "MiniMax Community",
+        "osi_approved": false,
+        "url": "https://huggingface.co/MiniMaxAI/MiniMax-M3"
+      },
+      "params": {
+        "total_b": 428,
+        "active_b": 23,
+        "is_moe": true
+      },
+      "context_window": 1000000,
+      "modalities": {
+        "input": [
+          "text",
+          "image",
+          "video"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 256.8,
+        "q8": 513.6,
+        "fp16": 1027.2
+      },
+      "quality": {
+        "arena_elo": null,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        }
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 0.3,
+        "output_per_mtok_usd": 1.2,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/MiniMaxAI/MiniMax-M3",
+      "vendor_reported": {
+        "note": "Web-reported specs (2026-08-19), not primary-verified. Long-horizon agentic coding MoE, 1M context, multimodal. MiniMax Community License carries commercial conditions. Not yet on the public leaderboards this dashboard syncs.",
+        "source_url": "https://www.morphllm.com/deepseek-v4-flash",
+        "benchmarks": []
+      },
+      "sources_used": [
+        "artificial_analysis"
+      ],
+      "missing_fields": [
+        "quality.arena_elo",
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
+      ]
+    },
+    {
+      "model_id": "mistral-large-3",
+      "name": "Mistral Large 3",
+      "family": "mistral",
+      "vendor": "mistral",
+      "release_date": "2025-12-01",
+      "license": {
+        "id": "apache-2.0",
+        "name": "Apache 2.0",
+        "osi_approved": true,
+        "url": "https://www.apache.org/licenses/LICENSE-2.0"
+      },
+      "params": {
+        "total_b": 675,
+        "active_b": 41,
+        "is_moe": true
+      },
+      "context_window": 262144,
+      "modalities": {
+        "input": [
+          "text",
+          "image"
+        ],
+        "output": [
+          "text"
+        ]
+      },
+      "vram_estimate_gb": {
+        "q4": 405,
+        "q8": 810,
+        "fp16": 1620
+      },
+      "quality": {
+        "arena_elo": null,
+        "composite_score": null,
+        "reasoning": {
+          "gpqa": null,
+          "mmlu_pro": null
+        },
+        "coding": {
+          "humaneval": null,
+          "livecodebench": null,
+          "swe_bench": null
+        }
+      },
+      "performance": {
+        "latency_ttft_ms": null,
+        "throughput_tok_s": null
+      },
+      "pricing_hosted": {
+        "input_per_mtok_usd": 0.5,
+        "output_per_mtok_usd": 1.5,
+        "provider_count": null
+      },
+      "model_card_url": "https://huggingface.co/mistralai/Mistral-Large-3-675B-Instruct-2512",
+      "vendor_reported": {
+        "note": "Web-reported specs (2026-08-19), not primary-verified. Apache-2.0 MoE flagship (675B total / 41B active), 256K context, text+image. Not yet on the public leaderboards this dashboard syncs.",
+        "source_url": "https://mistral.ai/news/mistral-3/",
+        "benchmarks": []
+      },
+      "sources_used": [
+        "artificial_analysis"
+      ],
+      "missing_fields": [
+        "quality.arena_elo",
+        "quality.reasoning.gpqa",
+        "quality.reasoning.mmlu_pro",
+        "quality.coding.humaneval",
+        "quality.coding.livecodebench",
+        "quality.coding.swe_bench",
+        "performance.latency_ttft_ms",
+        "performance.throughput_tok_s"
       ]
     },
     {

@@ -60,6 +60,136 @@
     source_url: https://www.marktechpost.com/2026/08/03/alibaba-qwen-releases-qwen3-8-max/
     benchmarks: []
 
+# --- gpt-oss: OpenAI's first open-weight release (Apache-2.0) ---------------
+
+- model_id: gpt-oss-120b
+  name: gpt-oss 120B
+  family: gpt-oss
+  vendor: openai
+  release_date: "2025-08-05"
+  # MoE: 117B total, ~5.1B active per token (vendor model card).
+  params: { total_b: 117, active_b: 5.1, is_moe: true }
+  context_window: 131072
+  license: apache-2.0
+  modalities: { input: [text], output: [text] }
+  aliases: [openai/gpt-oss-120b, gpt-oss-120b, gpt-oss:120b]
+  model_card_url: https://huggingface.co/openai/gpt-oss-120b
+
+- model_id: gpt-oss-20b
+  name: gpt-oss 20B
+  family: gpt-oss
+  vendor: openai
+  release_date: "2025-08-05"
+  # MoE: 21B total, ~3.6B active per token; runs in ~16GB (vendor model card).
+  params: { total_b: 21, active_b: 3.6, is_moe: true }
+  context_window: 131072
+  license: apache-2.0
+  modalities: { input: [text], output: [text] }
+  aliases: [openai/gpt-oss-20b, gpt-oss-20b, gpt-oss:20b]
+  model_card_url: https://huggingface.co/openai/gpt-oss-20b
+
+# --- 2026 trillion-scale open-weight flagships -----------------------------
+# Specs below are web-reported (as of 2026-08-19), not primary-verified against
+# vendor docs. Kept in `vendor_reported` so sync never treats them as leaderboard
+# data — same treatment as the Inkling / Qwen3.8 entries above.
+
+- model_id: kimi-k3
+  name: Kimi K3
+  family: kimi
+  vendor: moonshot
+  release_date: "2026-07-26"
+  # MoE: 2.8T total, ~104B active per token (16 of 896 experts).
+  params: { total_b: 2800, active_b: 104, is_moe: true }
+  context_window: 1048576
+  license: kimi-k3
+  modalities: { input: [text, image, video], output: [text] }
+  aliases: [moonshotai/Kimi-K3, Kimi-K3, kimi-k3]
+  model_card_url: https://huggingface.co/moonshotai/Kimi-K3
+  vendor_reported:
+    note: "Web-reported specs (2026-08-19), not primary-verified. Custom kimi-k3 license gates commercial inference above ~$20M/yr revenue. Not yet on the public leaderboards this dashboard syncs."
+    source_url: https://huggingface.co/moonshotai/Kimi-K3
+    benchmarks: []
+
+- model_id: deepseek-v4-pro
+  name: DeepSeek V4 Pro
+  family: deepseek
+  vendor: deepseek
+  release_date: "2026-08-13"
+  params: { total_b: 1600, active_b: 49, is_moe: true }
+  context_window: 1000000
+  license: mit
+  modalities: { input: [text], output: [text] }
+  aliases: [deepseek-ai/DeepSeek-V4-Pro, DeepSeek-V4-Pro, deepseek/deepseek-v4-pro]
+  model_card_url: https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro
+  vendor_reported:
+    note: "Web-reported specs (2026-08-19), not primary-verified. Pre-trained on 32T+ tokens; 1M context. Not yet on the public leaderboards this dashboard syncs."
+    source_url: https://artificialanalysis.ai/models/comparisons/glm-5-2-vs-deepseek-v4-pro
+    benchmarks: []
+
+- model_id: deepseek-v4-flash
+  name: DeepSeek V4 Flash
+  family: deepseek
+  vendor: deepseek
+  release_date: "2026-07-31"
+  params: { total_b: 284, active_b: 13, is_moe: true }
+  context_window: 1000000
+  license: mit
+  modalities: { input: [text], output: [text] }
+  aliases: [deepseek-ai/DeepSeek-V4-Flash, DeepSeek-V4-Flash, deepseek/deepseek-v4-flash]
+  model_card_url: https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash
+  vendor_reported:
+    note: "Web-reported specs (2026-08-19), not primary-verified. Smaller, faster sibling of V4 Pro; 1M context. Not yet on the public leaderboards this dashboard syncs."
+    source_url: https://www.together.ai/models/deepseek-v4-flash-0731
+    benchmarks: []
+
+- model_id: glm-5-2
+  name: GLM-5.2
+  family: glm
+  vendor: zhipu
+  release_date: "2026-07-01"
+  params: { total_b: 754, active_b: 40, is_moe: true }
+  context_window: 1000000
+  license: mit
+  modalities: { input: [text], output: [text] }
+  aliases: [zai-org/GLM-5.2, GLM-5.2, zhipu/glm-5.2, glm-5-2]
+  model_card_url: https://huggingface.co/zai-org/GLM-5.2
+  vendor_reported:
+    note: "Web-reported specs (2026-08-19), not primary-verified. MIT-licensed long-context coding MoE. Not yet on the public leaderboards this dashboard syncs."
+    source_url: https://kingy.ai/blog/glm-5-3-vs-kimi-k3-vs-deepseek-v4-pro/
+    benchmarks: []
+
+- model_id: minimax-m3
+  name: MiniMax M3
+  family: minimax
+  vendor: minimax
+  release_date: "2026-06-01"
+  params: { total_b: 428, active_b: 23, is_moe: true }
+  context_window: 1000000
+  license: minimax-community
+  modalities: { input: [text, image, video], output: [text] }
+  aliases: [MiniMaxAI/MiniMax-M3, MiniMax-M3, minimax/minimax-m3]
+  model_card_url: https://huggingface.co/MiniMaxAI/MiniMax-M3
+  vendor_reported:
+    note: "Web-reported specs (2026-08-19), not primary-verified. Long-horizon agentic coding MoE, 1M context, multimodal. MiniMax Community License carries commercial conditions. Not yet on the public leaderboards this dashboard syncs."
+    source_url: https://www.morphllm.com/deepseek-v4-flash
+    benchmarks: []
+
+- model_id: mistral-large-3
+  name: Mistral Large 3
+  family: mistral
+  vendor: mistral
+  release_date: "2025-12-01"
+  params: { total_b: 675, active_b: 41, is_moe: true }
+  context_window: 262144
+  license: apache-2.0
+  modalities: { input: [text, image], output: [text] }
+  aliases: [mistralai/Mistral-Large-3-675B-Instruct-2512, Mistral-Large-3, mistralai/mistral-large-2512]
+  model_card_url: https://huggingface.co/mistralai/Mistral-Large-3-675B-Instruct-2512
+  vendor_reported:
+    note: "Web-reported specs (2026-08-19), not primary-verified. Apache-2.0 MoE flagship (675B total / 41B active), 256K context, text+image. Not yet on the public leaderboards this dashboard syncs."
+    source_url: https://mistral.ai/news/mistral-3/
+    benchmarks: []
+
 - model_id: qwen3-72b
   name: Qwen3 72B
   family: qwen3
@@ -296,6 +426,8 @@
     bsd-3-clause:      { name: "BSD-3-Clause",      osi_approved: true,  url: "https://opensource.org/license/BSD-3-Clause" }
     llama-community:   { name: "Llama Community",   osi_approved: false, url: "https://www.llama.com/llama3/license/" }
     qwen-license:      { name: "Qwen License",      osi_approved: false, url: "https://huggingface.co/Qwen" }
+    kimi-k3:           { name: "Kimi K3 License",   osi_approved: false, url: "https://huggingface.co/moonshotai/Kimi-K3" }
+    minimax-community: { name: "MiniMax Community", osi_approved: false, url: "https://huggingface.co/MiniMaxAI/MiniMax-M3" }
     gemma-terms:       { name: "Gemma Terms",       osi_approved: false, url: "https://ai.google.dev/gemma/terms" }
     deepseek-license:  { name: "DeepSeek License",  osi_approved: false, url: "https://github.com/deepseek-ai/DeepSeek-LLM/blob/main/LICENSE-MODEL" }
     mistral-research:  { name: "Mistral Research",  osi_approved: false, url: "https://mistral.ai/licenses/MRL-0.1.md" }

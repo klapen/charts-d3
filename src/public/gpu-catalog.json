@@ -57,6 +57,17 @@
       "mem_bandwidth_gbps": 1008
     },
     {
+      "id": "rtx-5090",
+      "name": "RTX 5090 32GB",
+      "vram_gb": 32,
+      "buy_usd": 2400,
+      "rent_usd_hr": 0.69,
+      "watts": 575,
+      "class": "consumer",
+      "unified": false,
+      "mem_bandwidth_gbps": 1792
+    },
+    {
       "id": "rtx-6000-ada",
       "name": "RTX 6000 Ada 48GB",
       "vram_gb": 48,
